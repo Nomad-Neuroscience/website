@@ -95,7 +95,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="dns-prefetch" href="https://unpkg.com">
-    <link rel="preload" as="image" href="hero.png" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/images/hero.png" fetchpriority="high">
 
     <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"
@@ -503,11 +503,11 @@
 
             // Mapping variants to default textures if no specific image is provided
             const defaultTextures = {
-                primary: 'button_back.png',
-                secondary: 'button_back_2.png',
-                outline: 'button_back_2.png',
-                dark: 'button_back_3.png',
-                ghost: 'button_back_3.png'
+                primary: 'assets/images/button_back.png',
+                secondary: 'assets/images/button_back_2.png',
+                outline: 'assets/images/button_back_2.png',
+                dark: 'assets/images/button_back_3.png',
+                ghost: 'assets/images/button_back_3.png'
             };
 
             const activeTexture = hoverImage || defaultTextures[variant];
@@ -860,6 +860,7 @@
             const [isLoading, setIsLoading] = useState(false);
             const [consent, setConsent] = useState(false);
             const [error, setError] = useState('');
+            const [success, setSuccess] = useState(false);
 
             // simple email validation for UX (server/netlify will still validate)
             const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -998,7 +999,7 @@
                                             required
                                         />
                                         <label htmlFor="waitlist-consent" className="text-xs text-nomad-black/60 leading-tight">
-                                            I agree to receive communications from Nomad and have read the <a href="privacy.html" className="text-nomad-pink hover:underline">Privacy Policy</a>.
+                                            I agree to receive communications from Nomad and have read the <a href="/privacy" className="text-nomad-pink hover:underline">Privacy Policy</a>.
                                         </label>
                                     </div>
 
@@ -1117,8 +1118,8 @@
                             {/* Logo Circle */}
                             <Magnetic>
                                 <a
-                                    href="index.html"
-                                    className={`group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('button_back_2.png')] bg-cover bg-center ${isDark ? 'bg-white/10' : 'bg-white/53'}`}
+                                    href="/"
+                                    className={`group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('assets/images/button_back_2.png')] bg-cover bg-center ${isDark ? 'bg-white/10' : 'bg-white/53'}`}
                                 >
                                     <span className={`font-serif italic text-2xl md:text-3xl mt-[-2px] transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-pink group-hover:text-white'}`}>n</span>
                                 </a>
@@ -1131,7 +1132,7 @@
                                     <a href="#applications" className="hover:text-nomad-pink transition-colors">Applications</a>
                                     <a href="#technology" className="hover:text-nomad-pink transition-colors">Technology</a>
                                     <div className="w-px h-4 bg-black/10 mx-2"></div>
-                                    <a href="signin.html" className="hover:text-nomad-pink transition-colors">Partner Portal</a>
+                                    <a href="/signin" className="hover:text-nomad-pink transition-colors">Partner Portal</a>
                                 </div>
 
                                 <button
@@ -1166,14 +1167,14 @@
                             <a href="#technology" onClick={() => setMobileMenuOpen(false)} className="border-b border-black/5 pb-2">Technology</a>
                             <div className="pt-8 flex flex-col gap-4">
                                 <a href="#team" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Team</a>
-                                <a href="careers.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Careers</a>
+                                <a href="/careers" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Careers</a>
                                 <button 
                                     onClick={() => { onInvestorClick(); setMobileMenuOpen(false); }} 
                                     className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors text-left"
                                 >
                                     Investors
                                 </button>
-                                <a href="signin.html" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Portals</a>
+                                <a href="/signin" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/40 hover:text-nomad-pink transition-colors">Portals</a>
                             </div>
                             <button
                                 onClick={() => { onWaitlistClick(); setMobileMenuOpen(false); }}
@@ -1208,7 +1209,7 @@
                         <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-transparent z-10"></div>
                         <img
                             ref={parallaxRef}
-                            src="hero.png"
+                            src="assets/images/hero.png"
                             alt="Abstract neuro-interface visualization representing the Nomad autonomic interface"
                             className="absolute -top-[15%] left-0 w-full h-[130%] object-cover opacity-20 mix-blend-overlay will-change-transform"
                         />
@@ -1305,10 +1306,10 @@
                             <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Explore</span>
                             <div className="flex items-center gap-4">
                                 <Magnetic>
-                                    <Button href="#platform" variant="outline" size="small" className="text-nomad-pink border-nomad-pink !py-2 !px-4 !text-xs" hoverImage="button_back.png">E-field</Button>
+                                    <Button href="#platform" variant="outline" size="small" className="text-nomad-pink border-nomad-pink !py-2 !px-4 !text-xs" hoverImage="assets/images/button_back.png">E-field</Button>
                                 </Magnetic>
                                 <Magnetic>
-                                    <Button href="#applications" variant="outline" size="small" className="text-nomad-pink border-nomad-pink !py-2 !px-4 !text-xs" hoverImage="button_back_2.png">A-field</Button>
+                                    <Button href="#applications" variant="outline" size="small" className="text-nomad-pink border-nomad-pink !py-2 !px-4 !text-xs" hoverImage="assets/images/button_back_2.png">A-field</Button>
                                 </Magnetic>
                             </div>
                         </div>
@@ -1542,19 +1543,19 @@
 
         const Team = () => {
             const team = [
-                { name: "Santiago Denari", role: "Chief Executive Officer", bio: "", image: "Santi.jpg" },
-                { name: "Oliver Case", role: "Chief Science Officer", bio: "", image: "Ollie.png" },
-                { name: "Ben Black", role: "Management Team [NED]", bio: "", image: "ben_black.png" },
-                { name: "Ben Newton", role: "Management Team", bio: "", image: "Ben_newton.png" },
-                { name: "Callum Shingleton Smith", role: "Head of Engineering", bio: "", image: "callum.png" },
-                { name: "Marcelo Arenas", role: "Head of Systems", bio: "", image: "Marcelo.png" },
-                { name: "Dr. Guy Winter", role: "Management Team", bio: "", image: "Guy_winter.png" },
-                { name: "Dr. Ali Hawks", role: "Management Team", bio: "", image: "Ali-050.png" },
-                { name: "Patrik Nilsson", role: "Supply Chain Resilience", bio: "", image: "Patrik_Nilsson.png" },
-                { name: "Prof. Imanuel Lerman", role: "Clinical Team", bio: "", image: "Imanuel_Lerman.png" },
-                { name: "Prof. Steve Alty", role: "Engineering Advisor", bio: "", image: "Steve_Alty.png" },
-                { name: "Anders Borg", role: "Strategic Advisor", bio: "", image: "Anders_borg.png" },
-                { name: "Manuel Hidalgo Sola", role: "App Dev Team", bio: "", image: "manuel.png" }
+                { name: "Santiago Denari", role: "Chief Executive Officer", bio: "", image: "assets/images/Santi.jpg" },
+                { name: "Oliver Case", role: "Chief Science Officer", bio: "", image: "assets/images/Ollie.png" },
+                { name: "Ben Black", role: "Management Team [NED]", bio: "", image: "assets/images/ben_black.png" },
+                { name: "Ben Newton", role: "Management Team", bio: "", image: "assets/images/Ben_Newton.png" },
+                { name: "Callum Shingleton Smith", role: "Head of Engineering", bio: "", image: "assets/images/callum.png" },
+                { name: "Marcelo Arenas", role: "Head of Systems", bio: "", image: "assets/images/Marcelo.png" },
+                { name: "Dr. Guy Winter", role: "Management Team", bio: "", image: "assets/images/Guy_Winter.png" },
+                { name: "Dr. Ali Hawks", role: "Management Team", bio: "", image: "assets/images/Ali-050.png" },
+                { name: "Patrik Nilsson", role: "Supply Chain Resilience", bio: "", image: "assets/images/Patrik_Nilsson.png" },
+                { name: "Prof. Imanuel Lerman", role: "Clinical Team", bio: "", image: "assets/images/Imanuel_Lerman.png" },
+                { name: "Prof. Steve Alty", role: "Engineering Advisor", bio: "", image: "assets/images/Steve_Alty.png" },
+                { name: "Anders Borg", role: "Strategic Advisor", bio: "", image: "assets/images/Anders_borg.png" },
+                { name: "Manuel Hidalgo Sola", role: "App Dev Team", bio: "", image: "assets/images/Manuel.png" }
             ];
 
             return (
@@ -1629,6 +1630,20 @@
                             ))}
                         </div>
 
+
+                        {/* Non-Invasive Blood Pressure Teaser */}
+                        <FadeIn delay={300}>
+                            <div className="border-t border-white/10 py-8 mb-16 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-nomad-pink/60 mb-2">In Active Development</p>
+                                    <p className="text-white/50 font-light">Non-invasive blood pressure. <span className="text-white/25 italic">More to follow when we're ready to say it.</span></p>
+                                </div>
+                                <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-white/20 shrink-0">
+                                    <Lock size={12} />
+                                    <span>Embargoed</span>
+                                </div>
+                            </div>
+                        </FadeIn>
 
                         {/* Defence Applications - Login Required */}
                         <FadeIn>
@@ -1763,7 +1778,7 @@
                                             variant="ghost"
                                             className="w-10 h-10 md:w-14 md:h-14 bg-white border border-black/5 shadow-sm disabled:opacity-20 transition-all group active:scale-95 !p-0"
                                             aria-label="Previous milestone"
-                                            hoverImage="button_back_3.png"
+                                            hoverImage="assets/images/button_back_3.png"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" className="group-hover:-translate-x-0.5 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
                                         </Button>
@@ -1812,7 +1827,7 @@
                                             variant="ghost"
                                             className="w-10 h-10 md:w-14 md:h-14 bg-white border border-black/5 shadow-sm disabled:opacity-20 transition-all group active:scale-95 !p-0"
                                             aria-label="Next milestone"
-                                            hoverImage="button_back_3.png"
+                                            hoverImage="assets/images/button_back_3.png"
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" className="group-hover:translate-x-0.5 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                                         </Button>
@@ -2151,7 +2166,7 @@
                                 <ul className="space-y-3 text-white/50 text-[11px] uppercase tracking-wider font-tech">
                                     <li><a href="#platform" className="hover:text-white transition-colors">E-field</a></li>
                                     <li><a href="#applications" className="hover:text-white transition-colors">A-field</a></li>
-                                    <li><a href="careers.html" className="hover:text-white transition-colors">Careers</a></li>
+                                    <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
                                     <li>
                                         <button 
                                             onClick={onInvestorClick} 
@@ -2160,7 +2175,7 @@
                                             Investors
                                         </button>
                                     </li>
-                                    <li><a href="signin.html" className="hover:text-white transition-colors">Portals</a></li>
+                                    <li><a href="/signin" className="hover:text-white transition-colors">Portals</a></li>
                                 </ul>
                             </div>
 
@@ -2192,7 +2207,7 @@
                                             required
                                         />
                                         <label htmlFor="footer-consent" className="text-[10px] text-white/40 leading-tight">
-                                            I agree to receive updates. Our lawful basis for processing is your consent. <a href="privacy.html" className="text-white/60 hover:text-white underline">Privacy Policy</a>.
+                                            I agree to receive updates. Our lawful basis for processing is your consent. <a href="/privacy" className="text-white/60 hover:text-white underline">Privacy Policy</a>.
                                         </label>
                                     </div>
                                     <Button
@@ -2200,7 +2215,7 @@
                                         variant="primary"
                                         disabled={footerSubmitting || !footerConsent}
                                         className="w-full !rounded-lg"
-                                        hoverImage="button_back.png"
+                                        hoverImage="assets/images/button_back.png"
                                     >
                                         {footerSuccess ? 'Subscribed!' : footerSubmitting ? 'Subscribing...' : 'Subscribe'}
                                     </Button>
@@ -2255,7 +2270,7 @@
                                 </div>
                             </div>
                             <div className="flex gap-8 text-[10px] uppercase tracking-[0.3em] font-medium text-white/40">
-                                <a href="privacy.html" className="hover:text-white transition-colors">Privacy Policy</a>
+                                <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
                             </div>
                         </div>
                     </div>
@@ -2295,19 +2310,19 @@
 
         const ScienceAndTeam = () => {
             const team = [
-                { name: "Santiago Denari", role: "Chief Executive Officer", bio: "", image: "Santi.jpg" },
-                { name: "Oliver Case", role: "Chief Science Officer", bio: "", image: "Ollie.png" },
-                { name: "Ben Black", role: "Management Team [NED]", bio: "", image: "ben_black.png" },
-                { name: "Ben Newton", role: "Management Team", bio: "", image: "Ben_newton.png" },
-                { name: "Callum Shingleton Smith", role: "Head of Engineering", bio: "", image: "callum.png" },
-                { name: "Marcelo Arenas", role: "Head of Systems", bio: "", image: "Marcelo.png" },
-                { name: "Dr. Guy Winter", role: "Management Team", bio: "", image: "Guy_winter.png" },
-                { name: "Dr. Ali Hawks", role: "Management Team", bio: "", image: "Ali-050.png" },
-                { name: "Patrik Nilsson", role: "Supply Chain Resilience", bio: "", image: "Patrik_Nilsson.png" },
-                { name: "Prof. Imanuel Lerman", role: "Clinical Team", bio: "", image: "Imanuel_Lerman.png" },
-                { name: "Prof. Steve Alty", role: "Engineering Advisor", bio: "", image: "Steve_Alty.png" },
-                { name: "Anders Borg", role: "Strategic Advisor", bio: "", image: "Anders_borg.png" },
-                { name: "Manuel Hidalgo Sola", role: "App Dev Team", bio: "", image: "Manuel.png" }
+                { name: "Santiago Denari", role: "Chief Executive Officer", bio: "", image: "assets/images/Santi.jpg" },
+                { name: "Oliver Case", role: "Chief Science Officer", bio: "", image: "assets/images/Ollie.png" },
+                { name: "Ben Black", role: "Management Team [NED]", bio: "", image: "assets/images/ben_black.png" },
+                { name: "Ben Newton", role: "Management Team", bio: "", image: "assets/images/Ben_Newton.png" },
+                { name: "Callum Shingleton Smith", role: "Head of Engineering", bio: "", image: "assets/images/callum.png" },
+                { name: "Marcelo Arenas", role: "Head of Systems", bio: "", image: "assets/images/Marcelo.png" },
+                { name: "Dr. Guy Winter", role: "Management Team", bio: "", image: "assets/images/Guy_Winter.png" },
+                { name: "Dr. Ali Hawks", role: "Management Team", bio: "", image: "assets/images/Ali-050.png" },
+                { name: "Patrik Nilsson", role: "Supply Chain Resilience", bio: "", image: "assets/images/Patrik_Nilsson.png" },
+                { name: "Prof. Imanuel Lerman", role: "Clinical Team", bio: "", image: "assets/images/Imanuel_Lerman.png" },
+                { name: "Prof. Steve Alty", role: "Engineering Advisor", bio: "", image: "assets/images/Steve_Alty.png" },
+                { name: "Anders Borg", role: "Strategic Advisor", bio: "", image: "assets/images/Anders_borg.png" },
+                { name: "Manuel Hidalgo Sola", role: "App Dev Team", bio: "", image: "assets/images/Manuel.png" }
             ];
 
             return (
@@ -2328,7 +2343,7 @@
                                 title="Driven by People"
                                 description="We believe technology is only as powerful as the people behind it. Discover the team that makes it possible."
                                 badge="Careers"
-                                badgeHref="careers.html"
+                                badgeHref="/careers"
                                 linkText="Meet the Team"
                                 linkHref="#team"
                             />

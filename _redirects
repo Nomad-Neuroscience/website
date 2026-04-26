@@ -1,11 +1,8 @@
+# Pretty URLs — redirect .html versions to canonical extensionless paths
 /privacy.html    /privacy    301!
 /signin.html     /signin     301!
-/active.html      /active      301!
+/careers.html    /careers    301!
 /index.html      /           301!
 
+# Serve root
 /    /index.html   200
-
-
-
-
-

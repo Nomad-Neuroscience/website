@@ -14,17 +14,25 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
 
     <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"
+        integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z"
+        crossorigin="anonymous"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+        integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1"
+        crossorigin="anonymous"></script>
 
     <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"
+        integrity="sha384-dqDn4UOhYWNxmtwnMX6yC3WtZZ6Li8rF6rLB7cu0i/R7btvb+p+kObgEHto7VsJK"
+        crossorigin="anonymous"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Lenis Smooth Scroll -->
-    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"
+        integrity="sha384-eD5ubmuCcvTdCADWuSchJYE7wcj2nzNr0itbrh6w/KJyBiltSZ8w3VFRBSWu5YQ8"
+        crossorigin="anonymous"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -283,7 +291,7 @@
 
                     <div className="mt-auto pt-20">
                         <div className="text-[10px] uppercase tracking-[0.3em] font-medium text-nomad-black/40 flex flex-col gap-2 items-center">
-                            <p>© 2026 NOMAD NEUROSCIENCE LTD. All rights reserved. <a href="privacy" className="ml-4 hover:text-nomad-pink transition-colors text-nomad-black/60">Privacy Policy</a></p>
+                            <p>© 2026 NOMAD NEUROSCIENCE LTD. All rights reserved. <a href="/privacy" className="ml-4 hover:text-nomad-pink transition-colors text-nomad-black/60">Privacy Policy</a></p>
                             <p className="opacity-80 text-[8px] text-center">
                                 Registered in England and Wales • Company № 16558472<br />
                                 Registered Office: 71-75 Shelton Street, London, WC2H 9JQ
@@ -301,6 +309,7 @@
             const [loading, setLoading] = useState(true);
 
             useEffect(() => {
+                if (!window.Lenis) return;
                 const lenis = new window.Lenis({
                     duration: 1.2,
                     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
