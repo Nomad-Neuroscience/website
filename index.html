@@ -1254,7 +1254,9 @@
 
         /* --- ANIMATED COUNTER --- */
         const AnimatedCounter = ({ end, suffix = '', prefix = '', duration = 1200, delay = 0 }) => {
-            const [count, setCount] = useState(0);
+            // Start with end value so it's readable in static form/scrapers
+            const [count, setCount] = useState(end);
+            const [hasStarted, setHasStarted] = useState(false);
             const ref = useRef(null);
 
             useEffect(() => {
@@ -1263,8 +1265,11 @@
 
                 const observer = new IntersectionObserver(
                     ([entry]) => {
-                        if (entry.isIntersecting) {
-                            // Wait for the assigned delay before starting the counter
+                        if (entry.isIntersecting && !hasStarted) {
+                            setHasStarted(true);
+                            // Reset to 0 only when we're about to animate
+                            setCount(0);
+                            
                             delayTimer = setTimeout(() => {
                                 let start = 0;
                                 const increment = end / (duration / 16);
@@ -1278,10 +1283,6 @@
                                     }
                                 }, 16);
                             }, delay);
-                        } else {
-                            clearTimeout(delayTimer);
-                            clearInterval(timer);
-                            setCount(0); // Reset when scrolled out of view
                         }
                     },
                     { threshold: 0.1 }
@@ -1292,9 +1293,18 @@
                     clearInterval(timer);
                     observer.disconnect();
                 };
-            }, [end, duration, delay]);
+            }, [end, duration, delay, hasStarted]);
 
-            return <span ref={ref}>{prefix}{count}{suffix}</span>;
+            return (
+                <span 
+                    ref={ref} 
+                    role="status" 
+                    aria-live="polite" 
+                    aria-label={`${prefix}${end}${suffix}`}
+                >
+                    {prefix}{count}{suffix}
+                </span>
+            );
         };
 
         /* --- AUGEN-STYLE MODULAR SECTIONS --- */
