@@ -333,31 +333,101 @@ const LoginModal = ({ isOpen, onClose }) => {
 
 /* --- WAITLIST MODAL --- */
 const WaitlistModal = ({ isOpen, onClose }) => {
+    const [step, setStep] = useState(1);
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [userType, setUserType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
+    const [emailTouched, setEmailTouched] = useState(false);
+    const [nameTouched, setNameTouched] = useState(false);
     const panelRef = useRef(null);
     const previousFocus = useRef(null);
 
+    const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+    const roles = [
+        {
+            id: 'patient',
+            label: 'I live with this',
+            sub: 'Patient or carer',
+            detail: 'Autonomic dysfunction, dysautonomia, POTS, long COVID — anyone whose nervous system is the problem.',
+            note: 'You are why this exists. We will write to you first as the clinical investigation opens.',
+        },
+        {
+            id: 'clinician',
+            label: 'I treat or research this',
+            sub: 'Clinician or researcher',
+            detail: 'Cardiology, neurology, autonomic medicine, bioelectronics, signal processing, wearable engineering.',
+            note: 'We share clinical and scientific updates as the data matures. Collaboration is welcome.',
+        },
+        {
+            id: 'investor',
+            label: 'I invest in deep-tech health',
+            sub: 'Potential investor',
+            detail: 'Funds, family offices, angels, syndicates investing in regulated medical hardware and platform companies.',
+            note: 'We will share the next round of materials with you when they are ready.',
+        },
+        {
+            id: 'government',
+            label: 'I work in health policy',
+            sub: 'Government or health system',
+            detail: 'NHS, NICE, MHRA, public health, payers, commissioners, ministerial advisers.',
+            note: 'We will share regulatory and health-system briefings as the pathway matures.',
+        },
+    ];
+
+    const selectedRole = roles.find((r) => r.id === userType);
+
+    const resetState = () => {
+        setStep(1);
+        setSuccess(false);
+        setError('');
+        setFullName('');
+        setEmail('');
+        setUserType('');
+        setEmailTouched(false);
+        setNameTouched(false);
+        setIsLoading(false);
+    };
+
+    const handleClose = () => {
+        if (isLoading) return;
+        onClose();
+        // delay reset so the user doesn't see content disappear during the close animation
+        setTimeout(resetState, 250);
+    };
+
+    // Body scroll lock + focus management
     useEffect(() => {
         if (isOpen) {
             previousFocus.current = document.activeElement;
-            setTimeout(() => panelRef.current?.focus(), 0);
+            const previousOverflow = document.body.style.overflow;
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => panelRef.current?.focus(), 50);
+            return () => { document.body.style.overflow = previousOverflow; };
         } else if (previousFocus.current && typeof previousFocus.current.focus === 'function') {
             previousFocus.current.focus();
         }
     }, [isOpen]);
 
-    const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    const isFormValid = fullName.trim().length > 0 && validateEmail(email) && userType.trim().length > 0;
+    useEffect(() => {
+        if (!isOpen) return;
+        const onKey = (e) => { if (e.key === 'Escape') handleClose(); };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen, isLoading]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        if (!isFormValid) { setError('Please complete all fields correctly before submitting.'); return; }
+        const valid = fullName.trim().length > 0 && validateEmail(email) && userType.length > 0;
+        if (!valid) {
+            setError('Please complete all fields correctly before submitting.');
+            return;
+        }
         setIsLoading(true);
         try {
             const formData = new FormData();
@@ -370,8 +440,12 @@ const WaitlistModal = ({ isOpen, onClose }) => {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(formData).toString(),
             });
-            if (response.ok) { setSuccess(true); setFullName(''); setEmail(''); setUserType(''); }
-            else { throw new Error('Failed to submit'); }
+            if (response.ok) {
+                setStep(3);
+                setSuccess(true);
+            } else {
+                throw new Error('Failed to submit');
+            }
         } catch (err) {
             setError('Something went wrong. Please try again.');
         } finally {
@@ -379,87 +453,306 @@ const WaitlistModal = ({ isOpen, onClose }) => {
         }
     };
 
-    const handleClose = () => {
-        setSuccess(false);
-        setError('');
-        setFullName('');
-        setEmail('');
-        setUserType('');
-        onClose();
-    };
-
-    useEffect(() => {
-        if (!isOpen) return;
-        const onKey = (e) => { if (e.key === 'Escape') handleClose(); };
-        window.addEventListener('keydown', onKey);
-        return () => window.removeEventListener('keydown', onKey);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOpen]);
-
     if (!isOpen) return null;
 
+    const totalSteps = 3;
+    const stepNumber = (n) => String(n).padStart(2, '0');
+
+    // Heroline shifts per step — left pane copy
+    const heroForStep = {
+        1: { eyebrow: "Step 01 / 03",  line: <>We start with <i>you</i>.</>,           sub: 'There is no neutral patient. Tell us where you stand.' },
+        2: { eyebrow: "Step 02 / 03",  line: <>What should we <i>call you</i>.</>,     sub: 'Your name and an email we can reach you on.' },
+        3: { eyebrow: "Welcome",       line: <>You&rsquo;re <i>in</i>.</>,             sub: selectedRole?.note || "We'll be in touch as Nomad develops." },
+    };
+    const hero = heroForStep[step];
+
+    const nameValid = fullName.trim().length >= 2;
+    const emailValid = validateEmail(email);
+    const canSubmitStep2 = nameValid && emailValid;
+
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-nomad-black/60 backdrop-blur-xl" onClick={(e) => e.target === e.currentTarget && handleClose()}>
+        <div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 bg-nomad-black/70 backdrop-blur-xl"
+            onClick={(e) => { if (e.target === e.currentTarget && !isLoading) handleClose(); }}
+        >
             <div
                 ref={panelRef}
                 tabIndex={-1}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="waitlist-modal-title"
-                className="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-nomad-pink/10 focus:outline-none"
+                className="relative w-full sm:max-w-[1040px] h-full sm:h-auto sm:max-h-[92vh] bg-nomad-cream sm:rounded-[28px] shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] focus:outline-none animate-fade-in"
             >
-                <button onClick={handleClose} aria-label="Close dialog" className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-pink transition-colors"><X size={24} /></button>
-                {success ? (
-                    <div className="text-center py-8">
-                        <div className="w-16 h-16 bg-nomad-pink/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg className="w-8 h-8 text-nomad-pink" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                {/* Close button — global */}
+                <button
+                    onClick={handleClose}
+                    disabled={isLoading}
+                    aria-label="Close dialog"
+                    className="absolute top-5 right-5 z-30 w-10 h-10 rounded-full bg-white/70 backdrop-blur-md border border-nomad-black/5 text-nomad-black/60 hover:text-nomad-pink hover:bg-white transition-all flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                    <X size={18} />
+                </button>
+
+                {/* LEFT PANE — brand / story */}
+                <aside className="relative bg-nomad-pink text-white p-8 sm:p-10 md:p-12 flex flex-col justify-between min-h-[220px] md:min-h-[640px] overflow-hidden">
+                    {/* Decorative pink texture */}
+                    <div
+                        aria-hidden="true"
+                        className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none bg-cover bg-center"
+                        style={{ backgroundImage: "url('/assets/images/button_back_2.png')" }}
+                    />
+                    <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-br from-nomad-pink via-nomad-pink to-nomad-magenta opacity-90 pointer-events-none" />
+
+                    <div className="relative z-10 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-white/15 border border-white/20 backdrop-blur-md flex items-center justify-center">
+                            <span className="font-serif italic text-lg text-white mt-[-2px] select-none">n</span>
                         </div>
-                        <h3 id="waitlist-modal-title" className="text-3xl font-black mb-3 text-nomad-black">You're In!</h3>
-                        <p className="text-nomad-black/60 mb-6">We'll be in touch soon with updates on Nomad.</p>
-                        <Button onClick={handleClose} variant="primary" className="!px-8 !py-3 font-bold">Done</Button>
+                        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/80">Nomad · Waitlist</span>
                     </div>
-                ) : (
-                    <>
-                        <h3 id="waitlist-modal-title" className="text-3xl font-black mb-2 text-nomad-black">Join the Waitlist</h3>
-                        <p className="text-nomad-black/50 mb-8 text-sm">Be the first to experience Nomad.</p>
-                        <form onSubmit={handleSubmit} noValidate>
-                            <input type="hidden" name="form-name" value="waitlist" />
-                            <label htmlFor="waitlist-fullname" className="sr-only">Full name</label>
-                            <input id="waitlist-fullname" type="text" name="fullName" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} required aria-required="true" className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40" />
-                            <label htmlFor="waitlist-email" className="sr-only">Email address</label>
-                            <input id="waitlist-email" type="email" name="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} required aria-required="true" aria-invalid={email.length > 0 && !validateEmail(email)} className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40" />
-                            <label htmlFor="waitlist-usertype" className="sr-only">I am a...</label>
-                            <select
-                                id="waitlist-usertype"
-                                name="userType"
-                                value={userType}
-                                onChange={(e) => setUserType(e.target.value)}
-                                required
-                                aria-required="true"
-                                className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-6 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black appearance-none cursor-pointer"
-                                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23FF1B8D' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1.5rem' }}
-                            >
-                                <option value="" disabled>I am a...</option>
-                                <option value="patient">Patient</option>
-                                <option value="investor">Potential Investor</option>
-                                <option value="government">Government</option>
-                            </select>
-                            <Button
-                                type="submit"
-                                variant="primary"
-                                disabled={isLoading || !isFormValid}
-                                title={!isFormValid ? 'Please complete all fields' : 'Join the Waitlist'}
-                                aria-disabled={isLoading || !isFormValid}
-                                className="w-full !py-4 font-bold !rounded-xl"
-                            >
-                                {isLoading ? 'Joining...' : 'Join the Waitlist'}
-                            </Button>
-                            {!isFormValid && <p className="mt-3 text-xs text-red-500 text-center">Please complete all fields correctly before submitting.</p>}
-                        </form>
-                        {error && <p className="mt-4 text-red-500 text-sm text-center font-medium">{error}</p>}
-                        <p className="mt-6 text-center text-nomad-black/40 text-xs">No spam. Unsubscribe anytime. By joining you agree to our <a href="/privacy" className="underline hover:text-nomad-pink">Privacy Policy</a>.</p>
-                    </>
-                )}
+
+                    <div className="relative z-10 my-10 md:my-0">
+                        <p key={`eyebrow-${step}`} className="text-[10px] uppercase tracking-[0.4em] font-bold text-white/70 mb-6 animate-fade-in">{hero.eyebrow}</p>
+                        <h2
+                            id="waitlist-modal-title"
+                            key={`hero-${step}`}
+                            className="text-4xl sm:text-5xl md:text-6xl font-light leading-[1.02] tracking-tight text-white animate-fade-in"
+                        >
+                            {hero.line}
+                        </h2>
+                        <p key={`sub-${step}`} className="mt-6 text-base md:text-lg font-light leading-relaxed text-white/85 max-w-[360px] animate-fade-in">
+                            {hero.sub}
+                        </p>
+                    </div>
+
+                    <div className="relative z-10 flex items-center justify-between">
+                        <div className="flex items-center gap-2" aria-hidden="true">
+                            {[1, 2, 3].map((n) => (
+                                <span
+                                    key={n}
+                                    className={`h-[2px] transition-all duration-500 rounded-full ${
+                                        step === n ? 'w-10 bg-white' : step > n ? 'w-6 bg-white/80' : 'w-6 bg-white/25'
+                                    }`}
+                                />
+                            ))}
+                        </div>
+                        <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/60">{stepNumber(step)} / {stepNumber(totalSteps)}</p>
+                    </div>
+                </aside>
+
+                {/* RIGHT PANE — form */}
+                <section className="relative flex flex-col bg-nomad-cream p-6 sm:p-10 md:p-14 overflow-y-auto">
+                    <form onSubmit={step === 2 ? handleSubmit : (e) => e.preventDefault()} noValidate className="flex-1 flex flex-col">
+                        <input type="hidden" name="form-name" value="waitlist" />
+
+                        {/* STEP 1 — role */}
+                        {step === 1 && (
+                            <div key="step1" className="flex-1 flex flex-col animate-fade-in">
+                                <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-nomad-pink mb-4">Who are you</p>
+                                <h3 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-nomad-black leading-snug mb-2">
+                                    Pick the line that <i>fits you best</i>.
+                                </h3>
+                                <p className="text-sm text-nomad-black/55 mb-8">You can only choose one. We will write to you accordingly.</p>
+
+                                <fieldset className="space-y-3 flex-1">
+                                    <legend className="sr-only">Choose the role that best describes you</legend>
+                                    {roles.map((r) => {
+                                        const isActive = userType === r.id;
+                                        return (
+                                            <label
+                                                key={r.id}
+                                                htmlFor={`role-${r.id}`}
+                                                className={`group block rounded-2xl border cursor-pointer transition-all ${isActive ? 'border-nomad-pink bg-white shadow-sm' : 'border-nomad-black/10 bg-white/60 hover:border-nomad-black/30 hover:bg-white'}`}
+                                            >
+                                                <div className="flex items-start gap-4 p-4 sm:p-5">
+                                                    <input
+                                                        id={`role-${r.id}`}
+                                                        type="radio"
+                                                        name="userType"
+                                                        value={r.id}
+                                                        checked={isActive}
+                                                        onChange={(e) => setUserType(e.target.value)}
+                                                        className="sr-only peer"
+                                                        required
+                                                    />
+                                                    <span aria-hidden="true" className={`mt-1 w-4 h-4 rounded-full border flex-shrink-0 flex items-center justify-center transition-all ${isActive ? 'border-nomad-pink' : 'border-nomad-black/20 group-hover:border-nomad-black/50'}`}>
+                                                        <span className={`w-2 h-2 rounded-full transition-transform ${isActive ? 'bg-nomad-pink scale-100' : 'bg-transparent scale-0'}`} />
+                                                    </span>
+                                                    <span className="flex-1 min-w-0">
+                                                        <span className="flex items-baseline justify-between gap-3 mb-1">
+                                                            <span className={`text-base sm:text-lg font-medium leading-snug ${isActive ? 'text-nomad-black' : 'text-nomad-black/85'}`}>{r.label}</span>
+                                                            <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-nomad-black/30 whitespace-nowrap">{r.sub}</span>
+                                                        </span>
+                                                        <span className="block text-[13px] text-nomad-black/55 leading-relaxed">{r.detail}</span>
+                                                    </span>
+                                                </div>
+                                            </label>
+                                        );
+                                    })}
+                                </fieldset>
+
+                                <div className="flex items-center justify-between gap-4 mt-10 pt-6 border-t border-nomad-black/10">
+                                    <button
+                                        type="button"
+                                        onClick={handleClose}
+                                        className="text-[11px] uppercase tracking-[0.25em] font-bold text-nomad-black/40 hover:text-nomad-black transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => userType && setStep(2)}
+                                        disabled={!userType}
+                                        className="bg-nomad-black text-white rounded-full px-8 py-4 text-[12px] font-bold uppercase tracking-[0.25em] hover:bg-nomad-pink transition-all active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
+                                    >
+                                        <span>Continue</span>
+                                        <svg className="w-4 h-4 transition-transform group-enabled:group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* STEP 2 — name + email */}
+                        {step === 2 && (
+                            <div key="step2" className="flex-1 flex flex-col animate-fade-in">
+                                <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-nomad-pink mb-4">Your details</p>
+                                <h3 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-nomad-black leading-snug mb-2">
+                                    A name and an email. <i>That&rsquo;s it.</i>
+                                </h3>
+                                <p className="text-sm text-nomad-black/55 mb-10">No tracking, no marketing list trades, no spam. Unsubscribe at any time.</p>
+
+                                <div className="space-y-8 flex-1">
+                                    <div className="space-y-1.5">
+                                        <label htmlFor="waitlist-fullname" className="text-[10px] uppercase tracking-[0.3em] font-bold text-nomad-black/40 block">What should we call you</label>
+                                        <input
+                                            id="waitlist-fullname"
+                                            type="text"
+                                            name="fullName"
+                                            value={fullName}
+                                            onChange={(e) => setFullName(e.target.value)}
+                                            onBlur={() => setNameTouched(true)}
+                                            required
+                                            autoComplete="name"
+                                            placeholder="Your full name"
+                                            className="w-full bg-transparent border-0 border-b border-nomad-black/15 px-0 py-3 text-lg sm:text-xl text-nomad-black focus:outline-none focus:border-nomad-pink transition-colors font-light placeholder:text-nomad-black/20"
+                                            aria-invalid={nameTouched && !nameValid}
+                                        />
+                                        <div className="h-4">
+                                            {nameTouched && !nameValid && <p className="text-[11px] text-nomad-pink">Please enter your name.</p>}
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-1.5">
+                                        <label htmlFor="waitlist-email" className="text-[10px] uppercase tracking-[0.3em] font-bold text-nomad-black/40 block">Where can we reach you</label>
+                                        <input
+                                            id="waitlist-email"
+                                            type="email"
+                                            name="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            onBlur={() => setEmailTouched(true)}
+                                            required
+                                            autoComplete="email"
+                                            placeholder="you@example.com"
+                                            className="w-full bg-transparent border-0 border-b border-nomad-black/15 px-0 py-3 text-lg sm:text-xl text-nomad-black focus:outline-none focus:border-nomad-pink transition-colors font-light placeholder:text-nomad-black/20"
+                                            aria-invalid={emailTouched && !emailValid}
+                                        />
+                                        <div className="h-4">
+                                            {emailTouched && !emailValid && <p className="text-[11px] text-nomad-pink">Please enter a valid email address.</p>}
+                                        </div>
+                                    </div>
+
+                                    {selectedRole && (
+                                        <div className="rounded-2xl bg-white/70 border border-nomad-black/5 p-4 flex items-center justify-between gap-3">
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-nomad-black/40 mb-1">Joining as</p>
+                                                <p className="text-sm font-medium text-nomad-black truncate">{selectedRole.label} · <span className="text-nomad-black/60">{selectedRole.sub}</span></p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => setStep(1)}
+                                                className="text-[10px] uppercase tracking-[0.25em] font-bold text-nomad-pink hover:opacity-70 transition-opacity"
+                                            >
+                                                Change
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {error && <p className="mt-4 text-sm text-nomad-pink font-medium" role="alert">{error}</p>}
+
+                                <div className="flex items-center justify-between gap-4 mt-10 pt-6 border-t border-nomad-black/10">
+                                    <button
+                                        type="button"
+                                        onClick={() => setStep(1)}
+                                        disabled={isLoading}
+                                        className="text-[11px] uppercase tracking-[0.25em] font-bold text-nomad-black/50 hover:text-nomad-black transition-colors inline-flex items-center gap-2 disabled:opacity-40"
+                                    >
+                                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5m7 7-7-7 7-7" /></svg>
+                                        <span>Back</span>
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={isLoading || !canSubmitStep2}
+                                        aria-disabled={isLoading || !canSubmitStep2}
+                                        className="bg-nomad-black text-white rounded-full px-8 py-4 text-[12px] font-bold uppercase tracking-[0.25em] hover:bg-nomad-pink transition-all active:scale-[0.99] disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center gap-3 group min-w-[180px]"
+                                    >
+                                        {isLoading ? (
+                                            <span aria-hidden="true" className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        ) : (
+                                            <>
+                                                <span>Join the waitlist</span>
+                                                <svg className="w-4 h-4 transition-transform group-enabled:group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                                <p className="mt-6 text-[11px] text-nomad-black/45 leading-relaxed">
+                                    By joining you agree to our <a href="/privacy" className="underline hover:text-nomad-pink">Privacy Policy</a>. We process your details to send you Nomad updates only. Unsubscribe anytime.
+                                </p>
+                            </div>
+                        )}
+
+                        {/* STEP 3 — success */}
+                        {step === 3 && success && (
+                            <div key="step3" className="flex-1 flex flex-col items-start animate-fade-in">
+                                <div className="w-16 h-16 rounded-full border border-nomad-pink/30 flex items-center justify-center mb-8 relative">
+                                    <span aria-hidden="true" className="absolute inset-0 rounded-full bg-nomad-pink/10 animate-pulse-soft" />
+                                    <svg className="w-7 h-7 text-nomad-pink relative" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                                </div>
+                                <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-nomad-pink mb-4">Confirmed</p>
+                                <h3 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-nomad-black leading-[1.05] mb-6">
+                                    Thank you, <i>{fullName.trim().split(' ')[0] || 'friend'}</i>.
+                                </h3>
+                                <p className="text-base sm:text-lg font-light text-nomad-black/70 leading-relaxed max-w-[480px] mb-2">
+                                    You&rsquo;re on the list. We&rsquo;ll write to <span className="text-nomad-black">{email}</span> when there&rsquo;s something real to share — and not before.
+                                </p>
+                                {selectedRole && (
+                                    <p className="text-[14px] font-light italic text-nomad-black/55 leading-relaxed max-w-[480px] mt-4 pt-4 border-t border-nomad-black/10">
+                                        {selectedRole.note}
+                                    </p>
+                                )}
+
+                                <div className="mt-auto pt-10 w-full flex flex-col sm:flex-row gap-3 items-stretch">
+                                    <a
+                                        href="https://www.linkedin.com/company/nomadneuro/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex-1 text-center bg-white border border-nomad-black/10 text-nomad-black rounded-full py-4 px-6 text-[12px] font-bold uppercase tracking-[0.25em] hover:bg-nomad-black hover:text-white transition-all flex items-center justify-center gap-3"
+                                    >
+                                        <span>Follow on LinkedIn</span>
+                                    </a>
+                                    <button
+                                        type="button"
+                                        onClick={handleClose}
+                                        className="flex-1 bg-nomad-black text-white rounded-full py-4 px-6 text-[12px] font-bold uppercase tracking-[0.25em] hover:bg-nomad-pink transition-all active:scale-[0.99] flex items-center justify-center gap-3"
+                                    >
+                                        <span>Return to nomad</span>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </form>
+                </section>
             </div>
         </div>
     );
