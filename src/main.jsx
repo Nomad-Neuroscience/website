@@ -282,24 +282,8 @@ const PartnerLogos = () => {
 
 /* --- LOGIN MODAL --- */
 const LoginModal = ({ isOpen, onClose }) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [shake, setShake] = useState(false);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError('');
-        setTimeout(() => {
-            setIsLoading(false);
-            setError('Invalid credentials. Access denied.');
-            setShake(true);
-            setPassword('');
-            setTimeout(() => setShake(false), 500);
-        }, 1200);
-    };
+    const panelRef = useRef(null);
+    const previousFocus = useRef(null);
 
     useEffect(() => {
         if (!isOpen) return;
@@ -308,22 +292,40 @@ const LoginModal = ({ isOpen, onClose }) => {
         return () => window.removeEventListener('keydown', onKey);
     }, [isOpen, onClose]);
 
+    useEffect(() => {
+        if (isOpen) {
+            previousFocus.current = document.activeElement;
+            setTimeout(() => panelRef.current?.focus(), 0);
+        } else if (previousFocus.current && typeof previousFocus.current.focus === 'function') {
+            previousFocus.current.focus();
+        }
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-nomad-black/60 backdrop-blur-xl" onClick={(e) => e.target === e.currentTarget && onClose()}>
-            <div className={`bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-nomad-pink/10 ${shake ? 'animate-shake' : ''}`}>
-                <button onClick={onClose} className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-pink transition-colors"><X size={24} /></button>
-                <h3 className="text-3xl font-black mb-2 text-nomad-black">Investor Portal</h3>
-                <p className="text-nomad-black/50 mb-8 text-sm">Secure partners only.</p>
-                <form onSubmit={handleSubmit}>
-                    <input type="email" placeholder="Partner Email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40" />
-                    <input type="password" placeholder="Passkey" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-6 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40" />
-                    <Button type="submit" variant="primary" disabled={isLoading} className="w-full !rounded-xl !py-4 font-bold">
-                        {isLoading ? 'Verifying...' : 'Authenticate'}
-                    </Button>
-                </form>
-                {error && <p className="mt-4 text-red-500 text-sm text-center font-medium">{error}</p>}
+            <div
+                ref={panelRef}
+                tabIndex={-1}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="login-modal-title"
+                className="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-nomad-pink/10 focus:outline-none"
+            >
+                <button onClick={onClose} aria-label="Close dialog" className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-pink transition-colors"><X size={24} /></button>
+                <h3 id="login-modal-title" className="text-3xl font-black mb-2 text-nomad-black">Investor Portal</h3>
+                <p className="text-nomad-black/50 mb-6 text-sm">Access by invitation only.</p>
+                <p className="text-nomad-black/70 mb-8 text-sm leading-relaxed">
+                    If you've been invited to the Nomad investor portal, your access details were sent to you directly. For any questions, contact us below.
+                </p>
+                <Button
+                    href="mailto:hello@nomadneuro.com"
+                    variant="primary"
+                    className="w-full !rounded-xl !py-4 font-bold"
+                >
+                    Email hello@nomadneuro.com
+                </Button>
             </div>
         </div>
     );
@@ -337,6 +339,17 @@ const WaitlistModal = ({ isOpen, onClose }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
+    const panelRef = useRef(null);
+    const previousFocus = useRef(null);
+
+    useEffect(() => {
+        if (isOpen) {
+            previousFocus.current = document.activeElement;
+            setTimeout(() => panelRef.current?.focus(), 0);
+        } else if (previousFocus.current && typeof previousFocus.current.focus === 'function') {
+            previousFocus.current.focus();
+        }
+    }, [isOpen]);
 
     const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     const isFormValid = fullName.trim().length > 0 && validateEmail(email) && userType.trim().length > 0;
@@ -387,26 +400,37 @@ const WaitlistModal = ({ isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-nomad-black/60 backdrop-blur-xl" onClick={(e) => e.target === e.currentTarget && handleClose()}>
-            <div className="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-nomad-pink/10">
-                <button onClick={handleClose} className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-pink transition-colors"><X size={24} /></button>
+            <div
+                ref={panelRef}
+                tabIndex={-1}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="waitlist-modal-title"
+                className="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md relative border border-nomad-pink/10 focus:outline-none"
+            >
+                <button onClick={handleClose} aria-label="Close dialog" className="absolute top-6 right-6 text-nomad-black/40 hover:text-nomad-pink transition-colors"><X size={24} /></button>
                 {success ? (
                     <div className="text-center py-8">
                         <div className="w-16 h-16 bg-nomad-pink/10 rounded-full flex items-center justify-center mx-auto mb-6">
                             <svg className="w-8 h-8 text-nomad-pink" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                         </div>
-                        <h3 className="text-3xl font-black mb-3 text-nomad-black">You're In!</h3>
+                        <h3 id="waitlist-modal-title" className="text-3xl font-black mb-3 text-nomad-black">You're In!</h3>
                         <p className="text-nomad-black/60 mb-6">We'll be in touch soon with updates on Nomad.</p>
                         <Button onClick={handleClose} variant="primary" className="!px-8 !py-3 font-bold">Done</Button>
                     </div>
                 ) : (
                     <>
-                        <h3 className="text-3xl font-black mb-2 text-nomad-black">Get Early Access</h3>
+                        <h3 id="waitlist-modal-title" className="text-3xl font-black mb-2 text-nomad-black">Join the Waitlist</h3>
                         <p className="text-nomad-black/50 mb-8 text-sm">Be the first to experience Nomad.</p>
                         <form onSubmit={handleSubmit} noValidate>
                             <input type="hidden" name="form-name" value="waitlist" />
-                            <input type="text" name="fullName" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} required aria-required="true" className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40" />
-                            <input type="email" name="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} required aria-required="true" aria-invalid={email.length > 0 && !validateEmail(email)} className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40" />
+                            <label htmlFor="waitlist-fullname" className="sr-only">Full name</label>
+                            <input id="waitlist-fullname" type="text" name="fullName" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} required aria-required="true" className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40" />
+                            <label htmlFor="waitlist-email" className="sr-only">Email address</label>
+                            <input id="waitlist-email" type="email" name="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} required aria-required="true" aria-invalid={email.length > 0 && !validateEmail(email)} className="w-full px-5 py-4 rounded-xl border border-nomad-pink/20 bg-nomad-pink/5 mb-4 focus:outline-none focus:border-nomad-pink transition-colors text-nomad-black placeholder:text-nomad-black/40" />
+                            <label htmlFor="waitlist-usertype" className="sr-only">I am a...</label>
                             <select
+                                id="waitlist-usertype"
                                 name="userType"
                                 value={userType}
                                 onChange={(e) => setUserType(e.target.value)}
@@ -424,16 +448,16 @@ const WaitlistModal = ({ isOpen, onClose }) => {
                                 type="submit"
                                 variant="primary"
                                 disabled={isLoading || !isFormValid}
-                                title={!isFormValid ? 'Please complete all fields' : 'Get Early Access'}
+                                title={!isFormValid ? 'Please complete all fields' : 'Join the Waitlist'}
                                 aria-disabled={isLoading || !isFormValid}
                                 className="w-full !py-4 font-bold !rounded-xl"
                             >
-                                {isLoading ? 'Joining...' : 'Get Early Access'}
+                                {isLoading ? 'Joining...' : 'Join the Waitlist'}
                             </Button>
                             {!isFormValid && <p className="mt-3 text-xs text-red-500 text-center">Please complete all fields correctly before submitting.</p>}
                         </form>
                         {error && <p className="mt-4 text-red-500 text-sm text-center font-medium">{error}</p>}
-                        <p className="mt-6 text-center text-nomad-black/40 text-xs">No spam. Unsubscribe anytime.</p>
+                        <p className="mt-6 text-center text-nomad-black/40 text-xs">No spam. Unsubscribe anytime. By joining you agree to our <a href="/privacy" className="underline hover:text-nomad-pink">Privacy Policy</a>.</p>
                     </>
                 )}
             </div>
@@ -486,7 +510,7 @@ const Navbar = ({ onWaitlistClick }) => {
                             <a href="#technology" className="hover:text-nomad-pink transition-colors">Technology</a>
                             <a href="#team" className="hover:text-nomad-pink transition-colors">Team</a>
                             <div className="w-px h-4 bg-black/10 mx-2"></div>
-                            <a href="/signin" className="hover:text-nomad-pink transition-colors">Partner Portal</a>
+                            <a href="/signin" className="hover:text-nomad-pink transition-colors">Investor Portal</a>
                         </div>
                         <button
                             className={`flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 ml-4 ${isDark ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/5'}`}
@@ -513,7 +537,13 @@ const Navbar = ({ onWaitlistClick }) => {
             </div>
 
             {/* Mobile Menu Overlay */}
-            <div className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-y-auto ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+            <div
+                role="dialog"
+                aria-modal="true"
+                aria-label="Mobile navigation menu"
+                aria-hidden={!mobileMenuOpen}
+                className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-y-auto ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            >
                 <div className="flex flex-col text-nomad-black pb-16">
                     <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-nomad-black/40 mb-4">Main</p>
                     <div className="flex flex-col gap-5 text-4xl font-light mb-10">
@@ -524,14 +554,14 @@ const Navbar = ({ onWaitlistClick }) => {
                     <p className="text-[10px] uppercase tracking-[0.4em] font-bold text-nomad-black/40 mb-4">More</p>
                     <div className="flex flex-col gap-3">
                         <a href="/careers" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/60 hover:text-nomad-pink transition-colors">Careers</a>
-                        <a href="/signin" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/60 hover:text-nomad-pink transition-colors">Partner Portal</a>
+                        <a href="/signin" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/60 hover:text-nomad-pink transition-colors">Investor Portal</a>
                         <a href="/" onClick={() => setMobileMenuOpen(false)} className="text-2xl text-nomad-black/60 hover:text-nomad-pink transition-colors">Home</a>
                     </div>
                     <button
                         onClick={() => { onWaitlistClick(); setMobileMenuOpen(false); }}
                         className="mt-10 py-5 bg-nomad-black text-white text-xl font-bold rounded-2xl uppercase tracking-widest"
                     >
-                        Secure Access
+                        Join Waitlist
                     </button>
                 </div>
             </div>
@@ -570,12 +600,12 @@ const Hero = () => {
 
                     <div className="max-w-3xl mt-16 md:mt-24 space-y-8">
                         <FadeIn delay={1400}>
-                            <p className="text-xl md:text-2xl font-light text-white/80 leading-relaxed font-sans">
+                            <p className="text-xl md:text-2xl font-light text-white leading-relaxed font-sans">
                                 There is a system running inside you right now. It controls your heartbeat without being asked. It decides when you're in danger. It tells your gut to move, your pupils to dilate, your blood pressure to hold. It has been doing this since <i>before you were born</i>, beneath every thought you've ever had.
                             </p>
                         </FadeIn>
                         <FadeIn delay={2200}>
-                            <p className="text-xl md:text-2xl font-light text-white/80 leading-relaxed">
+                            <p className="text-xl md:text-2xl font-light text-white leading-relaxed">
                                 For most people, it hums along unnoticed. For 376 million, it <i>doesn't</i>.
                             </p>
                             <p className="text-2xl md:text-3xl font-light text-white mt-8">
@@ -642,18 +672,7 @@ const AnimatedCounter = ({ end, suffix = '', prefix = '', duration = 1200, delay
 const OverviewBlock = () => (
     <section id="platform" className="bg-nomad-cream pt-0 pb-32 md:pt-0 md:pb-48 px-6 md:px-16 lg:px-24">
         <div className="max-w-[1400px] mx-auto border-t border-nomad-black/10 pt-10">
-            <div className="flex justify-between items-start mb-16">
-                <div className="flex items-center gap-6">
-                    <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Explore</span>
-                    <div className="flex items-center gap-4">
-                        <Magnetic>
-                            <Button href="#technology" variant="outline" size="small" className="text-nomad-pink border-nomad-pink !py-2 !px-4 !text-xs" hoverImage="button_back.png">E-field</Button>
-                        </Magnetic>
-                        <Magnetic>
-                            <Button href="#technology" variant="outline" size="small" className="text-nomad-pink border-nomad-pink !py-2 !px-4 !text-xs" hoverImage="button_back_2.png">A-field</Button>
-                        </Magnetic>
-                    </div>
-                </div>
+            <div className="flex justify-end items-start mb-16">
                 <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Breakthrough</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black leading-[1.1] max-w-4xl tracking-tight mb-12">
@@ -662,7 +681,7 @@ const OverviewBlock = () => (
             <div className="max-w-2xl text-xl md:text-2xl font-light text-nomad-black/60 leading-relaxed">
                 <FadeIn delay={400}>
                     <p className="mb-6">Every wearable on the market monitors you. They collect. They log. They notify. Then they stop.</p>
-                    <p className="mb-6">Nomad doesn't stop. When your autonomic nervous system shifts — in real time, below the threshold of conscious awareness — Nomad senses it and responds. Automatically. Within milliseconds. Without breaking the skin.</p>
+                    <p className="mb-6">Nomad doesn't stop. It is designed to sense autonomic shifts — in real time, below the threshold of conscious awareness — and respond within milliseconds. Non-invasively. Without breaking the skin.</p>
                     <p>This is closed-loop neuromodulation. And until now, it required surgery. <span className="text-nomad-black font-medium italic">We changed that.</span></p>
                 </FadeIn>
             </div>
@@ -691,7 +710,7 @@ const MissionGrid = () => (
                     <span className="text-nomad-black mt-2 inline-block font-medium">Our Vision</span><br />
                     <span className="text-nomad-black/60 mt-1 inline-block leading-relaxed pr-4">
                         A world where the 376 million people told "there's nothing we can do" have something that does something. Every day. Without surgery. Without side effects. Without asking.<br /><br />
-                        <i>Worn like a watch. Working like medicine.</i>
+                        <i>Worn like a watch. Designed to work like medicine.</i>
                     </span>
                 </div>
                 <div className="md:col-span-1 border-l md:border-nomad-black/10 pl-0 md:pl-8 mt-8 md:mt-0 pt-8 md:pt-0">
@@ -730,7 +749,7 @@ const FutureWearable = () => (
                 <div>
                     <FadeIn>
                         <p className="text-xl md:text-2xl lg:text-3xl font-light text-white leading-relaxed mb-16">
-                            Nomad is the first device to move closed-loop intervention from the hospital bedside to the human wrist. We sense autonomic shifts below the threshold of awareness and respond within milliseconds — providing the precision of clinical neurophysiology with the simplicity of a wearable.
+                            Nomad is designed to bring closed-loop intervention from the hospital bedside to the human wrist. The system is engineered to sense autonomic shifts below the threshold of awareness and respond within milliseconds — combining the precision of clinical neurophysiology with the simplicity of a wearable.
                         </p>
                         <div className="border-t border-white/20 pt-8 flex gap-4">
                             <span className="text-nomad-pink text-2xl leading-none">*</span>
@@ -852,7 +871,7 @@ const ResearchTimeline = () => {
 
     const researchItems = [
         { title: 'The First Spark',     description: 'Cervical vagal stimulation is attempted for the first time. The discovery that electricity could silence a storm in the brain marks the beginning of a century of secret potential.', date: '1881' },
-        { title: 'Out of the Shadows',  description: 'VNS moves from experiment to clinical reality. The FDA approves the first system for drug-resistant epilepsy. For those with no other options, the loop finally begins to crack open.', date: '1997' },
+        { title: 'Out of the Shadows',  description: 'Vagal nerve stimulation (VNS) moves from experiment to clinical reality. The FDA approves the first system for drug-resistant epilepsy. For those with no other options, the loop finally begins to crack open.', date: '1997' },
         { title: 'The Emotional Current', description: 'The science moves deeper. VNS is approved for treatment-resistant depression. We begin to learn that the vagus nerve isn\'t just a wire — it\'s a dial for human emotion.', date: '2005' },
         { title: 'The Breaking Point',  description: 'Opioid withdrawal. A crisis with no exit. VNS is cleared to bridge the gap. The technology is no longer just for chronic conditions; it becomes a tool for survival.', date: '2017' },
         { title: 'Re-wiring the Future', description: 'Stroke rehabilitation. The vagus nerve is used to physically rebuild motor pathways. We realize we aren\'t just treating symptoms — we are teaching the body to repair itself.', date: '2021' },
@@ -1121,8 +1140,8 @@ const Footer = () => {
                         <p className="text-nomad-pink text-xs italic mb-8 max-w-xs leading-relaxed">
                             Currently in clinical investigation — because we refuse to release anything we can't prove.
                         </p>
-                        <p className="text-white/30 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs border-t border-white/5 pt-4 font-tech">
-                            * NOMAD nodes closed loop neuromodulation in the electrical field and the acoustic (ultrasound) field all non-invasive.
+                        <p className="text-white/55 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs border-t border-white/5 pt-4 font-tech">
+                            * Nomad delivers closed-loop neuromodulation through non-invasive autonomic interfaces.
                         </p>
                     </div>
                     <div>
@@ -1132,7 +1151,7 @@ const Footer = () => {
                             <li><a href="#technology" className="hover:text-white transition-colors">Technology</a></li>
                             <li><a href="#team" className="hover:text-white transition-colors">Team</a></li>
                             <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
-                            <li><a href="/signin" className="hover:text-white transition-colors">Portals</a></li>
+                            <li><a href="/signin" className="hover:text-white transition-colors">Investor Portal</a></li>
                         </ul>
                     </div>
                     <div>
@@ -1145,7 +1164,9 @@ const Footer = () => {
                     <div className="col-span-2">
                         <h4 className="font-bold mb-6 text-[10px] uppercase tracking-[0.2em] text-white/20 font-tech">Newsletter</h4>
                         <form onSubmit={handleFooterSubmit} className="space-y-3 max-w-xs">
+                            <label htmlFor="footer-email" className="sr-only">Email address</label>
                             <input
+                                id="footer-email"
                                 type="email"
                                 placeholder="Email address"
                                 value={footerEmail}
@@ -1162,6 +1183,7 @@ const Footer = () => {
                             >
                                 {footerSuccess ? 'Subscribed!' : footerSubmitting ? 'Subscribing...' : 'Subscribe'}
                             </Button>
+                            <p className="mt-3 text-[10px] text-white/30 leading-relaxed font-tech">By subscribing you agree to our <a href="/privacy" className="underline hover:text-white">Privacy Policy</a>. Unsubscribe anytime.</p>
                         </form>
                     </div>
                 </div>
@@ -1192,13 +1214,13 @@ const Footer = () => {
                                     Nomad is an investigational device, exclusively for clinical investigation. It has not yet been reviewed or approved by the MHRA or other regulatory authorities and is not available for commercial sale or medical use.
                                 </p>
                             </div>
-                            <div className="space-y-4">
+                            <div id="references" className="space-y-4">
                                 <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/20">4.0 Scientific References [1]</h4>
-                                <p className="text-[9px] leading-relaxed text-white/20 uppercase tracking-widest">
-                                    Estimates derived from aggregated global prevalence data across primary dysautonomia (Dysautonomia International, 2023: &gt;70M), cardiovascular autonomic neuropathy in diabetes (Spallone et al., Front. Neurosci., 2019; IDF Diabetes Atlas 2021: ~107M), post-COVID autonomic dysfunction (Stiles et al., 2022; Frontera et al., 2025 meta-analysis: &gt;100M), and autonomic impairment in heart failure and hypertension. Total addressable population estimated at &gt;376M.
+                                <p className="text-[9px] leading-relaxed text-white/55 uppercase tracking-widest">
+                                    Estimates derived from aggregated global prevalence data across primary dysautonomia (Dysautonomia International, 2023: &gt;70M), cardiovascular autonomic neuropathy in diabetes (Spallone et al., Front. Neurosci., 2019; IDF Diabetes Atlas 2021: ~107M), post-COVID autonomic dysfunction (Stiles et al., 2022; Frontera et al., 2025 meta-analysis: &gt;100M), and autonomic impairment in heart failure and hypertension. Total addressable population estimated at &gt;376M. This figure aggregates overlapping at-risk populations and is not a count of unique individuals.
                                 </p>
-                                <p className="text-[9px] leading-relaxed text-white/20 uppercase tracking-widest pt-2 border-t border-white/5">
-                                    As of [15.03.2026], no commercially available or CE/UKCA-approved wearable device integrates real-time ANS biomarker sensing with automated closed-loop neuromodulation [2].
+                                <p className="text-[9px] leading-relaxed text-white/55 uppercase tracking-widest pt-2 border-t border-white/5">
+                                    As of [15.03.2026], no commercially available or CE/UKCA-approved wearable device integrates real-time ANS biomarker sensing with automated closed-loop neuromodulation.
                                 </p>
                             </div>
                         </div>
@@ -1267,7 +1289,7 @@ const ScienceAndTeam = () => {
                     description="Wearables and insights, science-led."
                     badge="Learn How"
                     badgeHref="#technology"
-                    linkText="Explore E-field"
+                    linkText="Explore the platform"
                     linkHref="#platform"
                 />
                 <div className="mt-24" id="team">
@@ -1402,19 +1424,22 @@ const App = () => {
         <>
             {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
             <div className={`font-sans text-nomad-black bg-nomad-cream antialiased selection:bg-nomad-pink selection:text-white transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+                <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:bg-nomad-pink focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to content</a>
                 <Navbar onWaitlistClick={() => setWaitlistOpen(true)} />
-                <Hero />
-                <MarqueeText text="SENSING IN REAL TIME • RESPONDING IN MILLISECONDS • NON-INVASIVE • NO SURGERY • NO IMPLANT • PERSONALIZED TO YOUR NERVOUS SYSTEM • THE FIRST OF ITS KIND • " />
-                <OverviewBlock />
-                <MissionGrid />
-                <FutureWearable />
-                <Stats />
-                <DevelopmentTeaser />
-                <ScienceAndTeam />
-                <ResearchTimeline />
-                <Roadmap />
-                <PartnerLogos />
-                <GetInTouch />
+                <main id="main-content">
+                    <Hero />
+                    <MarqueeText text="SENSING IN REAL TIME • RESPONDING IN MILLISECONDS • NON-INVASIVE • NO SURGERY • NO IMPLANT • PERSONALIZED TO YOUR NERVOUS SYSTEM • THE FIRST OF ITS KIND • " />
+                    <OverviewBlock />
+                    <MissionGrid />
+                    <FutureWearable />
+                    <Stats />
+                    <DevelopmentTeaser />
+                    <ScienceAndTeam />
+                    <ResearchTimeline />
+                    <Roadmap />
+                    <PartnerLogos />
+                    <GetInTouch />
+                </main>
                 <Footer />
                 <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />
                 <WaitlistModal isOpen={waitlistOpen} onClose={() => setWaitlistOpen(false)} />
