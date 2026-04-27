@@ -5,11 +5,6 @@
 [build.environment]
   NODE_VERSION = "20"
 
-[[redirects]]
-  from = "/*"
-  to = "/404.html"
-  status = 404
-
 [[plugins]]
   package = "@netlify/plugin-sitemap"
   [plugins.inputs]
@@ -17,6 +12,5 @@
     exclude = [
       "/404.html",
       "/signin",
-      "/signin.html",
-      "/active"
+      "/signin.html"
     ]

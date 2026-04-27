@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /signin
+Disallow: /signin.html
 
 Sitemap: https://nomadneuro.com/sitemap.xml
