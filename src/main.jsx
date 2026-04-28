@@ -864,45 +864,21 @@ const Navbar = ({ onWaitlistClick }) => {
 
 /* --- HERO --- */
 const Hero = () => {
-    const bpPathRef = useRef(null);
-    const bpSysRef = useRef(null);
-    const bpDiaRef = useRef(null);
+    const bpWaveRef = useRef(null);
 
     useEffect(() => {
-        const path = bpPathRef.current;
-        const sysEl = bpSysRef.current;
-        const diaEl = bpDiaRef.current;
+        const path = bpWaveRef.current;
         if (!path) return;
 
-        let W = 200, t = 0, lastBeat = 0, hr = 64, sys = 118, dia = 76, idx = 0;
-        let rafId;
-
-        const pulse = (p) => {
-            const mid = 15;
-            if (p < .05) return mid + (p / .05) * 8;
-            if (p < .12) return mid + 8 - ((p - .05) / .07) * 22;
-            if (p < .22) return mid - 14 + ((p - .12) / .10) * 16;
-            if (p < .30) return mid + 2 - ((p - .22) / .08) * 4;
-            if (p < .42) return mid - 2 + ((p - .30) / .12) * 4;
-            return mid + 2 - ((p - .42) / .58) * 2;
-        };
+        let phase = 0, rafId;
+        const W = 200, H = 22, amp = 9, freq = 0.042;
 
         const tick = () => {
-            t += 1.2;
-            const period = (60000 / hr) / 16;
-            if (t - lastBeat > period) {
-                lastBeat = t; idx++;
-                sys = 118 + Math.round(Math.sin(idx * 0.15) * 3);
-                dia = 76 + Math.round(Math.cos(idx * 0.12) * 2);
-                hr = 64 + Math.round(Math.sin(idx * 0.08) * 4);
-                if (sysEl) sysEl.textContent = sys;
-                if (diaEl) diaEl.textContent = dia;
-            }
+            phase += 0.03;
             let d = '';
             for (let x = 0; x <= W; x += 2) {
-                const raw = (t - W + x) % period;
-                const p = raw < 0 ? (raw + period) / period : raw / period;
-                d += (x === 0 ? 'M' : 'L') + x + ' ' + pulse(p).toFixed(1);
+                const y = H - amp * Math.sin(x * freq + phase);
+                d += (x === 0 ? 'M' : 'L') + x + ' ' + y.toFixed(1);
             }
             path.setAttribute('d', d);
             rafId = requestAnimationFrame(tick);
@@ -1080,17 +1056,10 @@ const Hero = () => {
                                         </svg>
                                     </div>
 
-                                    {/* Live BP readout */}
-                                    <div style={{ position: 'absolute', top: '62%', left: 0, right: 0, textAlign: 'center', color: '#fff', zIndex: 3, padding: '0 28px' }}>
-                                        <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, letterSpacing: '.22em', textTransform: 'uppercase', opacity: .7 }}>Blood Pressure</div>
-                                        <div style={{ fontWeight: 700, fontSize: 50, letterSpacing: '-0.04em', lineHeight: 1, marginTop: 8, fontVariantNumeric: 'tabular-nums' }}>
-                                            <span ref={bpSysRef}>118</span>
-                                            <span style={{ color: 'rgba(255,255,255,.5)', fontWeight: 300, margin: '0 4px' }}>/</span>
-                                            <span ref={bpDiaRef}>76</span>
-                                        </div>
-                                        <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase', opacity: .65, marginTop: 6 }}>mmHg · beat-by-beat</div>
-                                        <svg style={{ width: '100%', height: 28, marginTop: 10, display: 'block' }} viewBox="0 0 200 30" preserveAspectRatio="none">
-                                            <path ref={bpPathRef} d="" fill="none" stroke="#fff" strokeWidth="1.4" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 4px rgba(255,255,255,.6))' }} />
+                                    {/* Sine wave */}
+                                    <div style={{ position: 'absolute', top: '60%', left: 0, right: 0, zIndex: 3, padding: '0 20px' }}>
+                                        <svg style={{ width: '100%', height: 44, display: 'block' }} viewBox="0 0 200 44" preserveAspectRatio="none">
+                                            <path ref={bpWaveRef} d="" fill="none" stroke="rgba(255,255,255,0.72)" strokeWidth="1.6" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 5px rgba(255,255,255,.45))' }} />
                                         </svg>
                                     </div>
 
