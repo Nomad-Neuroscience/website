@@ -7,3 +7,4 @@ dist/
 .env.*.local
 .vite/
 *.code-workspace
+.claude/worktrees/
