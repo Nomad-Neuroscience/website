@@ -1,222 +1,168 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 
-const Menu = ({ size = 24 }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
-);
-const X = ({ size = 24 }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 6 6 18" /><path d="m6 6 12 12" />
-    </svg>
+const Wordmark = () => (
+    <span className="font-display font-light lowercase tracking-tight text-[20px] leading-none flex items-center text-nomad-black">
+        <span>n</span>
+        <span aria-hidden="true" className="inline-block rounded-full border-[1.5px] border-nomad-pink mx-[0.04em] align-middle" style={{ width: '0.62em', height: '0.62em' }} />
+        <span className="sr-only">o</span>
+        <span>mad</span>
+    </span>
 );
 
-const Magnetic = ({ children, className = '' }) => {
-    const ref = useRef(null);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    useEffect(() => {
-        const element = ref.current;
-        if (!element || window.matchMedia('(pointer: coarse)').matches) return;
-        const handleMove = (e) => {
-            const { clientX, clientY } = e;
-            const { left, top, width, height } = element.getBoundingClientRect();
-            setPosition({ x: (clientX - (left + width / 2)) * 0.3, y: (clientY - (top + height / 2)) * 0.3 });
-        };
-        const handleLeave = () => setPosition({ x: 0, y: 0 });
-        element.addEventListener('mousemove', handleMove);
-        element.addEventListener('mouseleave', handleLeave);
-        return () => {
-            element.removeEventListener('mousemove', handleMove);
-            element.removeEventListener('mouseleave', handleLeave);
-        };
-    }, []);
-    return (
-        <div ref={ref} className={`inline-block transition-transform duration-300 ease-out will-change-transform ${className}`} style={{ transform: `translate3d(${position.x}px, ${position.y}px, 0)` }}>
-            {children}
-        </div>
-    );
-};
+const H = ({ id, n, children }) => (
+    <h2 id={id} className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mt-20 mb-6">
+        {n} — {children}
+    </h2>
+);
 
-const LoadingScreen = ({ onComplete }) => {
-    const [phase, setPhase] = useState(0);
-    useEffect(() => {
-        document.documentElement.classList.add('loading');
-        const t1 = setTimeout(() => setPhase(1), 450);
-        const t2 = setTimeout(() => setPhase(2), 1100);
-        const t3 = setTimeout(() => {
-            document.documentElement.classList.remove('loading');
-            try { sessionStorage.setItem('nomad-intro-seen', '1'); } catch (e) {}
-            onComplete();
-        }, 1700);
-        return () => {
-            clearTimeout(t1); clearTimeout(t2); clearTimeout(t3);
-            document.documentElement.classList.remove('loading');
-        };
-    }, [onComplete]);
-    return (
-        <div className="fixed inset-0 z-[150] pointer-events-none flex flex-col" role="status" aria-busy="true" aria-label="Loading Nomad">
-            <div aria-hidden="true" className={`absolute top-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[600ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-b border-white/5 ${phase === 2 ? '-translate-y-full' : 'translate-y-0'}`} />
-            <div aria-hidden="true" className={`absolute bottom-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[600ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-t border-white/5 ${phase === 2 ? 'translate-y-full' : 'translate-y-0'}`} />
-            <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${phase === 2 ? 'opacity-0' : 'opacity-100'}`}>
-                <div className="flex items-center text-4xl md:text-5xl lg:text-7xl font-light text-white tracking-tight font-display lowercase overflow-hidden">
-                    <span>n</span>
-                    <div className={`transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex ${phase >= 1 ? 'max-w-[300px] opacity-100' : 'max-w-0 opacity-0'}`}>
-                        <span>omad</span>
-                    </div>
-                </div>
+const P = ({ children }) => (
+    <p className="text-nomad-black/85 leading-[1.8] mb-5" style={{ fontSize: '17px' }}>{children}</p>
+);
+
+const UL = ({ children }) => (
+    <ul className="list-disc pl-6 space-y-2 mb-5 text-nomad-black/85 leading-[1.7]" style={{ fontSize: '17px' }}>
+        {children}
+    </ul>
+);
+
+const Privacy = () => (
+    <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased">
+        <header className="fixed top-6 left-6 right-6 z-50 flex items-center justify-between">
+            <a href="/" aria-label="nomad — home" className="group inline-flex items-center h-12 px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors">
+                <Wordmark />
+            </a>
+            <a href="/" className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors">← back</a>
+        </header>
+
+        <main className="max-w-[720px] mx-auto px-6 pt-40 pb-32">
+            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-12">privacy notice · last updated 2026.04</p>
+
+            <h1 className="font-display font-light leading-[1.02] tracking-tight mb-12" style={{ fontSize: 'clamp(40px, 7vw, 80px)' }}>
+                How we handle your information.
+            </h1>
+
+            <P>
+                This notice explains how Nomad Neuroscience Ltd ("Nomad", "we", "us") processes personal data when you use this website, write to us, register interest in our clinical investigation programme, or otherwise interact with the company. We have written it in plain language. Where law uses specific terms, we use them too.
+            </P>
+            <P>
+                We process personal data in line with the UK General Data Protection Regulation and the Data Protection Act 2018; with the EU General Data Protection Regulation (Regulation (EU) 2016/679) where it applies; and with the Swiss Federal Act on Data Protection (FADP, as revised in September 2023) where it applies.
+            </P>
+
+            <H n="01" id="controller">data controller</H>
+            <P>
+                Nomad Neuroscience Ltd is the controller of the personal data described in this notice. We are registered in England and Wales, company № 16558472. Our registered office is 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ, United Kingdom. You can contact us about anything in this notice at <a href="mailto:privacy@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">privacy@nomadneuro.com</a>.
+            </P>
+            <P>
+                We do not currently maintain an Article 27 representative inside the EU/EEA or a Swiss representative. If we begin offering goods or services to, or monitoring the behaviour of, individuals in those territories at a scale that requires one, we will appoint and disclose them in this notice.
+            </P>
+
+            <H n="02" id="data">what we collect</H>
+            <P>We process the following categories of personal data:</P>
+            <UL>
+                <li><strong>Contact data</strong> — name, email address, country, organisation or firm, role, and anything else you choose to put in a free-text field when writing to us.</li>
+                <li><strong>Health-relevant context</strong> — if you write to us about the clinical investigation programme, you may share a description of a condition or symptom. We treat this as <em>special category data</em> under Article 9 GDPR.</li>
+                <li><strong>Technical data</strong> — IP address, browser, device, and pages viewed, collected by our hosting provider for security and performance purposes only.</li>
+                <li><strong>Communications</strong> — the content of any email correspondence you have with us.</li>
+            </UL>
+            <P>
+                We do not collect data from the Nomad device on this website. The investigational device is operated under separate clinical investigation protocols and a separate participant information and consent process. That is described in the protocol documentation, not here.
+            </P>
+
+            <H n="03" id="basis">lawful basis</H>
+            <P>We rely on the following lawful bases under Article 6 GDPR (and the corresponding bases under the Swiss FADP):</P>
+            <UL>
+                <li><strong>Consent</strong> (Art. 6(1)(a)) — when you submit a form, subscribe to updates, or contact us.</li>
+                <li><strong>Legitimate interests</strong> (Art. 6(1)(f)) — for site security, fraud prevention, basic analytics, and corresponding with collaborators and investors. Our legitimate interest is operating the company responsibly; we have considered your rights and balanced them against ours.</li>
+                <li><strong>Legal obligation</strong> (Art. 6(1)(c)) — where we are required by law to keep records, respond to regulators, or co-operate with lawful requests.</li>
+            </UL>
+            <P>
+                Where we process special category data — for example, when you describe a condition in a contact form — we rely on your <strong>explicit consent</strong> (Art. 9(2)(a) GDPR, Art. 6(7) Swiss FADP). You can withdraw that consent at any time without affecting processing that took place before withdrawal.
+            </P>
+
+            <H n="04" id="purposes">why we use it</H>
+            <UL>
+                <li>To respond to enquiries and applications.</li>
+                <li>To assess whether someone may be eligible for the clinical investigation programme.</li>
+                <li>To send updates you have asked for.</li>
+                <li>To operate, secure, and improve this website.</li>
+                <li>To meet legal, regulatory, and accounting obligations.</li>
+            </UL>
+            <P>We do not sell personal data. We do not use personal data to make automated decisions that produce legal or similarly significant effects.</P>
+
+            <H n="05" id="recipients">who sees it</H>
+            <P>Personal data is accessed by Nomad personnel on a need-to-know basis. We share data with the following categories of processor:</P>
+            <UL>
+                <li><strong>Hosting and form processing</strong> — Netlify, Inc. (United States), which hosts this website and processes form submissions.</li>
+                <li><strong>Email infrastructure</strong> — the email provider we use to receive your messages.</li>
+                <li><strong>Professional advisers</strong> — legal, accounting, regulatory, and clinical advisers, where engagement requires it.</li>
+                <li><strong>Authorities</strong> — regulators, courts, and law enforcement, where legally required.</li>
+            </UL>
+            <P>Each processor is bound by an appropriate contract (a UK / EU GDPR Article 28 data processing agreement or equivalent) and may only process data on our instructions.</P>
+
+            <H n="06" id="transfers">international transfers</H>
+            <P>
+                Some of our processors are located outside the UK, the EEA, or Switzerland — most notably in the United States. Where we transfer personal data internationally, we rely on one of the following safeguards: an applicable adequacy decision (including the UK Extension to the EU–US Data Privacy Framework and the Swiss–US Data Privacy Framework, where the recipient is certified); the UK International Data Transfer Agreement; or the European Commission's Standard Contractual Clauses with the UK Addendum and Swiss-specific amendments where required. You can request a copy of the safeguards in place by writing to <a href="mailto:privacy@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">privacy@nomadneuro.com</a>.
+            </P>
+
+            <H n="07" id="retention">how long we keep it</H>
+            <P>
+                We keep personal data only as long as necessary for the purpose we collected it for. As a default, contact-form submissions are retained for up to 24 months from your last interaction with us, unless a longer period is required by law (for example, for accounting records, which we retain for 6 years). You can ask us to delete your data sooner; see your rights below.
+            </P>
+
+            <H n="08" id="rights">your rights</H>
+            <P>Under UK / EU GDPR and the Swiss FADP, you have the right to:</P>
+            <UL>
+                <li>Access the personal data we hold about you.</li>
+                <li>Have inaccurate data corrected.</li>
+                <li>Have your data deleted ("right to be forgotten") in certain circumstances.</li>
+                <li>Restrict or object to processing in certain circumstances.</li>
+                <li>Receive your data in a portable format and have it transmitted to another controller.</li>
+                <li>Withdraw consent at any time, where consent is the basis for processing.</li>
+                <li>Lodge a complaint with a supervisory authority — see below.</li>
+            </UL>
+            <P>
+                To exercise any of these rights, write to <a href="mailto:privacy@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">privacy@nomadneuro.com</a>. We will respond within one month, extendable to three months for complex requests, and will tell you if we need longer.
+            </P>
+
+            <H n="09" id="complaints">complaints</H>
+            <P>
+                If you are not satisfied with how we have handled your data, you have the right to complain to the relevant supervisory authority:
+            </P>
+            <UL>
+                <li><strong>United Kingdom</strong> — Information Commissioner's Office (ICO), <a href="https://ico.org.uk" className="text-nomad-pink hover:text-nomad-magenta">ico.org.uk</a>.</li>
+                <li><strong>European Union / EEA</strong> — your local data protection authority. A list is published by the European Data Protection Board.</li>
+                <li><strong>Switzerland</strong> — Federal Data Protection and Information Commissioner (FDPIC), <a href="https://www.edoeb.admin.ch" className="text-nomad-pink hover:text-nomad-magenta">edoeb.admin.ch</a>.</li>
+            </UL>
+
+            <H n="10" id="security">security</H>
+            <P>
+                We use appropriate technical and organisational measures to protect personal data, including transport-layer encryption, access control, principle-of-least-privilege for personnel, and contractual safeguards with processors. No system is perfectly secure; if a personal data breach occurs that is likely to result in a risk to your rights and freedoms, we will notify the relevant supervisory authority within 72 hours and inform affected individuals where the law requires it.
+            </P>
+
+            <H n="11" id="cookies">cookies</H>
+            <P>
+                See our separate <a href="/cookies" className="text-nomad-pink hover:text-nomad-magenta">cookie notice</a> for the cookies and similar technologies we use, why, and how you can control them.
+            </P>
+
+            <H n="12" id="children">children</H>
+            <P>
+                This website is not directed at children under 16 (under 13 in the UK for some purposes). We do not knowingly collect data from children. If you believe a child has provided us with personal data, please contact us so we can delete it.
+            </P>
+
+            <H n="13" id="changes">changes to this notice</H>
+            <P>
+                We may update this notice as our practices change or as the law develops. The "last updated" date at the top of the page reflects the most recent change. Where changes are material, we will say so prominently.
+            </P>
+
+            <div className="mt-24 pt-10 border-t border-nomad-pink/30 font-tech text-[11px] text-nomad-black/50 tracking-[0.04em] lowercase leading-[1.7] space-y-2">
+                <p>nomad neuroscience ltd · registered in england and wales · company № 16558472</p>
+                <p>71-75 shelton street, covent garden, london, wc2h 9jq</p>
+                <p className="pt-2"><a href="/privacy" className="hover:text-nomad-pink">privacy</a> · <a href="/cookies" className="hover:text-nomad-pink">cookies</a></p>
             </div>
-        </div>
-    );
-};
-
-const Navbar = () => {
-    const [open, setOpen] = useState(false);
-    return (
-        <>
-            <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
-                <div className="flex items-center gap-2.5 w-full max-w-[750px]">
-                    <Magnetic>
-                        <a href="/" className="group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('/assets/images/button_back_2.png')] bg-cover bg-center bg-white/53">
-                            <span className="font-serif italic text-2xl md:text-3xl mt-[-2px] transition-colors duration-500 text-nomad-pink group-hover:text-white">n</span>
-                        </a>
-                    </Magnetic>
-                    <nav className="flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] backdrop-blur-md flex items-center justify-between px-6 md:px-10 transition-all duration-500 bg-white/53">
-                        <div className="hidden md:flex flex-1 items-center justify-around gap-6 text-[14px] font-light text-black/80">
-                            <a href="/#platform" className="hover:opacity-50 transition-opacity">Platform</a>
-                            <a href="/#technology" className="hover:opacity-50 transition-opacity">Technology</a>
-                            <a href="/#team" className="hover:opacity-50 transition-opacity">Team</a>
-                        </div>
-                        <button
-                            className="flex items-center gap-3 ml-auto px-2 py-2 -mr-2 transition-all active:scale-95 text-black"
-                            onClick={() => setOpen(!open)}
-                            aria-label="Toggle menu"
-                        >
-                            <span className="text-[14px] font-medium md:hidden">Menu</span>
-                            {open ? <X size={20} /> : <Menu size={20} />}
-                        </button>
-                    </nav>
-                </div>
-            </div>
-            <div className={`fixed inset-0 z-40 bg-white/98 backdrop-blur-xl pt-32 px-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden ${open ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                <div className="flex flex-col gap-6 text-4xl font-light text-nomad-black">
-                    <a href="/#platform" onClick={() => setOpen(false)} className="border-b border-black/5 pb-6">Platform</a>
-                    <a href="/#technology" onClick={() => setOpen(false)} className="border-b border-black/5 pb-6">Technology</a>
-                    <a href="/#team" onClick={() => setOpen(false)} className="border-b border-black/5 pb-6">Team</a>
-                    <a href="/signin" onClick={() => setOpen(false)} className="text-2xl pt-4 text-nomad-black/50">Partner Portal</a>
-                </div>
-            </div>
-        </>
-    );
-};
-
-const Content = () => (
-    <div className="pt-48 pb-24 px-6 md:px-16 lg:px-24 max-w-4xl mx-auto">
-        <div className="animate-fade-in">
-            <p className="text-xs font-bold text-[#FF1B8D] uppercase tracking-[0.3em] mb-6">Legal Framework</p>
-            <h1 className="text-5xl md:text-7xl font-light tracking-tight mb-16 font-display">Privacy Policy</h1>
-
-            <div className="space-y-12 text-[#0A0A0A]/70 leading-relaxed text-lg font-light">
-                <section>
-                    <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">1. Overview</h2>
-                    <p>Nomad Neuroscience Ltd ("we", "our", or "us") is committed to protecting and respecting your privacy. This policy explains how we collect, use, and safeguard your personal data when you visit our website and use our services, in accordance with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.</p>
-                </section>
-
-                <section>
-                    <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">2. Data We Collect</h2>
-                    <p>We may collect and process the following data about you:</p>
-                    <ul className="list-disc pl-6 mt-4 space-y-2">
-                        <li><strong>Identity Data:</strong> Name and contact details when you join our waitlist or create an account.</li>
-                        <li><strong>Technical Data:</strong> IP address, browser type, time zone setting, and operating system when you visit our site.</li>
-                        <li><strong>Usage Data:</strong> Information about how you use our website and services.</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">3. How We Use Your Data</h2>
-                    <p>We use your information to provide and manage our services, communicate updates, improve our user experience, and comply with legal obligations.</p>
-                </section>
-
-                <section>
-                    <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">4. Regulatory Status</h2>
-                    <p>Nomad is currently an <strong>investigational device</strong>, intended exclusively for clinical investigation purposes. It has not yet been reviewed, cleared, or approved by the Medicines and Healthcare products Regulatory Agency (MHRA) or any other regulatory body. The device is not currently available for commercial medical use or sale to the general public.</p>
-                </section>
-
-                <section>
-                    <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">5. Your Rights</h2>
-                    <p>Under UK data protection law, you have the right of access, rectification, erasure, and restriction of processing regarding your personal information.</p>
-                </section>
-
-                <section>
-                    <h2 className="text-xl font-bold text-[#0A0A0A] mb-4 uppercase tracking-widest">6. Contact Us</h2>
-                    <p>If you have any questions about this privacy policy, please contact us at:</p>
-                    <div className="mt-4 font-bold uppercase tracking-widest text-[#0A0A0A] space-y-1">
-                        <p>NOMAD NEUROSCIENCE LTD</p>
-                        <p className="text-sm font-light lowercase tracking-normal">Company № 16558472</p>
-                    </div>
-                    <p className="mt-4">
-                        Registered Office:<br />
-                        71-75 Shelton Street, Covent Garden<br />
-                        London, United Kingdom, WC2H 9JQ
-                    </p>
-                    <p className="mt-4">
-                        Email: <a href="mailto:hello@nomadneuro.com" className="text-nomad-pink hover:underline">hello@nomadneuro.com</a>
-                    </p>
-                </section>
-            </div>
-        </div>
+        </main>
     </div>
 );
 
-const Footer = () => (
-    <footer data-theme="dark" className="bg-nomad-black text-white/40 py-24 px-6 md:px-16 lg:px-24 font-tech">
-        <div className="max-w-[1400px] mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-16">
-                <span className="font-display text-lg tracking-[0.2em] font-medium lowercase text-white">nomad</span>
-                <div className="flex flex-wrap gap-8 text-[10px] uppercase tracking-[0.3em] font-medium">
-                    <a href="/" className="hover:text-white transition-colors">Home</a>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-12 border-t border-white/5">
-                <div className="space-y-4">
-                    <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/20">Regulatory Status</h4>
-                    <p className="text-[10px] leading-relaxed uppercase tracking-widest text-white/30">
-                        Nomad is an investigational device, exclusively for clinical investigation. It has not yet been reviewed or approved by the MHRA or other regulatory authorities and is not available for commercial sale or medical use.
-                    </p>
-                </div>
-                <div className="space-y-4">
-                    <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/20">Corporate</h4>
-                    <div className="flex flex-col gap-2 text-[10px] uppercase tracking-widest">
-                        <span>&copy; 2026 Nomad Neuroscience Ltd. All rights reserved.</span>
-                        <span>Registered in England and Wales • Company № 16558472</span>
-                        <span>Note: This policy applies to all our investigational activities.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-);
-
-const App = () => {
-    const [loading, setLoading] = useState(() => {
-        try {
-            if (sessionStorage.getItem('nomad-intro-seen') === '1') return false;
-            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-        } catch (e) {}
-        return true;
-    });
-    return (
-        <>
-            {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
-            <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-                <Navbar />
-                <Content />
-                <Footer />
-            </div>
-        </>
-    );
-};
-
-createRoot(document.getElementById('root')).render(<App />);
+createRoot(document.getElementById('root')).render(<Privacy />);

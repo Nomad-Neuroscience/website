@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact · three doors | Nomad Neuroscience</title>
+    <meta name="description" content="Three ways into Nomad: clinical investigation, research collaboration, and gated investor access. Every message is read by a human.">
+    <link rel="canonical" href="https://nomadneuro.com/contact" />
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+    <link href="https://fonts.cdnfonts.com/css/pp-neue-montreal" rel="stylesheet">
+</head>
+
+<body class="bg-nomad-cream text-nomad-black selection:bg-nomad-pink selection:text-white" style="font-family: 'PP Neue Montreal', sans-serif; background-color: #F5F5F0; color: #0A0A0A;">
+
+    <!-- Hidden forms for Netlify build-time detection -->
+    <form name="contact-patient" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="contact-patient" />
+        <input type="text" name="bot-field" />
+        <input type="text" name="fullName" />
+        <input type="email" name="email" />
+        <input type="text" name="country" />
+        <textarea name="condition"></textarea>
+        <input type="text" name="diagnosisStatus" />
+        <input type="checkbox" name="consent" />
+    </form>
+    <form name="contact-collaborator" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="contact-collaborator" />
+        <input type="text" name="bot-field" />
+        <input type="text" name="fullName" />
+        <input type="email" name="email" />
+        <input type="text" name="organisation" />
+        <input type="text" name="role" />
+        <textarea name="brief"></textarea>
+        <input type="checkbox" name="consent" />
+    </form>
+    <form name="contact-investor" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="contact-investor" />
+        <input type="text" name="bot-field" />
+        <input type="text" name="fullName" />
+        <input type="email" name="email" />
+        <input type="text" name="firm" />
+        <input type="text" name="fundStage" />
+        <textarea name="interest"></textarea>
+        <input type="checkbox" name="consent" />
+    </form>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main-contact.jsx"></script>
+</body>
+
+</html>

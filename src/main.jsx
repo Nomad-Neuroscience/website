@@ -2132,19 +2132,19 @@ const ThreeDoors = ({ onWaitlistClick }) => {
             label: 'door 01 — clinical investigation',
             title: 'Living with autonomic dysfunction.',
             body: "If you've been told there's nothing targeted for what you have — write to us first. Eligibility criteria for the clinical investigation programme are limited and rolling.",
-            cta: { kind: 'primary', text: 'Register interest', onClick: onWaitlistClick },
+            cta: { kind: 'primary', text: 'Register interest', href: '/contact?door=01' },
         },
         {
             label: 'door 02 — research & clinical',
             title: 'Researchers, clinicians, regulatory specialists.',
             body: 'If your work touches autonomic neuroscience, neuromodulation, wearable biosensing, signal processing, or device regulation — we want to hear what you’re working on. We collaborate.',
-            cta: { kind: 'link', text: 'Submit collaboration brief →', href: 'mailto:hello@nomadneuro.com?subject=Collaboration%20brief' },
+            cta: { kind: 'link', text: 'Submit collaboration brief →', href: '/contact?door=02' },
         },
         {
             label: 'door 03 — gated',
             title: 'Sophisticated capital.',
             body: 'Frontier biotech and deep-tech investors only. Access to the investor portal is by request. We respond within 5 business days.',
-            cta: { kind: 'underline', text: 'Request portal access →', href: 'mailto:hello@nomadneuro.com?subject=Investor%20portal%20access%20request' },
+            cta: { kind: 'underline', text: 'Request portal access →', href: '/contact?door=03' },
         },
     ];
 
@@ -2167,12 +2167,12 @@ const ThreeDoors = ({ onWaitlistClick }) => {
                             <p className="text-[15px] text-nomad-black/70 leading-[1.65] mb-10 flex-1">{d.body}</p>
                             <div>
                                 {d.cta.kind === 'primary' && (
-                                    <button
-                                        onClick={d.cta.onClick}
+                                    <a
+                                        href={d.cta.href}
                                         className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-nomad-pink text-white text-sm font-medium hover:bg-nomad-magenta pink-glow-sm transition-colors"
                                     >
                                         {d.cta.text}
-                                    </button>
+                                    </a>
                                 )}
                                 {d.cta.kind === 'link' && (
                                     <a href={d.cta.href} className="inline-flex items-center text-nomad-black hover:text-nomad-pink text-sm font-medium transition-colors">
