@@ -96,7 +96,7 @@ const Cookies = () => (
 
             <H n="08" id="contact">questions</H>
             <P>
-                Email <a href="mailto:privacy@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">privacy@nomadneuro.com</a>. For your rights, complaints, and supervisory authorities, see the <a href="/privacy" className="text-nomad-pink hover:text-nomad-magenta">privacy notice</a>.
+                Email <a href="mailto:hello@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">hello@nomadneuro.com</a>. For your rights, complaints, and supervisory authorities, see the <a href="/privacy" className="text-nomad-pink hover:text-nomad-magenta">privacy notice</a>.
             </P>
 
             <div className="mt-24 pt-10 border-t border-nomad-pink/30 font-tech text-[11px] text-nomad-black/50 tracking-[0.04em] lowercase leading-[1.7] space-y-2">
@@ -109,3 +109,4 @@ const Cookies = () => (
 );
 
 createRoot(document.getElementById('root')).render(<Cookies />);
+import('./cookie-banner.js').then(m => m.mountCookieBanner());

@@ -52,7 +52,7 @@ const Privacy = () => (
 
             <H n="01" id="controller">data controller</H>
             <P>
-                Nomad Neuroscience Ltd is the controller of the personal data described in this notice. We are registered in England and Wales, company № 16558472. Our registered office is 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ, United Kingdom. You can contact us about anything in this notice at <a href="mailto:privacy@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">privacy@nomadneuro.com</a>.
+                Nomad Neuroscience Ltd is the controller of the personal data described in this notice. We are registered in England and Wales, company № 16558472. Our registered office is 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ, United Kingdom. You can contact us about anything in this notice at <a href="mailto:hello@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">hello@nomadneuro.com</a>.
             </P>
             <P>
                 We do not currently maintain an Article 27 representative inside the EU/EEA or a Swiss representative. If we begin offering goods or services to, or monitoring the behaviour of, individuals in those territories at a scale that requires one, we will appoint and disclose them in this notice.
@@ -103,7 +103,7 @@ const Privacy = () => (
 
             <H n="06" id="transfers">international transfers</H>
             <P>
-                Some of our processors are located outside the UK, the EEA, or Switzerland — most notably in the United States. Where we transfer personal data internationally, we rely on one of the following safeguards: an applicable adequacy decision (including the UK Extension to the EU–US Data Privacy Framework and the Swiss–US Data Privacy Framework, where the recipient is certified); the UK International Data Transfer Agreement; or the European Commission's Standard Contractual Clauses with the UK Addendum and Swiss-specific amendments where required. You can request a copy of the safeguards in place by writing to <a href="mailto:privacy@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">privacy@nomadneuro.com</a>.
+                Some of our processors are located outside the UK, the EEA, or Switzerland — most notably in the United States. Where we transfer personal data internationally, we rely on one of the following safeguards: an applicable adequacy decision (including the UK Extension to the EU–US Data Privacy Framework and the Swiss–US Data Privacy Framework, where the recipient is certified); the UK International Data Transfer Agreement; or the European Commission's Standard Contractual Clauses with the UK Addendum and Swiss-specific amendments where required. You can request a copy of the safeguards in place by writing to <a href="mailto:hello@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">hello@nomadneuro.com</a>.
             </P>
 
             <H n="07" id="retention">how long we keep it</H>
@@ -123,7 +123,7 @@ const Privacy = () => (
                 <li>Lodge a complaint with a supervisory authority — see below.</li>
             </UL>
             <P>
-                To exercise any of these rights, write to <a href="mailto:privacy@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">privacy@nomadneuro.com</a>. We will respond within one month, extendable to three months for complex requests, and will tell you if we need longer.
+                To exercise any of these rights, write to <a href="mailto:hello@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">hello@nomadneuro.com</a>. We will respond within one month, extendable to three months for complex requests, and will tell you if we need longer.
             </P>
 
             <H n="09" id="complaints">complaints</H>
@@ -166,3 +166,4 @@ const Privacy = () => (
 );
 
 createRoot(document.getElementById('root')).render(<Privacy />);
+import('./cookie-banner.js').then(m => m.mountCookieBanner());

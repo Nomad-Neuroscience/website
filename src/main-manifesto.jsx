@@ -124,3 +124,4 @@ const Manifesto = () => (
 );
 
 createRoot(document.getElementById('root')).render(<Manifesto />);
+import('./cookie-banner.js').then(m => m.mountCookieBanner());

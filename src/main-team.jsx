@@ -139,3 +139,4 @@ const Team = () => (
 );
 
 createRoot(document.getElementById('root')).render(<Team />);
+import('./cookie-banner.js').then(m => m.mountCookieBanner());

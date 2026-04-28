@@ -2289,3 +2289,4 @@ const App = () => {
 };
 
 createRoot(document.getElementById('root')).render(<App />);
+import('./cookie-banner.js').then(m => m.mountCookieBanner());

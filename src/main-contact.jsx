@@ -275,3 +275,4 @@ const Contact = () => {
 };
 
 createRoot(document.getElementById('root')).render(<Contact />);
+import('./cookie-banner.js').then(m => m.mountCookieBanner());
