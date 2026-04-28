@@ -1079,6 +1079,191 @@ const FutureWearable = () => (
     </section>
 );
 
+const HowItWorks = () => (
+    <section data-theme="dark" className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-white/10">
+        <div className="max-w-[1400px] mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 mb-20 md:mb-24">
+                <div>
+                    <span className="text-nomad-pink tracking-widest text-xs uppercase font-medium">How it works</span>
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-light leading-[1.05] mt-6 tracking-tight">
+                        The first device <i className="text-white/60">that listens back.</i>
+                    </h2>
+                </div>
+                <div>
+                    <FadeIn>
+                        <p className="text-lg md:text-xl font-light text-white/70 leading-relaxed">
+                            Sense autonomic shifts in real time. Respond within milliseconds. Non-invasively, without breaking the skin — a closed loop that adapts to you.
+                        </p>
+                    </FadeIn>
+                </div>
+            </div>
+
+            <div className="how-grid">
+                {/* 01 — SENSOR SYNC */}
+                <div className="how-card">
+                    <span className="num">01.</span>
+                    <div className="how-vis">
+                        <svg viewBox="0 0 180 130" width="180" height="130" fill="none" overflow="visible">
+                            <defs>
+                                <radialGradient id="hiwCoreGlow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stopColor="#FFD0E5" stopOpacity=".95" />
+                                    <stop offset="55%" stopColor="#E94A9C" stopOpacity=".75" />
+                                    <stop offset="100%" stopColor="#E94A9C" stopOpacity="0" />
+                                </radialGradient>
+                            </defs>
+                            <path d="M14 110 Q 14 70 36 64 L 144 64 Q 166 70 166 110" stroke="rgba(255,255,255,.35)" strokeWidth="1" />
+                            <path d="M14 110 L 14 130 M 166 110 L 166 130" stroke="rgba(255,255,255,.35)" strokeWidth="1" />
+                            <g stroke="rgba(255,255,255,.25)" strokeWidth=".75">
+                                <line x1="30" y1="118" x2="30" y2="122" />
+                                <line x1="50" y1="118" x2="50" y2="122" />
+                                <line x1="70" y1="118" x2="70" y2="122" />
+                                <line x1="90" y1="118" x2="90" y2="122" />
+                                <line x1="110" y1="118" x2="110" y2="122" />
+                                <line x1="130" y1="118" x2="130" y2="122" />
+                                <line x1="150" y1="118" x2="150" y2="122" />
+                            </g>
+                            <circle cx="90" cy="50" r="14" stroke="#E94A9C" strokeWidth="1" opacity=".9">
+                                <animate attributeName="r" values="14;46" dur="2.4s" repeatCount="indefinite" />
+                                <animate attributeName="opacity" values=".9;0" dur="2.4s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="90" cy="50" r="14" stroke="#E94A9C" strokeWidth="1" opacity=".9">
+                                <animate attributeName="r" values="14;46" dur="2.4s" begin="-1.2s" repeatCount="indefinite" />
+                                <animate attributeName="opacity" values=".9;0" dur="2.4s" begin="-1.2s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="90" cy="50" r="32" fill="url(#hiwCoreGlow)">
+                                <animate attributeName="r" values="30;36;30" dur="1.1s" repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="90" cy="50" r="6" fill="#fff" />
+                            <circle cx="90" cy="50" r="3" fill="#E94A9C" />
+                            <g stroke="rgba(255,255,255,.5)" strokeWidth=".75">
+                                <line x1="56" y1="50" x2="66" y2="50" />
+                                <line x1="114" y1="50" x2="124" y2="50" />
+                                <line x1="90" y1="16" x2="90" y2="26" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div>
+                        <p>Pair the wearable in seconds. A single touch initiates a continuous, beat-by-beat stream of your nervous system — directly to the screen.</p>
+                        <div className="how-label">Sensor sync</div>
+                    </div>
+                </div>
+
+                {/* 02 — LIVE MONITORING */}
+                <div className="how-card">
+                    <span className="num">02.</span>
+                    <div className="how-vis">
+                        <svg className="sparkline" viewBox="0 0 160 50" fill="none">
+                            <g stroke="rgba(255,255,255,.55)" strokeWidth="1">
+                                <line x1="6" y1="40" x2="6" y2="46" /><line x1="14" y1="36" x2="14" y2="46" />
+                                <line x1="22" y1="42" x2="22" y2="46" /><line x1="30" y1="34" x2="30" y2="46" />
+                                <line x1="38" y1="38" x2="38" y2="46" /><line x1="46" y1="32" x2="46" y2="46" />
+                                <line x1="54" y1="40" x2="54" y2="46" /><line x1="62" y1="28" x2="62" y2="46" />
+                                <line x1="70" y1="36" x2="70" y2="46" /><line x1="78" y1="22" x2="78" y2="46" />
+                                <line x1="86" y1="32" x2="86" y2="46" /><line x1="94" y1="38" x2="94" y2="46" />
+                                <line x1="102" y1="34" x2="102" y2="46" /><line x1="110" y1="40" x2="110" y2="46" />
+                                <line x1="118" y1="36" x2="118" y2="46" /><line x1="126" y1="42" x2="126" y2="46" />
+                                <line x1="134" y1="38" x2="134" y2="46" /><line x1="142" y1="40" x2="142" y2="46" />
+                                <line x1="150" y1="42" x2="150" y2="46" />
+                            </g>
+                            <line x1="78" y1="6" x2="78" y2="48" stroke="#E7FE55" strokeWidth="1.5">
+                                <animate attributeName="x1" values="78;120;40;78" dur="6s" repeatCount="indefinite" />
+                                <animate attributeName="x2" values="78;120;40;78" dur="6s" repeatCount="indefinite" />
+                            </line>
+                            <polygon points="74,4 82,4 78,10" fill="#E7FE55">
+                                <animate attributeName="points" values="74,4 82,4 78,10;116,4 124,4 120,10;36,4 44,4 40,10;74,4 82,4 78,10" dur="6s" repeatCount="indefinite" />
+                            </polygon>
+                        </svg>
+                    </div>
+                    <div>
+                        <p>The dynamic interface renders raw autonomic signal into clear visual curves, highlighting heart-rate variability and reactive shifts in real time.</p>
+                        <div className="how-label">Live monitoring</div>
+                    </div>
+                </div>
+
+                {/* 03 — STABILITY SCORE (flow wave) */}
+                <div className="how-card">
+                    <span className="num">03.</span>
+                    <div className="how-vis">
+                        <svg className="flow-wave" viewBox="0 0 180 50" fill="none" strokeLinecap="round">
+                            <path d="M0 25 Q 18 6 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="rgba(255,255,255,.18)" strokeWidth="1" />
+                            <path d="M0 25 Q 18 6 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="#E7FE55" strokeWidth="1.5" strokeDasharray="600" strokeDashoffset="600">
+                                <animate attributeName="stroke-dashoffset" values="600;0;-600" dur="5s" repeatCount="indefinite" />
+                            </path>
+                            <polygon points="146,22 154,22 150,30" fill="#E7FE55" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p>Track autonomic stability across the day. The system surfaces dips and surges before you feel them — and quantifies your nervous system in a single number.</p>
+                        <div className="how-label">Stability score</div>
+                    </div>
+                </div>
+
+                {/* 04 — ADAPTIVE RESPONSE (84 stable ring) */}
+                <div className="how-card">
+                    <span className="num">04.</span>
+                    <div className="how-vis">
+                        <div className="dot-ring stability-ring">
+                            <svg viewBox="0 0 120 120">
+                                <defs>
+                                    <linearGradient id="hiwStabGrad" x1="0" x2="1" y1="0" y2="1">
+                                        <stop offset="0" stopColor="#ff8ab9" />
+                                        <stop offset="1" stopColor="#E94A9C" />
+                                    </linearGradient>
+                                    <radialGradient id="hiwStabGlow" cx="0.5" cy="0.5" r="0.5">
+                                        <stop offset="0" stopColor="#E94A9C" stopOpacity="0.35" />
+                                        <stop offset="1" stopColor="#E94A9C" stopOpacity="0" />
+                                    </radialGradient>
+                                </defs>
+                                <circle cx="60" cy="60" r="58" fill="url(#hiwStabGlow)" />
+                                <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(233,74,156,.15)" strokeWidth="2" />
+                                <circle cx="60" cy="60" r="48" fill="none" stroke="url(#hiwStabGrad)" strokeWidth="3" strokeLinecap="round" strokeDasharray="253.5 301.6" transform="rotate(-90 60 60)" filter="drop-shadow(0 0 4px rgba(233,74,156,.7))">
+                                    <animate attributeName="stroke-dasharray" values="0 301.6;253.5 301.6;253.5 301.6" dur="2.6s" repeatCount="indefinite" />
+                                </circle>
+                                <g stroke="rgba(255,255,255,.35)" strokeWidth="1" strokeLinecap="round">
+                                    <line x1="60" y1="2" x2="60" y2="8" />
+                                    <line x1="60" y1="112" x2="60" y2="118" />
+                                    <line x1="2" y1="60" x2="8" y2="60" />
+                                    <line x1="112" y1="60" x2="118" y2="60" />
+                                </g>
+                                <circle r="3.5" fill="#fff" filter="drop-shadow(0 0 6px #ff8ab9)">
+                                    <animateMotion dur="2.6s" repeatCount="indefinite" path="M 60 12 A 48 48 0 1 1 33.5 100" keyTimes="0;1" keyPoints="0;1" />
+                                </circle>
+                                <text x="60" y="56" textAnchor="middle" fontFamily="Helvetica" fontWeight="700" fontSize="32" fill="#fff" letterSpacing="-1">84</text>
+                                <text x="60" y="74" textAnchor="middle" fontFamily="ui-monospace,monospace" fontSize="7" letterSpacing="2.5" fill="rgba(255,255,255,.6)">STABLE</text>
+                                <path d="M 32 88 L 40 88 L 44 80 L 50 96 L 56 84 L 64 88 L 88 88" stroke="#ff8ab9" strokeWidth="1" fill="none" strokeLinecap="round" opacity="0.7" filter="drop-shadow(0 0 2px #ff8ab9)">
+                                    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.4s" repeatCount="indefinite" />
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <p>The on-device model learns your unique autonomic signature and adapts the closed-loop response — quietly, in milliseconds, all day long.</p>
+                        <div className="how-label">Adaptive response</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+);
+
+const MegaStat = () => (
+    <section data-theme="dark" className="bg-nomad-black text-white border-t border-white/10">
+        <div className="stat-mega max-w-[1400px] mx-auto px-6 md:px-16 lg:px-24">
+            <FadeIn>
+                <div className="mega-num">
+                    376M<a href="#references" className="mega-ref">[1]</a>
+                </div>
+                <p className="text-base md:text-lg text-white/60 max-w-[520px] mx-auto mt-6 leading-relaxed">
+                    <strong className="text-white font-medium">People</strong> whose autonomic nervous system is working against them.
+                </p>
+                <p className="mt-20 text-2xl text-white italic tracking-tight">
+                    Until now, the loop was never closed.
+                </p>
+            </FadeIn>
+        </div>
+    </section>
+);
+
 const Stats = () => {
     const stats = [
         { number: 376, suffix: 'M', prefix: '', label: 'People whose autonomic nervous system is working against them' },
@@ -1725,6 +1910,8 @@ const App = () => {
                     <OverviewBlock />
                     <MissionGrid />
                     <FutureWearable />
+                    <HowItWorks />
+                    <MegaStat />
                     <Stats />
                     <DevelopmentTeaser />
                     <ScienceAndTeam />
