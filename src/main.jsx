@@ -350,6 +350,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
     const [error, setError] = useState('');
     const [emailTouched, setEmailTouched] = useState(false);
     const [nameTouched, setNameTouched] = useState(false);
+    const [healthConsent, setHealthConsent] = useState(false);
     const panelRef = useRef(null);
     const previousFocus = useRef(null);
 
@@ -397,6 +398,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
         setUserType('');
         setEmailTouched(false);
         setNameTouched(false);
+        setHealthConsent(false);
         setIsLoading(false);
     };
 
@@ -480,7 +482,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
 
     const nameValid = fullName.trim().length >= 2;
     const emailValid = validateEmail(email);
-    const canSubmitStep2 = nameValid && emailValid;
+    const canSubmitStep2 = nameValid && emailValid && (userType !== 'patient' || healthConsent);
 
     return (
         <div
@@ -971,7 +973,7 @@ const Hero = () => {
                                     background: '#E94A9C', boxShadow: '0 0 10px #E94A9C',
                                     display: 'inline-block', animation: 'veri-blink 2s infinite',
                                 }} />
-                                Currently in clinical investigation
+                                Preparing for first-in-human investigation
                             </span>
 
                             <h1 style={{
@@ -1103,7 +1105,7 @@ const Hero = () => {
                             {/* Caption */}
                             <div style={{ position: 'absolute', bottom: -20, right: -10, fontSize: 11, color: 'rgba(244,242,234,.4)', display: 'flex', alignItems: 'center', gap: 10, fontFamily: 'ui-monospace, monospace' }}>
                                 <span style={{ width: 32, height: 1, background: 'rgba(255,255,255,.15)', display: 'inline-block' }} />
-                                In clinical investigation
+                                Preparing for first-in-human investigation
                             </div>
                         </div>
 
@@ -1800,7 +1802,7 @@ const Roadmap = () => {
     const milestones = [
         { year: '2024', title: 'The Science', description: "We didn't start with a product. We started with a question: is there enough published evidence to build a non-invasive, closed-loop system for autonomic regulation? The answer was yes — barely — and that was enough to begin.", status: 'complete' },
         { year: '2025', title: 'The Foundation', description: 'University spinout from our research base. Seed funding. A small, deliberate team assembled around people who have spent their careers in neuromodulation, autonomic physiology, and wearable engineering. First prototypes. First proof-of-concept data.', status: 'complete' },
-        { year: '2026', title: 'Validation', description: "Clinical investigation. Hardware miniaturisation. UKCA and CE marking under voluntary application of medical-device standards.\n\nSee: where we are →", status: 'current' },
+        { year: '2026', title: 'Validation', description: "Preparing for first-in-human investigation. Hardware miniaturisation. UKCA and CE marking under voluntary application of medical-device standards.\n\nSee: where we are →", status: 'current' },
         { year: '2027', title: 'First Product', description: 'Commercial release of the first Nomad device. A wearable. Non-invasive. Cleared for use.', status: 'upcoming' },
         { year: '2028 and beyond', title: 'Scale', description: "EU Class IIb. FDA pathway. Global. Platform extensions we're not ready to describe yet, because we'd rather show you than promise you.", status: 'upcoming' },
     ];
@@ -1919,7 +1921,7 @@ const WhereWeAre = () => (
         <div className="max-w-[1100px] mx-auto">
             <p className="font-tech text-[11px] text-nomad-pink tracking-[0.2em] lowercase mb-16">05 / 07 — where we are</p>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-nomad-cream leading-[1.05] tracking-tight mb-14 max-w-[900px]">
-                We are in clinical investigation.
+                We are preparing for first-in-human investigation.
             </h2>
             <div className="text-nomad-cream/85 text-[17px] md:text-[18px] leading-[1.7] space-y-7 max-w-[640px]">
                 <p>That means we are in the rigorous, unglamorous, necessary phase of proving that what we believe works actually works — in real people, under controlled conditions, with the kind of evidence that survives scrutiny.</p>
@@ -1976,7 +1978,7 @@ const Footer = () => {
                         nomad —<br />the operating system for your body.
                     </h2>
                     <p className="mt-10 text-nomad-cream/70 text-[16px] md:text-[17px] leading-[1.7] max-w-[540px]">
-                        Currently in clinical investigation. We refuse to release anything we cannot prove.
+                        Preparing for first-in-human investigation. We refuse to release anything we cannot prove.
                     </p>
                 </div>
 
@@ -2035,7 +2037,7 @@ const Footer = () => {
                             <span className="absolute inset-0 rounded-full bg-nomad-pink animate-ping opacity-60" />
                             <span className="relative inline-flex w-2 h-2 rounded-full bg-nomad-pink" />
                         </span>
-                        live — in clinical investigation
+                        live — preparing for first-in-human investigation
                     </span>
                     <span className="text-white/40">q4 2026 — first-in-human readout</span>
                 </div>

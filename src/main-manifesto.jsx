@@ -80,7 +80,7 @@ const Manifesto = () => (
                 <hr className="border-0 h-px bg-nomad-pink/40 my-12" />
 
                 <p>
-                    We are in clinical investigation now, with collaborators across UK and US institutions, under protocols whose numbers we will publish when we have data to defend them. We are pursuing UKCA and CE marking under voluntary application of medical-device standards because the people who will eventually wear this deserve a device built to that standard.
+                    We are preparing for first-in-human investigation, with collaborators across UK and US institutions, under protocols whose numbers we will publish when we have data to defend them. We are pursuing UKCA and CE marking under voluntary application of medical-device standards because the people who will eventually wear this deserve a device built to that standard.
                 </p>
 
                 <p>
@@ -98,7 +98,7 @@ const Manifesto = () => (
                 </p>
 
                 <p>
-                    If you are an investor or a researcher or an engineer wondering whether this is real: it is real. It is in clinical investigation. It is, at the time of writing, mostly hidden. That will not last.
+                    If you are an investor or a researcher or an engineer wondering whether this is real: it is real. It is out of the lab — preparing for first-in-human investigation. It is, at the time of writing, mostly hidden. That will not last.
                 </p>
 
                 <p>Pink is the colour of the system that runs you.</p>
