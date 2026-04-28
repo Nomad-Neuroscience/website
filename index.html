@@ -28,25 +28,12 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "MedicalWebPage",
+          "@type": "WebPage",
           "@id": "https://nomadneuro.com/#webpage",
           "url": "https://nomadneuro.com/",
           "name": "Nomad Neuroscience | The Operating System for Your Body",
           "description": "The first closed-loop wearable designed to read and respond to signals from the autonomic nervous system.",
-          "about": { "@id": "https://nomadneuro.com/#device" }
-        },
-        {
-          "@type": "MedicalDevice",
-          "@id": "https://nomadneuro.com/#device",
-          "name": "Nomad",
-          "manufacturer": { "@id": "https://nomadneuro.com/#organization" },
-          "status": "In clinical investigation",
-          "medicalSpecialty": ["Autonomic Neuroscience", "Bioelectronics"],
-          "indication": [
-            { "@type": "MedicalIndication", "name": "Autonomic Dysfunction" },
-            { "@type": "MedicalIndication", "name": "Dysautonomia" }
-          ],
-          "description": "Non-invasive, closed-loop neuromodulation for autonomic regulation."
+          "publisher": { "@id": "https://nomadneuro.com/#organization" }
         },
         {
           "@type": "Organization",
