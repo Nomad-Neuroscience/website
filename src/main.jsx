@@ -486,7 +486,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
 
     return (
         <div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 bg-nomad-black/70 backdrop-blur-xl"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 bg-nomad-black/70 backdrop-blur-xl overflow-y-auto"
             onClick={(e) => { if (e.target === e.currentTarget && !isLoading) handleClose(); }}
         >
             <div
@@ -554,7 +554,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
                 </aside>
 
                 {/* RIGHT PANE — form */}
-                <section data-lenis-prevent className="relative flex flex-col bg-nomad-cream p-6 sm:p-10 md:p-14 overflow-y-auto">
+                <section data-lenis-prevent className="relative flex flex-col bg-nomad-cream p-6 sm:p-10 md:p-14 overflow-y-auto flex-1 min-h-0">
                     <form onSubmit={step === 2 ? handleSubmit : (e) => e.preventDefault()} noValidate className="flex-1 flex flex-col">
                         <input type="hidden" name="form-name" value="waitlist" />
 
