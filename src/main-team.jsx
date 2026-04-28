@@ -54,7 +54,7 @@ const board = [
 
 const clinicalAdvisors = [
     { name: 'Prof. Imanuel Lerman', role: 'Clinical Lead',     image: '/assets/images/Imanuel_Lerman.png' },
-    { name: 'Rohan Kandasamy',      role: 'Clinical Advisor',  image: '' },
+    { name: 'Rohan Kandasamy',      role: 'Clinical Advisor',  image: '/assets/images/rohan.png' },
 ];
 
 const advisors = [
@@ -63,7 +63,7 @@ const advisors = [
     { name: 'Ben Newton',       role: 'Strategic Advisor',       image: '/assets/images/Ben_Newton.png' },
     { name: 'Dr. Ali Hawks',    role: 'Strategic Advisor',       image: '/assets/images/Ali-050.png' },
     { name: 'Patrik Nilsson',   role: 'Supply Chain Resilience', image: '/assets/images/Patrik_Nilsson.png' },
-    { name: 'Magnus Bruce',     role: 'Strategic Advisor',       image: '' },
+    { name: 'Magnus Bruce',     role: 'Strategic Advisor',       image: '/assets/images/Magnus.jpeg' },
 ];
 
 const initials = (name) => name.split(/\s+/).filter(Boolean).map((p) => p.replace(/[^A-Za-z]/g, '')[0] || '').join('').slice(0, 2).toUpperCase();
