@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import Lenis from 'lenis';
 import './index.css';
 
+let _lenis = null;
+
 /* --- ICONS --- */
 const IconWrapper = ({ children, size = 24, color = 'currentColor', className = '' }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
@@ -295,7 +297,13 @@ const LoginModal = ({ isOpen, onClose }) => {
     useEffect(() => {
         if (isOpen) {
             previousFocus.current = document.activeElement;
+            _lenis?.stop();
+            document.body.style.overflow = 'hidden';
             setTimeout(() => panelRef.current?.focus(), 0);
+            return () => {
+                document.body.style.overflow = '';
+                _lenis?.start();
+            };
         } else if (previousFocus.current && typeof previousFocus.current.focus === 'function') {
             previousFocus.current.focus();
         }
@@ -403,10 +411,14 @@ const WaitlistModal = ({ isOpen, onClose }) => {
     useEffect(() => {
         if (isOpen) {
             previousFocus.current = document.activeElement;
+            _lenis?.stop();
             const previousOverflow = document.body.style.overflow;
             document.body.style.overflow = 'hidden';
             setTimeout(() => panelRef.current?.focus(), 50);
-            return () => { document.body.style.overflow = previousOverflow; };
+            return () => {
+                document.body.style.overflow = previousOverflow;
+                _lenis?.start();
+            };
         } else if (previousFocus.current && typeof previousFocus.current.focus === 'function') {
             previousFocus.current.focus();
         }
@@ -540,7 +552,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
                 </aside>
 
                 {/* RIGHT PANE — form */}
-                <section className="relative flex flex-col bg-nomad-cream p-6 sm:p-10 md:p-14 overflow-y-auto">
+                <section data-lenis-prevent className="relative flex flex-col bg-nomad-cream p-6 sm:p-10 md:p-14 overflow-y-auto">
                     <form onSubmit={step === 2 ? handleSubmit : (e) => e.preventDefault()} noValidate className="flex-1 flex flex-col">
                         <input type="hidden" name="form-name" value="waitlist" />
 
@@ -2237,6 +2249,7 @@ const App = () => {
             smoothTouch: false,
             touchMultiplier: 2,
         });
+        _lenis = lenis;
         function raf(time) {
             lenis.raf(time);
             requestAnimationFrame(raf);
@@ -2260,6 +2273,7 @@ const App = () => {
 
         return () => {
             document.removeEventListener('click', handleAnchorClick);
+            _lenis = null;
             lenis.destroy();
         };
     }, []);
