@@ -21,9 +21,9 @@ export default {
         },
       },
       fontFamily: {
-        sans:    ['PP Neue Montreal', 'IBM Plex Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        sans:    ['IBM Plex Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
         serif:   ['Newsreader', 'Georgia', 'serif'],
-        display: ['PP Neue Montreal', 'IBM Plex Sans', 'sans-serif'],
+        display: ['IBM Plex Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
         mono:    ['JetBrains Mono', 'ui-monospace', 'monospace'],
         tech:    ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
