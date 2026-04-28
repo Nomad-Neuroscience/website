@@ -306,6 +306,140 @@ html.lenis body {
   -webkit-text-fill-color: rgba(255,255,255,0.55);
 }
 
+/* ---- Body Data / Bento section ---- */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes cvBlink { 0%,40%{opacity:1} 50%,100%{opacity:.25} }
+
+.bento-head { margin-bottom: 64px; }
+.bento-head h2 {
+  font-weight: 700;
+  font-size: clamp(40px, 5.5vw, 84px);
+  letter-spacing: -0.025em;
+  line-height: 1;
+  text-transform: uppercase;
+  margin: 0;
+}
+.bento-head h2 .dim { color: rgba(255,255,255,0.25); }
+
+.bento-row {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr 1fr;
+  gap: 32px;
+  align-items: flex-start;
+}
+@media (max-width: 1024px) { .bento-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px)  { .bento-row { grid-template-columns: 1fr; } }
+
+.body-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+.body-card .bd-label {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+.body-card .bd-desc {
+  font-size: 13.5px;
+  color: #fff;
+  line-height: 1.55;
+  align-self: flex-start;
+  max-width: 220px;
+}
+
+/* Sugar / live graph */
+.sugar-vis { padding: 32px 0; width: 100%; }
+.sugar-vis .sv-name { font-size: 13px; color: rgba(255,255,255,0.55); text-align: center; margin-bottom: 8px; }
+.sugar-vis .sv-num { text-align: center; margin-bottom: 16px; }
+.sugar-vis .sv-num strong { font-size: 54px; font-weight: 700; letter-spacing: -0.03em; color: #fff; }
+.sugar-vis .sv-num .sv-u { font-size: 13px; color: rgba(255,255,255,0.55); margin-left: 4px; }
+
+/* Health bento */
+.health-bento { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; width: 100%; }
+.hb-card {
+  position: relative; border-radius: 22px; overflow: hidden;
+  padding: 18px; min-height: 120px;
+  border: 1px solid rgba(255,255,255,.06); isolation: isolate;
+}
+.hb-card .hb-lab { font-size: 13px; color: #fff; position: relative; z-index: 2; }
+.hb-card .hb-num {
+  position: absolute; left: 18px; bottom: 14px;
+  font-weight: 700; font-size: 30px; letter-spacing: -0.03em; z-index: 2; color: #fff;
+}
+.hb-card .hb-num span { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.55); margin-left: 4px; }
+.hb-glucose {
+  grid-column: 1/3;
+  background: radial-gradient(120% 100% at 50% 50%, rgba(233,74,156,.45), rgba(20,8,16,1) 80%);
+}
+.hb-glucose .hb-ring {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  width: 74px; height: 74px; border-radius: 50%;
+  border: 1px dashed rgba(255,255,255,.4);
+  display: grid; place-items: center;
+  font-weight: 700; font-size: 22px; color: #fff;
+  background: radial-gradient(circle, #1a1a1a, #0a0a0a);
+}
+.hb-tir { background: radial-gradient(120% 120% at 50% 50%, rgba(40,40,40,.9), rgba(10,10,10,1)); border: 1px solid rgba(255,255,255,.15); }
+.hb-tir .hb-bar { position: absolute; left: 18px; right: 18px; top: 50%; height: 4px; border-radius: 99px; background: linear-gradient(90deg,#888 0%,#E94A9C 80%,#ff5a8c 100%); }
+.hb-tir .hb-arrow { position: absolute; right: 24px; top: calc(50% - 12px); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #E7FE55; }
+.hb-var { background: radial-gradient(80% 80% at 50% 50%, #E94A9C, #240817 80%); }
+.hb-var .hb-dots { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; justify-content: center; gap: 8px; }
+.hb-var .hb-dots span { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.85); }
+
+/* Sensor sync card */
+.sensor-vis {
+  width: 100%; aspect-ratio: .78; border-radius: 32px;
+  background: radial-gradient(60% 50% at 50% 35%, rgba(182,201,168,.5), rgba(34,46,38,1) 85%);
+  position: relative; overflow: hidden; display: grid; place-items: center;
+}
+.sensor-vis .sv-top { position: absolute; top: 24px; left: 24px; right: 24px; text-align: center; color: #fff; font-size: 14px; line-height: 1.3; }
+.sensor-vis .ring-wrap { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 60%; aspect-ratio: 1; display: grid; place-items: center; }
+.sensor-vis .scan-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(255,255,255,.85) 0 .8deg, transparent .8deg 6deg, rgba(255,255,255,.85) 6deg 6.8deg, transparent 6.8deg 12deg, rgba(255,255,255,.85) 12deg 12.8deg, transparent 12.8deg 18deg, rgba(255,255,255,.85) 18deg 18.8deg, transparent 18.8deg 24deg);
+  -webkit-mask: radial-gradient(circle, transparent 47%, #000 49%, #000 51%, transparent 53%);
+          mask: radial-gradient(circle, transparent 47%, #000 49%, #000 51%, transparent 53%);
+  animation: spin 14s linear infinite;
+}
+.sensor-vis .scan-core { width: 36%; aspect-ratio: 1; border-radius: 50%; background: #f5f5f0; box-shadow: 0 0 0 6px #0a0a0a, 0 0 40px rgba(255,255,255,.3); }
+.sensor-vis .phone-bottom { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); width: 60%; aspect-ratio: 2.4/1; border: 1px solid rgba(255,255,255,.4); border-bottom: none; border-radius: 14px 14px 0 0; }
+
+/* Cardiac / rhythm card */
+.cardiac-vis {
+  width: 100%; aspect-ratio: .78; border-radius: 32px;
+  background: radial-gradient(120% 90% at 50% 110%, rgba(233,74,156,.55) 0%, #2a0d1e 35%, #18060f 70%, #0a0408 95%);
+  padding: 22px 22px 18px;
+  display: flex; flex-direction: column; gap: 14px; justify-content: flex-start;
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.06);
+}
+.cardiac-vis::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent 0 11px, rgba(255,255,255,.025) 11px 12px),
+              repeating-linear-gradient(90deg, transparent 0 11px, rgba(255,255,255,.025) 11px 12px);
+  pointer-events: none; border-radius: inherit;
+}
+.cv-head { display: flex; justify-content: space-between; align-items: center; font-family: ui-monospace,monospace; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.7); position: relative; z-index: 2; }
+.cv-tag { color: #fff; }
+.cv-tag::before { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #fff; margin-right: 6px; vertical-align: 1px; animation: cvBlink 1.2s infinite; }
+.cv-id { color: rgba(255,255,255,.5); }
+.cv-readout { display: flex; flex-direction: column; gap: 10px; position: relative; z-index: 2; margin-top: 4px; }
+.cv-row { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid rgba(255,255,255,.1); padding-bottom: 8px; }
+.cv-row .cv-k { font-family: ui-monospace,monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.65); }
+.cv-row .cv-k sup { font-size: 7px; vertical-align: super; margin-left: 1px; opacity: .7; }
+.cv-row .cv-k i { font-style: normal; font-size: 9px; letter-spacing: .1em; margin-left: 4px; }
+.cv-row .cv-v { font-weight: 600; font-size: 22px; color: #fff; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1; }
+.cv-row .cv-v i { font-style: normal; font-size: 10px; font-weight: 400; letter-spacing: .04em; margin-left: 5px; color: rgba(255,255,255,.6); }
+.cv-wave { width: 100%; height: 54px; margin-top: auto; position: relative; z-index: 2; display: block; }
+.cv-foot { font-family: ui-monospace,monospace; font-size: 9px; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.55); position: relative; z-index: 2; text-align: center; }
+
 /* Honour user motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

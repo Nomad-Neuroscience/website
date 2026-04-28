@@ -1079,6 +1079,164 @@ const FutureWearable = () => (
     </section>
 );
 
+const CardiacVis = () => {
+    const pathRef  = useRef(null);
+    const sbiRef   = useRef(null);
+    const brsRef   = useRef(null);
+    const hrvRef   = useRef(null);
+    const pwvRef   = useRef(null);
+
+    useEffect(() => {
+        const W = 280, H = 60, mid = 36;
+        let t = 0, lastBeat = 0, hr = 64, rafId;
+
+        function ecg(phase) {
+            if (phase < .12) return mid - Math.sin(phase / .12 * Math.PI) * 4;
+            if (phase < .18) return mid;
+            if (phase < .20) return mid + 4;
+            if (phase < .23) return mid - 26;
+            if (phase < .27) return mid + 10;
+            if (phase < .35) return mid;
+            if (phase < .55) return mid - Math.sin((phase - .35) / .20 * Math.PI) * 6;
+            return mid;
+        }
+
+        function tick() {
+            t += 1.4;
+            const period = (60000 / hr) / 16;
+            if (t - lastBeat > period) {
+                lastBeat = t;
+                const n = Math.sin(t * 0.001);
+                if (sbiRef.current) sbiRef.current.textContent = (0.87 + n * 0.02 + (Math.random() - .5) * 0.01).toFixed(2);
+                if (brsRef.current) brsRef.current.innerHTML = (14.2 + n * 0.4).toFixed(1) + '<i>ms/mmHg</i>';
+                if (hrvRef.current) hrvRef.current.innerHTML = Math.round(48 + n * 3 + (Math.random() - .5) * 2) + '<i>ms</i>';
+                if (pwvRef.current) pwvRef.current.innerHTML = (7.4 + n * 0.15).toFixed(1) + '<i>m/s</i>';
+                hr = 64 + Math.round(Math.sin(t * 0.0008) * 4);
+            }
+            let d = '';
+            const step = 3;
+            for (let x = 0; x <= W; x += step) {
+                const phase = ((t - W + x) % period) / period;
+                const y = ecg(phase < 0 ? phase + 1 : phase);
+                d += (x === 0 ? 'M' : 'L') + x + ' ' + y.toFixed(1);
+            }
+            if (pathRef.current) pathRef.current.setAttribute('d', d);
+            rafId = requestAnimationFrame(tick);
+        }
+        rafId = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(rafId);
+    }, []);
+
+    return (
+        <div className="cardiac-vis">
+            <div className="cv-head">
+                <span className="cv-tag">Live</span>
+                <span className="cv-id">CH 02</span>
+            </div>
+            <div className="cv-readout">
+                <div className="cv-row">
+                    <span className="cv-k">SBI<sup>™</sup></span>
+                    <span className="cv-v" ref={sbiRef}>0.87</span>
+                </div>
+                <div className="cv-row">
+                    <span className="cv-k">BRS</span>
+                    <span className="cv-v" ref={brsRef}>14.2<i>ms/mmHg</i></span>
+                </div>
+                <div className="cv-row">
+                    <span className="cv-k">HRV<i style={{opacity:.55}}>·rmssd</i></span>
+                    <span className="cv-v" ref={hrvRef}>48<i>ms</i></span>
+                </div>
+                <div className="cv-row">
+                    <span className="cv-k">PWV</span>
+                    <span className="cv-v" ref={pwvRef}>7.4<i>m/s</i></span>
+                </div>
+            </div>
+            <svg className="cv-wave" viewBox="0 0 280 60" preserveAspectRatio="none">
+                <path ref={pathRef} d="" fill="none" stroke="#fff" strokeWidth="1.3" strokeLinecap="round" filter="drop-shadow(0 0 4px rgba(255,255,255,.4))" />
+            </svg>
+            <div className="cv-foot">PROPRIETARY · AUTONOMIC INDEX</div>
+        </div>
+    );
+};
+
+const BodyData = () => (
+    <section data-theme="dark" className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-white/10">
+        <div className="max-w-[1400px] mx-auto">
+            <div className="bento-head">
+                <h2>Your body's data.<br />Always visible. <span className="dim">Always on.</span></h2>
+            </div>
+
+            <div className="bento-row">
+                {/* 01 — Live graph */}
+                <div className="body-card">
+                    <div className="sugar-vis">
+                        <div className="sv-name">Blood pressure · live</div>
+                        <div className="sv-num">
+                            <strong>118</strong><span className="sv-u">/76 mmHg</span>
+                        </div>
+                        <svg viewBox="0 0 180 50" style={{width:'100%',height:'50px',overflow:'visible'}}>
+                            <path d="M0 25 Q 18 8 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="rgba(255,255,255,.15)" strokeWidth="1" fill="none" />
+                            <path d="M0 25 Q 18 8 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="#E7FE55" strokeWidth="1.4" fill="none" strokeDasharray="600" strokeDashoffset="600">
+                                <animate attributeName="stroke-dashoffset" values="600;0;-600" dur="6s" repeatCount="indefinite" />
+                            </path>
+                            <polygon points="146,22 154,22 150,30" fill="#E7FE55" />
+                        </svg>
+                    </div>
+                    <div className="bd-label">— Live graph</div>
+                    <div className="bd-desc">A minimalist real-time display that keeps your current autonomic state in focus.</div>
+                </div>
+
+                {/* 02 — Health grid */}
+                <div className="body-card">
+                    <div className="health-bento">
+                        <div className="hb-card hb-glucose">
+                            <div className="hb-lab">Mean arterial pressure</div>
+                            <div className="hb-num">90<span>mmHg</span></div>
+                            <div className="hb-ring">A+</div>
+                        </div>
+                        <div className="hb-card hb-tir">
+                            <div className="hb-lab">Time in range</div>
+                            <div className="hb-bar" />
+                            <div className="hb-arrow" />
+                            <div className="hb-num">100<span>%</span></div>
+                        </div>
+                        <div className="hb-card hb-var">
+                            <div className="hb-lab">Variability</div>
+                            <div className="hb-dots">
+                                {[...Array(8)].map((_, i) => <span key={i} />)}
+                            </div>
+                            <div className="hb-num">6.8<span>%</span></div>
+                        </div>
+                    </div>
+                    <div className="bd-label">— Health grid</div>
+                    <div className="bd-desc">Your body's complex data organised into a clear bento-grid layout you can read in three seconds.</div>
+                </div>
+
+                {/* 03 — Sensor sync */}
+                <div className="body-card">
+                    <div className="sensor-vis">
+                        <div className="sv-top">Hold steady — calibrating</div>
+                        <div className="ring-wrap">
+                            <div className="scan-ring" />
+                            <div className="scan-core" />
+                        </div>
+                        <div className="phone-bottom" />
+                    </div>
+                    <div className="bd-label">— Sensor sync</div>
+                    <div className="bd-desc">The bridge between biology and digital code, calibrated to your skin in seconds.</div>
+                </div>
+
+                {/* 04 — Proprietary cardiac measures */}
+                <div className="body-card">
+                    <CardiacVis />
+                    <div className="bd-label">— Proprietary cardiac measures</div>
+                    <div className="bd-desc">Cardiac signals decomposed into proprietary autonomic indices — calibrated against clinical reference standards.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+);
+
 const HowItWorks = () => (
     <section data-theme="dark" className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-white/10">
         <div className="max-w-[1400px] mx-auto">
@@ -1912,6 +2070,7 @@ const App = () => {
                     <FutureWearable />
                     <HowItWorks />
                     <MegaStat />
+                    <BodyData />
                     <Stats />
                     <DevelopmentTeaser />
                     <ScienceAndTeam />
