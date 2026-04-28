@@ -486,7 +486,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
 
     return (
         <div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 bg-nomad-black/70 backdrop-blur-xl overflow-y-auto"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 bg-nomad-black/70 backdrop-blur-xl"
             onClick={(e) => { if (e.target === e.currentTarget && !isLoading) handleClose(); }}
         >
             <div
@@ -495,7 +495,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="waitlist-modal-title"
-                className="relative w-full sm:max-w-[1040px] h-full sm:h-auto sm:max-h-[92vh] bg-nomad-cream sm:rounded-[28px] shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] focus:outline-none animate-fade-in"
+                className="relative w-full sm:max-w-[1040px] h-screen sm:h-[90vh] bg-nomad-cream sm:rounded-[28px] shadow-2xl overflow-hidden flex flex-col md:grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] focus:outline-none animate-fade-in"
             >
                 {/* Close button — global */}
                 <button
