@@ -389,7 +389,7 @@ html.lenis body {
 }
 .hb-tir { background: radial-gradient(120% 120% at 50% 50%, rgba(40,40,40,.9), rgba(10,10,10,1)); border: 1px solid rgba(255,255,255,.15); }
 .hb-tir .hb-bar { position: absolute; left: 18px; right: 18px; top: 50%; height: 4px; border-radius: 99px; background: linear-gradient(90deg,#888 0%,#E94A9C 80%,#ff5a8c 100%); }
-.hb-tir .hb-arrow { position: absolute; right: 24px; top: calc(50% - 12px); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #E7FE55; }
+.hb-tir .hb-arrow { position: absolute; right: 24px; top: calc(50% - 12px); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #FF8AB9; }
 .hb-var { background: radial-gradient(80% 80% at 50% 50%, #E94A9C, #240817 80%); }
 .hb-var .hb-dots { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; justify-content: center; gap: 8px; }
 .hb-var .hb-dots span { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.85); }

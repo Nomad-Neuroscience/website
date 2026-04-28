@@ -226,10 +226,10 @@ const CurvedReveal = ({ children, className = '', delay = 0 }) => {
 const MarqueeText = ({ text }) => (
     <div className="marquee-track w-full overflow-hidden bg-nomad-cream py-10 border-t border-b border-nomad-black/5 fade-mask" aria-hidden="true">
         <div className="whitespace-nowrap flex w-[200%] animate-marquee">
-            <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
-            <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
-            <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
-            <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/10 mx-8">{text}</span>
+            <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/15 mx-8">{text}</span>
+            <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/15 mx-8">{text}</span>
+            <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/15 mx-8">{text}</span>
+            <span className="text-[12vw] font-display font-light uppercase tracking-widest text-nomad-black/15 mx-8">{text}</span>
         </div>
     </div>
 );
@@ -792,6 +792,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
 const Navbar = ({ onWaitlistClick }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isDark, setIsDark] = useState(false);
+    const [pastHero, setPastHero] = useState(false);
 
     useEffect(() => {
         const darkSections = Array.from(document.querySelectorAll('[data-theme="dark"]'));
@@ -810,6 +811,13 @@ const Navbar = ({ onWaitlistClick }) => {
         });
         darkSections.forEach((el) => observer.observe(el));
         return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        const onScroll = () => setPastHero(window.scrollY > 240);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
     return (
@@ -855,11 +863,15 @@ const Navbar = ({ onWaitlistClick }) => {
                     </nav>
                 </div>
 
-                {/* Secondary Sub-Pill */}
-                <div className="hidden md:flex items-center justify-center">
+                {/* Secondary Sub-Pill — visible only on hero, fades on scroll */}
+                <div
+                    className={`hidden md:flex items-center justify-center transition-all duration-500 ease-out ${pastHero ? 'opacity-0 -translate-y-2 pointer-events-none' : 'opacity-100 translate-y-0'}`}
+                    aria-hidden={pastHero}
+                >
                     <button
                         onClick={onWaitlistClick}
-                        className={`h-10 px-6 rounded-full backdrop-blur-md flex items-center gap-3 text-[13px] transition-all duration-500 group border border-black/5 ${isDark ? 'bg-white/10 text-white/60 hover:text-white' : 'bg-white/53 text-black/40 hover:text-black'}`}
+                        tabIndex={pastHero ? -1 : 0}
+                        className={`h-10 px-6 rounded-full backdrop-blur-md flex items-center gap-3 text-[13px] transition-colors duration-500 group border border-black/5 ${isDark ? 'bg-white/10 text-white/60 hover:text-white' : 'bg-white/53 text-black/40 hover:text-black'}`}
                     >
                         <span className="font-light">Join the waitlist for every update</span>
                         <div className="w-5 h-5 rounded-full border border-blue-500/30 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">
@@ -1182,7 +1194,7 @@ const OverviewBlock = () => (
                 <span className="text-nomad-black/60 uppercase tracking-[0.1em] text-sm font-medium">Breakthrough</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-7xl font-light text-nomad-black leading-[1.1] max-w-4xl tracking-tight mb-12">
-                <TextReveal>The first device that <i>listens back.</i></TextReveal>
+                <TextReveal>Most wearables stop at <i>monitoring.</i></TextReveal>
             </h2>
             <div className="max-w-2xl text-xl md:text-2xl font-light text-nomad-black/60 leading-relaxed">
                 <FadeIn delay={400}>
@@ -1389,10 +1401,10 @@ const BodyData = () => (
                         </div>
                         <svg viewBox="0 0 180 50" style={{width:'100%',height:'50px',overflow:'visible'}}>
                             <path d="M0 25 Q 18 8 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="rgba(255,255,255,.15)" strokeWidth="1" fill="none" />
-                            <path d="M0 25 Q 18 8 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="#E7FE55" strokeWidth="1.4" fill="none" strokeDasharray="600" strokeDashoffset="600">
+                            <path d="M0 25 Q 18 8 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="#FF8AB9" strokeWidth="1.4" fill="none" strokeDasharray="600" strokeDashoffset="600">
                                 <animate attributeName="stroke-dashoffset" values="600;0;-600" dur="6s" repeatCount="indefinite" />
                             </path>
-                            <polygon points="146,22 154,22 150,30" fill="#E7FE55" />
+                            <polygon points="146,22 154,22 150,30" fill="#FF8AB9" />
                         </svg>
                     </div>
                     <div className="bd-label">— Live graph</div>
@@ -1536,11 +1548,11 @@ const HowItWorks = () => (
                                 <line x1="134" y1="38" x2="134" y2="46" /><line x1="142" y1="40" x2="142" y2="46" />
                                 <line x1="150" y1="42" x2="150" y2="46" />
                             </g>
-                            <line x1="78" y1="6" x2="78" y2="48" stroke="#E7FE55" strokeWidth="1.5">
+                            <line x1="78" y1="6" x2="78" y2="48" stroke="#FF8AB9" strokeWidth="1.5">
                                 <animate attributeName="x1" values="78;120;40;78" dur="6s" repeatCount="indefinite" />
                                 <animate attributeName="x2" values="78;120;40;78" dur="6s" repeatCount="indefinite" />
                             </line>
-                            <polygon points="74,4 82,4 78,10" fill="#E7FE55">
+                            <polygon points="74,4 82,4 78,10" fill="#FF8AB9">
                                 <animate attributeName="points" values="74,4 82,4 78,10;116,4 124,4 120,10;36,4 44,4 40,10;74,4 82,4 78,10" dur="6s" repeatCount="indefinite" />
                             </polygon>
                         </svg>
@@ -1557,10 +1569,10 @@ const HowItWorks = () => (
                     <div className="how-vis">
                         <svg className="flow-wave" viewBox="0 0 180 50" fill="none" strokeLinecap="round">
                             <path d="M0 25 Q 18 6 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="rgba(255,255,255,.18)" strokeWidth="1" />
-                            <path d="M0 25 Q 18 6 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="#E7FE55" strokeWidth="1.5" strokeDasharray="600" strokeDashoffset="600">
+                            <path d="M0 25 Q 18 6 36 25 T 72 25 T 108 25 T 144 25 T 180 25" stroke="#FF8AB9" strokeWidth="1.5" strokeDasharray="600" strokeDashoffset="600">
                                 <animate attributeName="stroke-dashoffset" values="600;0;-600" dur="5s" repeatCount="indefinite" />
                             </path>
-                            <polygon points="146,22 154,22 150,30" fill="#E7FE55" />
+                            <polygon points="146,22 154,22 150,30" fill="#FF8AB9" />
                         </svg>
                     </div>
                     <div>
@@ -2014,8 +2026,18 @@ const Footer = () => {
                         <ul className="space-y-3 font-tech text-[11px] uppercase tracking-[0.16em] text-white/60">
                             <li><a href="/manifesto" className="hover:text-white transition-colors">manifesto</a></li>
                             <li><a href="#where-we-are" className="hover:text-white transition-colors">regulatory</a></li>
-                            <li><span className="text-white/30">science <span className="text-nomad-pink/70">(gated)</span></span></li>
-                            <li><a href="/signin" className="hover:text-white transition-colors">investor portal <span className="text-nomad-pink/70">(gated)</span></a></li>
+                            <li>
+                                <span className="text-white/30 inline-flex items-center gap-2">
+                                    science
+                                    <span aria-label="access gated" title="Access gated" className="inline-block w-1 h-1 rounded-full bg-nomad-pink/70" />
+                                </span>
+                            </li>
+                            <li>
+                                <a href="/signin" className="hover:text-white transition-colors inline-flex items-center gap-2">
+                                    investor portal
+                                    <span aria-label="access gated" title="Access gated" className="inline-block w-1 h-1 rounded-full bg-nomad-pink/70" />
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div>
@@ -2237,11 +2259,15 @@ const LoadingScreen = ({ onComplete }) => {
             <div aria-hidden="true" className={`absolute top-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[600ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-b border-white/5 ${phase === 2 ? '-translate-y-full' : 'translate-y-0'}`} />
             <div aria-hidden="true" className={`absolute bottom-0 left-0 w-full h-[50vh] bg-nomad-pink transition-transform duration-[600ms] ease-[cubic-bezier(0.76,0,0.24,1)] border-t border-white/5 ${phase === 2 ? 'translate-y-full' : 'translate-y-0'}`} />
             <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${phase === 2 ? 'opacity-0' : 'opacity-100'}`}>
-                <div className="flex items-center text-4xl md:text-5xl lg:text-7xl font-light text-white tracking-tight font-display lowercase overflow-hidden">
-                    <span>n</span>
-                    <div className={`transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden flex ${phase >= 1 ? 'max-w-[300px] opacity-100' : 'max-w-0 opacity-0'}`}>
-                        <span>omad</span>
-                    </div>
+                <div className="flex items-center text-4xl md:text-5xl lg:text-7xl font-light text-white tracking-tight font-display lowercase leading-none">
+                    <span className={`transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${phase >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-3'}`}>n</span>
+                    <span
+                        aria-hidden="true"
+                        className={`inline-block rounded-full border-[2px] border-white mx-[0.04em] align-middle transition-all duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${phase >= 1 ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+                        style={{ width: '0.62em', height: '0.62em' }}
+                    />
+                    <span className="sr-only">o</span>
+                    <span className={`transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] delay-150 ${phase >= 1 ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-3'}`}>mad</span>
                 </div>
             </div>
         </div>
@@ -2309,7 +2335,6 @@ const App = () => {
                     <MissionGrid />
                     <FutureWearable />
                     <HowItWorks />
-                    <MegaStat />
                     <BodyData />
                     <Stats />
                     <DevelopmentTeaser />
