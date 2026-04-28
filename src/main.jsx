@@ -864,58 +864,262 @@ const Navbar = ({ onWaitlistClick }) => {
 
 /* --- HERO --- */
 const Hero = () => {
-    const parallaxRef = useParallax(0.15);
-    return (
-        <div id="hero" data-theme="dark" className="relative min-h-screen w-full overflow-hidden bg-[#FF1B8D]">
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-transparent z-10"></div>
-                <img
-                    ref={parallaxRef}
-                    src="/assets/images/hero.png"
-                    alt="Abstract neuro-interface visualization representing the Nomad autonomic interface"
-                    loading="eager"
-                    decoding="async"
-                    fetchPriority="high"
-                    className="absolute -top-[15%] left-0 w-full h-[130%] object-cover opacity-20 mix-blend-overlay will-change-transform"
-                />
-            </div>
-            <div className="relative z-10 flex flex-col justify-center items-center text-center min-h-screen pt-32 pb-12">
-                <div className="max-w-[1400px] w-full px-6 md:px-16 lg:px-24 flex flex-col items-center">
-                    <p className="font-display text-2xl md:text-3xl font-medium tracking-wide text-white mb-6 lg:mb-10 lowercase">nomad</p>
-                    <h1 className="text-5xl md:text-7xl lg:text-[6rem] font-light text-white leading-[1.05] tracking-tight max-w-5xl">
-                        <TextReveal delay={200}>Your brain and body are programmable.</TextReveal>
-                    </h1>
-                    <FadeIn delay={800}>
-                        <p className="text-2xl md:text-3xl lg:text-4xl font-light text-white/90 mt-10 md:mt-16">
-                            Let nomad be the <i>interface</i>.
-                        </p>
-                    </FadeIn>
+    const bpPathRef = useRef(null);
+    const bpSysRef = useRef(null);
+    const bpDiaRef = useRef(null);
 
-                    <div className="max-w-3xl mt-16 md:mt-24 space-y-8">
-                        <FadeIn delay={1400}>
-                            <p className="text-xl md:text-2xl font-light text-white leading-relaxed font-sans">
-                                There is a system running inside you right now. It controls your heartbeat without being asked. It decides when you're in danger. It tells your gut to move, your pupils to dilate, your blood pressure to hold. It has been doing this since <i>before you were born</i>, beneath every thought you've ever had.
-                            </p>
-                        </FadeIn>
-                        <FadeIn delay={2200}>
-                            <p className="text-xl md:text-2xl font-light text-white leading-relaxed">
-                                For most people, it hums along unnoticed. For 376 million, it <i>doesn't</i>.
-                            </p>
-                            <p className="text-2xl md:text-3xl font-light text-white mt-8">
-                                Nomad was built for them.
-                            </p>
-                        </FadeIn>
-                        <FadeIn delay={3200}>
-                            <div className="mt-20 md:mt-32 pt-10 border-t border-white/10 max-w-2xl mx-auto">
-                                <p className="text-lg md:text-xl font-light text-white/60 tracking-wide italic leading-relaxed">
-                                    If your nervous system has never let you forget it's there — <i>keep reading.</i>
-                                </p>
+    useEffect(() => {
+        const path = bpPathRef.current;
+        const sysEl = bpSysRef.current;
+        const diaEl = bpDiaRef.current;
+        if (!path) return;
+
+        let W = 200, t = 0, lastBeat = 0, hr = 64, sys = 118, dia = 76, idx = 0;
+        let rafId;
+
+        const pulse = (p) => {
+            const mid = 15;
+            if (p < .05) return mid + (p / .05) * 8;
+            if (p < .12) return mid + 8 - ((p - .05) / .07) * 22;
+            if (p < .22) return mid - 14 + ((p - .12) / .10) * 16;
+            if (p < .30) return mid + 2 - ((p - .22) / .08) * 4;
+            if (p < .42) return mid - 2 + ((p - .30) / .12) * 4;
+            return mid + 2 - ((p - .42) / .58) * 2;
+        };
+
+        const tick = () => {
+            t += 1.2;
+            const period = (60000 / hr) / 16;
+            if (t - lastBeat > period) {
+                lastBeat = t; idx++;
+                sys = 118 + Math.round(Math.sin(idx * 0.15) * 3);
+                dia = 76 + Math.round(Math.cos(idx * 0.12) * 2);
+                hr = 64 + Math.round(Math.sin(idx * 0.08) * 4);
+                if (sysEl) sysEl.textContent = sys;
+                if (diaEl) diaEl.textContent = dia;
+            }
+            let d = '';
+            for (let x = 0; x <= W; x += 2) {
+                const raw = (t - W + x) % period;
+                const p = raw < 0 ? (raw + period) / period : raw / period;
+                d += (x === 0 ? 'M' : 'L') + x + ' ' + pulse(p).toFixed(1);
+            }
+            path.setAttribute('d', d);
+            rafId = requestAnimationFrame(tick);
+        };
+
+        rafId = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(rafId);
+    }, []);
+
+    return (
+        <>
+            <style>{`
+                @keyframes veri-orb-breathe {
+                    0%, 100% { transform: scale(1); filter: brightness(1); }
+                    50% { transform: scale(1.04); filter: brightness(1.12); }
+                }
+                @keyframes veri-blink {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: .35; }
+                }
+                .veri-hero-grid {
+                    display: grid;
+                    grid-template-columns: 1.1fr .9fr;
+                    gap: 64px;
+                    align-items: center;
+                    min-height: calc(100vh - 220px);
+                }
+                .veri-feat-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 24px;
+                    margin-top: 48px;
+                    max-width: 680px;
+                }
+                @media (max-width: 1024px) {
+                    .veri-hero-grid { grid-template-columns: 1fr; }
+                    .veri-feat-grid { grid-template-columns: 1fr; }
+                    .veri-phone-col { display: none; }
+                }
+            `}</style>
+            <div
+                id="hero"
+                data-theme="dark"
+                style={{
+                    position: 'relative',
+                    minHeight: '100vh',
+                    padding: '140px 0 80px',
+                    overflow: 'hidden',
+                    background: 'radial-gradient(60% 50% at 75% 35%, rgba(233,74,156,.18), transparent 65%), radial-gradient(80% 60% at 12% 90%, rgba(233,74,156,.08), transparent 60%), #070707',
+                    color: '#F4F2EA',
+                    fontFamily: '"PP Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif',
+                    WebkitFontSmoothing: 'antialiased',
+                }}
+            >
+                <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+                    <div className="veri-hero-grid">
+
+                        {/* LEFT — copy */}
+                        <div>
+                            <span style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 10,
+                                padding: '8px 14px', border: '1px solid rgba(255,255,255,.18)',
+                                borderRadius: 999, fontSize: 11, letterSpacing: '.18em',
+                                textTransform: 'uppercase', color: 'rgba(244,242,234,.55)',
+                            }}>
+                                <span style={{
+                                    width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+                                    background: '#E94A9C', boxShadow: '0 0 10px #E94A9C',
+                                    display: 'inline-block', animation: 'veri-blink 2s infinite',
+                                }} />
+                                Currently in clinical investigation
+                            </span>
+
+                            <h1 style={{
+                                fontSize: 'clamp(48px, 8vw, 120px)',
+                                margin: '24px 0 0',
+                                fontWeight: 700,
+                                letterSpacing: '-0.03em',
+                                lineHeight: .92,
+                                textTransform: 'uppercase',
+                                color: '#F4F2EA',
+                            }}>
+                                Our brain<br />
+                                and body are<br />
+                                programmable.<br />
+                                <span style={{
+                                    color: 'rgba(244,242,234,.35)',
+                                    fontStyle: 'italic',
+                                    fontWeight: 400,
+                                    textTransform: 'none',
+                                    letterSpacing: '-0.02em',
+                                    fontFamily: 'Newsreader, Georgia, serif',
+                                }}>
+                                    Let nomad be the interface.
+                                </span>
+                            </h1>
+
+                            <div className="veri-feat-grid">
+                                {[
+                                    'There is a system running inside you right now. It controls your heartbeat without being asked. It decides when you\'re in danger. It tells your gut to move, your pupils to dilate, your blood pressure to hold. It has been doing this since before you were born, beneath every thought you\'ve ever had.',
+                                    'For most people, it hums along unnoticed. For 376 million, it doesn\'t.',
+                                    'Nomad was built for them.',
+                                ].map((text, i) => (
+                                    <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                                        <span style={{ color: '#E94A9C', fontSize: 14, lineHeight: 1, fontFamily: 'ui-monospace, monospace', flexShrink: 0, marginTop: 2 }}>+</span>
+                                        <p style={{ margin: 0, fontSize: 13, lineHeight: 1.55, color: 'rgba(244,242,234,.55)' }}>{text}</p>
+                                    </div>
+                                ))}
                             </div>
-                        </FadeIn>
+                        </div>
+
+                        {/* RIGHT — phone mockup */}
+                        <div className="veri-phone-col" style={{ position: 'relative', display: 'grid', placeItems: 'center' }}>
+                            <div style={{
+                                position: 'relative', width: 320, height: 660, borderRadius: 54,
+                                background: 'linear-gradient(160deg, #1a1a1a, #0a0a0a)',
+                                border: '1px solid rgba(255,255,255,.08)',
+                                boxShadow: '0 60px 120px rgba(0,0,0,.6), inset 0 0 0 8px #050505, inset 0 0 0 9px rgba(255,255,255,.04)',
+                                transform: 'rotate(-6deg)',
+                                overflow: 'hidden',
+                            }}>
+                                {/* Dynamic island */}
+                                <div style={{ position: 'absolute', top: 14, left: '50%', transform: 'translateX(-50%)', width: 110, height: 30, borderRadius: 18, background: '#000', zIndex: 5 }} />
+
+                                {/* Screen */}
+                                <div style={{ position: 'absolute', inset: 8, borderRadius: 46, overflow: 'hidden', background: '#0b0b0b' }}>
+                                    {/* Pink orb */}
+                                    <div style={{
+                                        position: 'absolute', inset: 0,
+                                        background: 'radial-gradient(70% 60% at 50% 50%, #F26AB0 0%, #E94A9C 32%, #7A1948 65%, #1a060f 92%)',
+                                        animation: 'veri-orb-breathe 6s ease-in-out infinite',
+                                    }} />
+                                    {/* Film grain */}
+                                    <div style={{
+                                        position: 'absolute', inset: 0, mixBlendMode: 'overlay', opacity: .7,
+                                        backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")`,
+                                    }} />
+
+                                    {/* Live status row */}
+                                    <div style={{ position: 'absolute', top: 24, left: 24, right: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#F4F2EA', fontSize: 15, fontWeight: 500, zIndex: 3 }}>
+                                        <span>● Live</span>
+                                        <div style={{ width: 50, height: 28, borderRadius: 999, background: 'rgba(0,0,0,.35)', border: '1px solid rgba(255,255,255,.25)', position: 'relative', display: 'flex', alignItems: 'center', padding: 3 }}>
+                                            <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 9, position: 'absolute', left: 7, top: '50%', transform: 'translateY(-50%)', color: '#F4F2EA' }}>On</span>
+                                            <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#F4F2EA', marginLeft: 'auto' }} />
+                                        </div>
+                                    </div>
+
+                                    {/* Closed-loop rings */}
+                                    <div style={{ position: 'absolute', top: '22%', left: '50%', transform: 'translateX(-50%)', width: '62%', aspectRatio: '1', zIndex: 2 }}>
+                                        <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                                            <defs>
+                                                <linearGradient id="loopGradHero" x1="0" x2="1" y1="0" y2="1">
+                                                    <stop offset="0" stopColor="#fff" stopOpacity=".95" />
+                                                    <stop offset="1" stopColor="#fff" stopOpacity=".4" />
+                                                </linearGradient>
+                                            </defs>
+                                            <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(255,255,255,.18)" strokeWidth="1" />
+                                            <circle cx="100" cy="100" r="86" fill="none" stroke="url(#loopGradHero)" strokeWidth="1.5" strokeDasharray="540" strokeDashoffset="270" pathLength="540" style={{ filter: 'drop-shadow(0 0 4px rgba(255,255,255,.6))' }}>
+                                                <animate attributeName="stroke-dashoffset" from="540" to="0" dur="3.2s" repeatCount="indefinite" />
+                                            </circle>
+                                            <circle cx="100" cy="100" r="64" fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="1" />
+                                            <circle cx="100" cy="100" r="64" fill="none" stroke="#fff" strokeWidth="1.2" strokeDasharray="80 320" pathLength="400" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 3px #fff)' }}>
+                                                <animateTransform attributeName="transform" type="rotate" from="0 100 100" to="-360 100 100" dur="4.5s" repeatCount="indefinite" />
+                                            </circle>
+                                            <circle cx="100" cy="100" r="44" fill="none" stroke="rgba(255,255,255,.18)" strokeWidth="1" strokeDasharray="2 4" />
+                                            <g fontFamily="ui-monospace,monospace" fontSize="6.5" letterSpacing="1.5" fill="rgba(255,255,255,.85)">
+                                                <text x="100" y="9" textAnchor="middle">SENSE</text>
+                                                <text x="195" y="103" textAnchor="end">DECODE</text>
+                                                <text x="100" y="200" textAnchor="middle">RESPOND</text>
+                                                <text x="5" y="103">CALIBRATE</text>
+                                            </g>
+                                            <circle r="3" fill="#fff" style={{ filter: 'drop-shadow(0 0 6px #fff)' }}>
+                                                <animateMotion dur="3.2s" repeatCount="indefinite" path="M 100 14 A 86 86 0 1 1 99.99 14 Z" />
+                                            </circle>
+                                        </svg>
+                                    </div>
+
+                                    {/* Live BP readout */}
+                                    <div style={{ position: 'absolute', top: '62%', left: 0, right: 0, textAlign: 'center', color: '#fff', zIndex: 3, padding: '0 28px' }}>
+                                        <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, letterSpacing: '.22em', textTransform: 'uppercase', opacity: .7 }}>Blood Pressure</div>
+                                        <div style={{ fontWeight: 700, fontSize: 50, letterSpacing: '-0.04em', lineHeight: 1, marginTop: 8, fontVariantNumeric: 'tabular-nums' }}>
+                                            <span ref={bpSysRef}>118</span>
+                                            <span style={{ color: 'rgba(255,255,255,.5)', fontWeight: 300, margin: '0 4px' }}>/</span>
+                                            <span ref={bpDiaRef}>76</span>
+                                        </div>
+                                        <div style={{ fontFamily: 'ui-monospace, monospace', fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase', opacity: .65, marginTop: 6 }}>mmHg · beat-by-beat</div>
+                                        <svg style={{ width: '100%', height: 28, marginTop: 10, display: 'block' }} viewBox="0 0 200 30" preserveAspectRatio="none">
+                                            <path ref={bpPathRef} d="" fill="none" stroke="#fff" strokeWidth="1.4" strokeLinecap="round" style={{ filter: 'drop-shadow(0 0 4px rgba(255,255,255,.6))' }} />
+                                        </svg>
+                                    </div>
+
+                                    {/* Active pill */}
+                                    <div style={{
+                                        position: 'absolute', bottom: 28, left: '50%', transform: 'translateX(-50%)',
+                                        display: 'flex', alignItems: 'center', gap: 10,
+                                        padding: '10px 16px 10px 20px',
+                                        background: 'rgba(0,0,0,.45)', border: '1px solid rgba(255,255,255,.18)',
+                                        borderRadius: 999, color: '#F4F2EA', fontSize: 13,
+                                        backdropFilter: 'blur(6px)', whiteSpace: 'nowrap', zIndex: 4,
+                                    }}>
+                                        Closed-loop active
+                                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#E94A9C', boxShadow: '0 0 8px #E94A9C', display: 'inline-block', animation: 'veri-blink 1.6s infinite' }} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Caption */}
+                            <div style={{ position: 'absolute', bottom: -20, right: -10, fontSize: 11, color: 'rgba(244,242,234,.4)', display: 'flex', alignItems: 'center', gap: 10, fontFamily: 'ui-monospace, monospace' }}>
+                                <span style={{ width: 32, height: 1, background: 'rgba(255,255,255,.15)', display: 'inline-block' }} />
+                                In clinical investigation
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
