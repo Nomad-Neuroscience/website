@@ -951,7 +951,7 @@ const Hero = () => {
                     overflow: 'hidden',
                     background: 'radial-gradient(60% 50% at 75% 35%, rgba(233,74,156,.18), transparent 65%), radial-gradient(80% 60% at 12% 90%, rgba(233,74,156,.08), transparent 60%), #070707',
                     color: '#F4F2EA',
-                    fontFamily: '"PP Neue Montreal", "Helvetica Neue", Helvetica, Arial, sans-serif',
+                    fontFamily: '"IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
                     WebkitFontSmoothing: 'antialiased',
                 }}
             >

@@ -45,6 +45,13 @@ const team = [
         image: '/assets/images/ben_black.png',
         linkedin: '',
     },
+    {
+        name: 'Magnus Bruce',
+        role: 'Head of Outreach',
+        bio: 'Leads outreach and stakeholder engagement. Ex Imperial College London.',
+        image: '/assets/images/Magnus.jpeg',
+        linkedin: '',
+    },
 ];
 
 const board = [
@@ -78,7 +85,7 @@ const clinicalAdvisors = [
     {
         name: 'Prof. Imanuel Lerman',
         role: 'Clinical Advisory Team',
-        bio: 'Leads the clinical investigation programme. Based at UC San Diego.',
+        bio: 'Part of the clinical advisory team. Based at UC San Diego.',
         image: '/assets/images/Imanuel_Lerman.png',
     },
     {
@@ -119,12 +126,6 @@ const advisors = [
         role: 'Supply Chain Resilience',
         bio: 'Advises on supply chain architecture for medical-device manufacturing.',
         image: '/assets/images/Patrik_Nilsson.png',
-    },
-    {
-        name: 'Magnus Bruce',
-        role: 'Head of Outreach',
-        bio: 'Leads outreach and stakeholder engagement. Ex Imperial College London.',
-        image: '/assets/images/Magnus.jpeg',
     },
 ];
 
