@@ -106,7 +106,7 @@ const advisors = [
     {
         name: 'Anders Borg',
         role: 'Strategic Advisor',
-        bio: 'Former Swedish Minister of Finance. Advises on institutional and strategic direction.',
+        bio: 'Former Managing Director at KKR. Advises on institutional and strategic direction.',
         image: '/assets/images/Anders_borg.png',
     },
     {
