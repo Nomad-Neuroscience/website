@@ -632,7 +632,7 @@ const WaitlistModal = ({ isOpen, onClose }) => {
                                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-tight text-nomad-black leading-snug mb-2">
                                     A name and an email. <i>That&rsquo;s it.</i>
                                 </h3>
-                                <p className="text-sm text-nomad-black/55 mb-10">No tracking, no marketing list trades, no spam. Unsubscribe at any time.</p>
+                                <p className="text-sm text-nomad-black/55 mb-10">No tracking, no marketing list trades, no spam. Unsubscribe at any time. See our <a href="/privacy" className="underline hover:text-nomad-pink transition-colors">privacy notice</a>.</p>
 
                                 <div className="space-y-8 flex-1">
                                     <div className="space-y-1.5">
@@ -674,6 +674,22 @@ const WaitlistModal = ({ isOpen, onClose }) => {
                                             {emailTouched && !emailValid && <p className="text-[11px] text-nomad-pink">Please enter a valid email address.</p>}
                                         </div>
                                     </div>
+
+                                    {userType === 'patient' && (
+                                        <label htmlFor="waitlist-health-consent" className="flex items-start gap-3 cursor-pointer group">
+                                            <input
+                                                id="waitlist-health-consent"
+                                                type="checkbox"
+                                                checked={healthConsent}
+                                                onChange={(e) => setHealthConsent(e.target.checked)}
+                                                className="mt-1 w-4 h-4 flex-shrink-0 accent-nomad-pink cursor-pointer"
+                                                required
+                                            />
+                                            <span className="text-[13px] text-nomad-black/60 leading-relaxed group-hover:text-nomad-black/80 transition-colors">
+                                                I understand that by selecting "patient or carer" I may be sharing information about a health condition. I give explicit consent for Nomad Neuroscience Ltd to process this as special-category data under Article 9 GDPR, solely to assess my interest in the clinical investigation programme. I can withdraw this consent at any time by writing to <a href="mailto:hello@nomadneuro.com" className="underline hover:text-nomad-pink transition-colors">hello@nomadneuro.com</a>.
+                                            </span>
+                                        </label>
+                                    )}
 
                                     {selectedRole && (
                                         <div className="rounded-2xl bg-white/70 border border-nomad-black/5 p-4 flex items-center justify-between gap-3">

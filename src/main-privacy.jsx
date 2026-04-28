@@ -57,6 +57,9 @@ const Privacy = () => (
             <P>
                 We do not currently maintain an Article 27 representative inside the EU/EEA or a Swiss representative. If we begin offering goods or services to, or monitoring the behaviour of, individuals in those territories at a scale that requires one, we will appoint and disclose them in this notice.
             </P>
+            <P>
+                <strong>Data protection officer.</strong> We have assessed our processing activities against the criteria in Article 37 UK GDPR. We are not a public authority; our core activities do not involve large-scale, regular, systematic monitoring of individuals; and the special-category data we currently process (limited health context voluntarily shared via the waitlist form) does not meet the "large scale" threshold that would make a DPO mandatory. We have therefore not appointed a formal DPO at this stage. The designated contact for all data protection matters is <a href="mailto:hello@nomadneuro.com" className="text-nomad-pink hover:text-nomad-magenta">hello@nomadneuro.com</a>. We will review this assessment if our processing activities expand — in particular, as the clinical investigation programme scales.
+            </P>
 
             <H n="02" id="data">what we collect</H>
             <P>We process the following categories of personal data:</P>
@@ -94,12 +97,12 @@ const Privacy = () => (
             <H n="05" id="recipients">who sees it</H>
             <P>Personal data is accessed by Nomad personnel on a need-to-know basis. We share data with the following categories of processor:</P>
             <UL>
-                <li><strong>Hosting and form processing</strong> — Netlify, Inc. (United States), which hosts this website and processes form submissions.</li>
-                <li><strong>Email infrastructure</strong> — the email provider we use to receive your messages.</li>
+                <li><strong>Hosting and form processing</strong> — Netlify, Inc. (United States), which hosts this website and processes form submissions on our behalf under a signed Article 28 Data Processing Agreement.</li>
+                <li><strong>Email infrastructure</strong> — Google Workspace (Google LLC, United States), which provides our email service.</li>
                 <li><strong>Professional advisers</strong> — legal, accounting, regulatory, and clinical advisers, where engagement requires it.</li>
                 <li><strong>Authorities</strong> — regulators, courts, and law enforcement, where legally required.</li>
             </UL>
-            <P>Each processor is bound by an appropriate contract (a UK / EU GDPR Article 28 data processing agreement or equivalent) and may only process data on our instructions.</P>
+            <P>Fonts used on this site are self-hosted; no font or analytics CDN requests are made to third parties. Each processor listed above is bound by an appropriate contract (a UK / EU GDPR Article 28 data processing agreement or equivalent) and may only process data on our instructions.</P>
 
             <H n="06" id="transfers">international transfers</H>
             <P>
