@@ -829,7 +829,7 @@ const Navbar = ({ onWaitlistClick }) => {
                         <a
                             href="/"
                             aria-label="nomad — home"
-                            className={`group flex-shrink-0 h-14 md:h-16 px-5 md:px-6 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-500 ${isDark ? 'bg-white/10' : 'bg-white/53'}`}
+                            className={`group flex-shrink-0 h-14 md:h-16 px-5 md:px-6 rounded-full backdrop-blur-md border flex items-center justify-center transition-all duration-500 ${isDark ? 'bg-white/10 border-white/10' : 'bg-white/80 border-black/5 shadow-[0_1px_2px_rgba(10,10,10,0.04)]'}`}
                         >
                             <span className={`font-display font-light lowercase tracking-tight text-[22px] md:text-[26px] leading-none flex items-center transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-black'}`}>
                                 <span>n</span>
@@ -845,7 +845,7 @@ const Navbar = ({ onWaitlistClick }) => {
                     </Magnetic>
 
                     {/* Nav Pill */}
-                    <nav className={`flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] backdrop-blur-md flex items-center justify-between px-6 md:px-10 transition-all duration-500 ${isDark ? 'bg-white/10' : 'bg-white/53'}`}>
+                    <nav className={`flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] backdrop-blur-md border flex items-center justify-between px-6 md:px-10 transition-all duration-500 ${isDark ? 'bg-white/10 border-white/10' : 'bg-white/80 border-black/5 shadow-[0_1px_2px_rgba(10,10,10,0.04)]'}`}>
                         <div className={`hidden md:flex flex-1 items-center justify-around gap-8 text-[14px] font-medium transition-colors duration-500 ${isDark ? 'text-white' : 'text-black/80'}`}>
                             <a href="#platform" className="hover:text-nomad-pink transition-colors">Platform</a>
                             <a href="#technology" className="hover:text-nomad-pink transition-colors">Technology</a>
@@ -871,7 +871,7 @@ const Navbar = ({ onWaitlistClick }) => {
                     <button
                         onClick={onWaitlistClick}
                         tabIndex={pastHero ? -1 : 0}
-                        className={`h-10 px-6 rounded-full backdrop-blur-md flex items-center gap-3 text-[13px] transition-colors duration-500 group border border-black/5 ${isDark ? 'bg-white/10 text-white/60 hover:text-white' : 'bg-white/53 text-black/40 hover:text-black'}`}
+                        className={`h-10 px-6 rounded-full backdrop-blur-md flex items-center gap-3 text-[13px] transition-colors duration-500 group border ${isDark ? 'bg-white/10 text-white/60 hover:text-white border-white/10' : 'bg-white/80 text-black/40 hover:text-black border-black/5'}`}
                     >
                         <span className="font-light">Join the waitlist for every update</span>
                         <div className="w-5 h-5 rounded-full border border-blue-500/30 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all">
