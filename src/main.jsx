@@ -786,13 +786,23 @@ const Navbar = ({ onWaitlistClick }) => {
         <>
             <div className="navbar-container fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
                 <div className="flex items-center gap-2.5 w-full max-w-[800px]">
-                    {/* Logo */}
+                    {/* Wordmark */}
                     <Magnetic>
                         <a
                             href="/"
-                            className={`group flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full backdrop-blur-md flex items-center justify-center hover:scale-110 transition-all duration-500 hover:bg-[url('/assets/images/button_back_2.png')] bg-cover bg-center ${isDark ? 'bg-white/10' : 'bg-white/53'}`}
+                            aria-label="nomad — home"
+                            className={`group flex-shrink-0 h-14 md:h-16 px-5 md:px-6 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-500 ${isDark ? 'bg-white/10' : 'bg-white/53'}`}
                         >
-                            <span className={`font-serif italic text-2xl md:text-3xl mt-[-2px] transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-pink group-hover:text-white'}`}>n</span>
+                            <span className={`font-display font-light lowercase tracking-tight text-[22px] md:text-[26px] leading-none flex items-center transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-black'}`}>
+                                <span>n</span>
+                                <span
+                                    aria-hidden="true"
+                                    className="inline-block rounded-full border-[1.5px] border-nomad-pink mx-[0.04em] align-middle"
+                                    style={{ width: '0.62em', height: '0.62em' }}
+                                />
+                                <span className="sr-only">o</span>
+                                <span>mad</span>
+                            </span>
                         </a>
                     </Magnetic>
 
@@ -1796,7 +1806,7 @@ const Roadmap = () => {
     const milestones = [
         { year: '2024', title: 'The Science', description: "We didn't start with a product. We started with a question: is there enough published evidence to build a non-invasive, closed-loop system for autonomic regulation? The answer was yes — barely — and that was enough to begin.", status: 'complete' },
         { year: '2025', title: 'The Foundation', description: 'University spinout from our research base. Seed funding. A small, deliberate team assembled around people who have spent their careers in neuromodulation, autonomic physiology, and wearable engineering. First prototypes. First proof-of-concept data.', status: 'complete' },
-        { year: '2026', title: 'Validation (This is where we are)', description: "We are in clinical investigation. That means we are in the rigorous, unglamorous, necessary phase of proving that what we believe works, actually works, in real people, under controlled conditions.\n\nWe are pursuing UKCA and CE marking. We are miniaturising the hardware. We are not cutting corners.\n\n*If you're reading this hoping to buy or use Nomad today — we understand. We're moving as fast as the science allows.*", status: 'current' },
+        { year: '2026', title: 'Validation', description: "Clinical investigation. Hardware miniaturisation. UKCA and CE marking under voluntary application of medical-device standards.\n\nSee: where we are →", status: 'current' },
         { year: '2027', title: 'First Product', description: 'Commercial release of the first Nomad device. A wearable. Non-invasive. Cleared for use.', status: 'upcoming' },
         { year: '2028 and beyond', title: 'Scale', description: "EU Class IIb. FDA pathway. Global. Platform extensions we're not ready to describe yet, because we'd rather show you than promise you.", status: 'upcoming' },
     ];
@@ -1910,6 +1920,30 @@ const Roadmap = () => {
     );
 };
 
+const WhereWeAre = () => (
+    <section id="where-we-are" data-theme="dark" className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-white/5">
+        <div className="max-w-[1100px] mx-auto">
+            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.2em] lowercase mb-16">05 / 07 — where we are</p>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-nomad-cream leading-[1.05] tracking-tight mb-14 max-w-[900px]">
+                We are in clinical investigation.
+            </h2>
+            <div className="text-nomad-cream/85 text-[17px] md:text-[18px] leading-[1.7] space-y-7 max-w-[640px]">
+                <p>That means we are in the rigorous, unglamorous, necessary phase of proving that what we believe works actually works — in real people, under controlled conditions, with the kind of evidence that survives scrutiny.</p>
+                <p>We are pursuing UKCA and CE marking under voluntary application of medical-device standards. We are miniaturising the hardware. We are not cutting corners.</p>
+                <p>If you are reading this hoping to use Nomad today: we understand. We are moving as fast as the science allows.</p>
+            </div>
+            <div className="mt-14 flex flex-wrap gap-x-10 gap-y-3 font-tech text-[11px] text-nomad-pink lowercase tracking-[0.12em]">
+                <span>protocol nmd-vga-001</span>
+                <span>iso 13485 aligned</span>
+                <span>iso 14971 hazard analysis</span>
+            </div>
+            <a href="/manifesto" className="inline-block mt-12 font-tech text-[12px] text-nomad-cream/60 hover:text-nomad-cream lowercase tracking-[0.1em] border-b border-nomad-cream/20 hover:border-nomad-cream pb-1 transition-colors">
+                read the manifesto →
+            </a>
+        </div>
+    </section>
+);
+
 const Footer = () => {
     const [footerEmail, setFooterEmail] = useState('');
     const [footerSubmitting, setFooterSubmitting] = useState(false);
@@ -1940,103 +1974,94 @@ const Footer = () => {
     };
 
     return (
-        <footer data-theme="dark" className="bg-nomad-black text-white py-24 px-6 md:px-16 lg:px-24">
+        <footer data-theme="dark" className="bg-nomad-black text-white pt-32 pb-16 px-6 md:px-16 lg:px-24">
             <div className="max-w-[1400px] mx-auto">
-                <div className="grid grid-cols-2 md:grid-cols-6 gap-10 md:gap-8 mb-20 pb-20 border-b border-white/10">
-                    <div className="col-span-2">
-                        <div className="font-display text-2xl font-medium lowercase tracking-wide mb-6">nomad</div>
-                        <p className="text-white/50 leading-relaxed max-w-xs mb-6 text-xl pb-2">The operating system for your body.</p>
-                        <p className="text-nomad-pink text-xs italic mb-8 max-w-xs leading-relaxed">
-                            Currently in clinical investigation — because we refuse to release anything we can't prove.
-                        </p>
-                        <p className="text-white/55 text-[10px] uppercase tracking-widest leading-relaxed max-w-xs border-t border-white/5 pt-4 font-tech">
-                            * Nomad delivers closed-loop neuromodulation through non-invasive autonomic interfaces.
-                        </p>
-                    </div>
+                {/* Wordmark sign-off */}
+                <div className="mb-24 max-w-[1100px]">
+                    <h2 className="font-display font-light lowercase tracking-tight text-nomad-pink leading-[0.95] text-[clamp(48px,9vw,128px)]">
+                        nomad —<br />the operating system for your body.
+                    </h2>
+                    <p className="mt-10 text-nomad-cream/70 text-[16px] md:text-[17px] leading-[1.7] max-w-[540px]">
+                        Currently in clinical investigation. We refuse to release anything we cannot prove.
+                    </p>
+                </div>
+
+                {/* Three columns */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-10 pb-16 border-b border-white/10">
                     <div>
-                        <h4 className="font-bold mb-6 text-[10px] uppercase tracking-[0.2em] text-white/20 font-tech">1.0 Explore</h4>
-                        <ul className="space-y-3 text-white/50 text-[11px] uppercase tracking-wider font-tech">
-                            <li><a href="#platform" className="hover:text-white transition-colors">Platform</a></li>
-                            <li><a href="#technology" className="hover:text-white transition-colors">Technology</a></li>
-                            <li><a href="#team" className="hover:text-white transition-colors">Team</a></li>
-                            <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
-                            <li><a href="/signin" className="hover:text-white transition-colors">Investor Portal</a></li>
+                        <h4 className="font-tech text-[11px] uppercase tracking-[0.22em] text-white/30 mb-6">01 — explore</h4>
+                        <ul className="space-y-3 font-tech text-[11px] uppercase tracking-[0.16em] text-white/60">
+                            <li><a href="#platform" className="hover:text-white transition-colors">platform</a></li>
+                            <li><a href="#technology" className="hover:text-white transition-colors">technology</a></li>
+                            <li><a href="#lineage" className="hover:text-white transition-colors">lineage</a></li>
+                            <li><a href="#team" className="hover:text-white transition-colors">team</a></li>
+                            <li><a href="/careers" className="hover:text-white transition-colors">careers</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 className="font-bold mb-6 text-[10px] uppercase tracking-[0.2em] text-white/20 font-tech">2.0 Follow</h4>
-                        <ul className="space-y-3 text-white/50 text-[11px] uppercase tracking-wider font-tech">
-                            <li><a href="https://www.linkedin.com/company/nomadneuro/" className="hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-                            <li><a href="mailto:hello@nomadneuro.com" className="hover:text-white transition-colors">Email</a></li>
+                        <h4 className="font-tech text-[11px] uppercase tracking-[0.22em] text-white/30 mb-6">02 — depth</h4>
+                        <ul className="space-y-3 font-tech text-[11px] uppercase tracking-[0.16em] text-white/60">
+                            <li><a href="/manifesto" className="hover:text-white transition-colors">manifesto</a></li>
+                            <li><a href="#where-we-are" className="hover:text-white transition-colors">regulatory</a></li>
+                            <li><span className="text-white/30">science <span className="text-nomad-pink/70">(gated)</span></span></li>
+                            <li><a href="/signin" className="hover:text-white transition-colors">investor portal <span className="text-nomad-pink/70">(gated)</span></a></li>
                         </ul>
                     </div>
-                    <div className="col-span-2">
-                        <h4 className="font-bold mb-6 text-[10px] uppercase tracking-[0.2em] text-white/20 font-tech">Newsletter</h4>
-                        <form onSubmit={handleFooterSubmit} className="space-y-3 max-w-xs">
+                    <div>
+                        <h4 className="font-tech text-[11px] uppercase tracking-[0.22em] text-white/30 mb-6">03 — follow</h4>
+                        <ul className="space-y-3 font-tech text-[11px] uppercase tracking-[0.16em] text-white/60 mb-6">
+                            <li><a href="https://www.linkedin.com/company/nomadneuro/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">linkedin</a></li>
+                            <li><a href="mailto:hello@nomadneuro.com" className="hover:text-white transition-colors">email</a></li>
+                        </ul>
+                        <form onSubmit={handleFooterSubmit} className="flex items-center gap-2 max-w-xs">
                             <label htmlFor="footer-email" className="sr-only">Email address</label>
                             <input
                                 id="footer-email"
                                 type="email"
-                                placeholder="Email address"
+                                placeholder="your email"
                                 value={footerEmail}
                                 onChange={(e) => setFooterEmail(e.target.value)}
                                 required
-                                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-nomad-pink transition-colors text-white placeholder:text-white/30 font-tech"
+                                className="flex-1 min-w-0 bg-transparent border-b border-white/20 px-1 py-2 text-[12px] focus:outline-none focus:border-nomad-pink transition-colors text-white placeholder:text-white/30 font-tech lowercase"
                             />
-                            <Button
+                            <button
                                 type="submit"
-                                variant="primary"
                                 disabled={footerSubmitting}
-                                className="w-full !rounded-lg"
-                                hoverImage="button_back.png"
+                                className="font-tech text-[11px] uppercase tracking-[0.16em] bg-nomad-pink text-white px-4 py-2 rounded-full hover:bg-nomad-magenta transition-colors disabled:opacity-50"
                             >
-                                {footerSuccess ? 'Subscribed!' : footerSubmitting ? 'Subscribing...' : 'Subscribe'}
-                            </Button>
-                            <p className="mt-3 text-[10px] text-white/30 leading-relaxed font-tech">By subscribing you agree to our <a href="/privacy" className="underline hover:text-white">Privacy Policy</a>. Unsubscribe anytime.</p>
+                                {footerSuccess ? 'subscribed' : footerSubmitting ? '…' : 'submit'}
+                            </button>
                         </form>
                     </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row justify-between items-start gap-12 pt-12 border-t border-white/5 font-tech">
-                    <div className="flex flex-col gap-8 max-w-4xl">
-                        <div className="space-y-2">
-                            <p className="text-[10px] uppercase tracking-[0.3em] font-medium text-white/40">
-                                &copy; 2026 NOMAD NEUROSCIENCE LTD. All rights reserved.
-                            </p>
-                            <p className="text-[9px] uppercase tracking-[0.2em] text-white/20">
-                                Registered in England and Wales • Company № 16558472
-                            </p>
-                            <div className="pt-8 mt-8 border-t border-white/5">
-                                <p className="text-[10px] font-medium text-nomad-pink tracking-widest uppercase">
-                                    Currently in clinical investigation. Not available for commercial or medical use.
-                                </p>
-                            </div>
-                            <p className="text-[9px] uppercase tracking-[0.2em] text-white/20">
-                                Registered Office: 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ
-                            </p>
-                        </div>
+                {/* Live indicator + anchor date */}
+                <div className="flex flex-col md:flex-row gap-6 md:gap-12 py-10 border-b border-white/10 font-tech text-[11px] uppercase tracking-[0.22em]">
+                    <span className="flex items-center gap-3 text-nomad-pink">
+                        <span className="relative flex w-2 h-2">
+                            <span className="absolute inset-0 rounded-full bg-nomad-pink animate-ping opacity-60" />
+                            <span className="relative inline-flex w-2 h-2 rounded-full bg-nomad-pink" />
+                        </span>
+                        live — in clinical investigation
+                    </span>
+                    <span className="text-white/40">q4 2026 — first-in-human readout</span>
+                </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8 border-t border-white/5">
-                            <div className="space-y-4">
-                                <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/20">3.0 Regulatory Status</h4>
-                                <p className="text-[10px] leading-relaxed text-white/40 uppercase tracking-widest">
-                                    Nomad is an investigational device, exclusively for clinical investigation. It has not yet been reviewed or approved by the MHRA or other regulatory authorities and is not available for commercial sale or medical use.
-                                </p>
-                            </div>
-                            <div id="references" className="space-y-4">
-                                <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-white/20">4.0 Scientific References [1]</h4>
-                                <p className="text-[9px] leading-relaxed text-white/55 uppercase tracking-widest">
-                                    Estimates derived from aggregated global prevalence data across primary dysautonomia (Dysautonomia International, 2023: &gt;70M), cardiovascular autonomic neuropathy in diabetes (Spallone et al., Front. Neurosci., 2019; IDF Diabetes Atlas 2021: ~107M), post-COVID autonomic dysfunction (Stiles et al., 2022; Frontera et al., 2025 meta-analysis: &gt;100M), and autonomic impairment in heart failure and hypertension. Total addressable population estimated at &gt;376M. This figure aggregates overlapping at-risk populations and is not a count of unique individuals.
-                                </p>
-                                <p className="text-[9px] leading-relaxed text-white/55 uppercase tracking-widest pt-2 border-t border-white/5">
-                                    As of [15.03.2026], no commercially available or CE/UKCA-approved wearable device integrates real-time ANS biomarker sensing with automated closed-loop neuromodulation.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex gap-8 text-[10px] uppercase tracking-[0.3em] font-medium text-white/40">
-                        <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
-                    </div>
+                {/* Legal */}
+                <div className="pt-10 font-tech text-[11px] leading-[1.7] text-white/30 lowercase tracking-[0.04em] space-y-4 max-w-[840px]">
+                    <p>© 2026 nomad neuroscience ltd. all rights reserved.</p>
+                    <p>registered in england and wales · company № 16558472</p>
+                    <p>registered office: 71-75 shelton street, covent garden, london, wc2h 9jq</p>
+                    <p className="pt-4">
+                        regulatory status: nomad is an investigational device, exclusively for clinical investigation. it has not yet been reviewed or approved by the mhra or other regulatory authorities and is not available for commercial sale or medical use.
+                    </p>
+                    <p className="pt-4 flex flex-wrap gap-x-3">
+                        <a href="/privacy" className="hover:text-white transition-colors">privacy</a>
+                        <span>·</span>
+                        <a href="/privacy#cookies" className="hover:text-white transition-colors">cookies</a>
+                        <span>·</span>
+                        <a href="/privacy#terms" className="hover:text-white transition-colors">terms</a>
+                    </p>
                 </div>
             </div>
         </footer>
@@ -2124,47 +2149,72 @@ const ScienceAndTeam = () => {
     );
 };
 
-const GetInTouch = () => (
-    <section className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-nomad-black/10">
-        <div className="max-w-[1400px] mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-12 group">
-                <div className="flex gap-8 lg:w-3/5">
-                    <span className="text-nomad-black text-2xl md:text-3xl font-light">3.0</span>
-                    <div>
-                        <h3 className="text-3xl md:text-5xl font-light text-nomad-black leading-tight mb-8 tracking-tight">Who writes to us</h3>
-                        <div className="text-xl text-nomad-black/60 leading-relaxed space-y-6">
-                            <p>Researchers who want to collaborate. Clinicians who have spent careers treating what we're building for. Engineers who want to work on the hardest problem in wearable medicine.</p>
-                            <p>And patients — more than anyone else — who have been waiting for something like this, and want to know if it's real, when it's coming, and whether they can be part of the investigation.</p>
-                            <p>All of it matters. All of it gets read.</p>
+const ThreeDoors = ({ onWaitlistClick }) => {
+    const doors = [
+        {
+            label: 'door 01 — clinical investigation',
+            title: 'Living with autonomic dysfunction.',
+            body: "If you've been told there's nothing targeted for what you have — write to us first. Eligibility criteria for the clinical investigation programme are limited and rolling.",
+            cta: { kind: 'primary', text: 'Register interest', onClick: onWaitlistClick },
+        },
+        {
+            label: 'door 02 — research & clinical',
+            title: 'Researchers, clinicians, regulatory specialists.',
+            body: 'If your work touches autonomic neuroscience, neuromodulation, wearable biosensing, signal processing, or device regulation — we want to hear what you’re working on. We collaborate.',
+            cta: { kind: 'link', text: 'Submit collaboration brief →', href: 'mailto:hello@nomadneuro.com?subject=Collaboration%20brief' },
+        },
+        {
+            label: 'door 03 — gated',
+            title: 'Sophisticated capital.',
+            body: 'Frontier biotech and deep-tech investors only. Access to the investor portal is by request. We respond within 5 business days.',
+            cta: { kind: 'underline', text: 'Request portal access →', href: 'mailto:hello@nomadneuro.com?subject=Investor%20portal%20access%20request' },
+        },
+    ];
+
+    return (
+        <section className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-nomad-black/10">
+            <div className="max-w-[1400px] mx-auto">
+                <p className="font-tech text-[11px] text-nomad-pink tracking-[0.2em] lowercase mb-16">06 / 07 — who writes to us</p>
+                <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-nomad-black leading-[1.05] tracking-tight mb-10 max-w-[900px]">
+                    Three ways in.
+                </h2>
+                <p className="text-[17px] md:text-[18px] text-nomad-black/70 leading-[1.7] max-w-[480px] mb-20">
+                    The site is mostly quiet. The inbox is not. Every message is read by a human.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                    {doors.map((d, i) => (
+                        <div key={i} className="flex flex-col bg-white/40 border border-nomad-black/10 rounded-2xl p-8 md:p-10 min-h-[360px]">
+                            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.18em] lowercase mb-8">{d.label}</p>
+                            <h3 className="text-2xl md:text-[28px] font-light text-nomad-black leading-[1.15] tracking-tight mb-5">{d.title}</h3>
+                            <p className="text-[15px] text-nomad-black/70 leading-[1.65] mb-10 flex-1">{d.body}</p>
+                            <div>
+                                {d.cta.kind === 'primary' && (
+                                    <button
+                                        onClick={d.cta.onClick}
+                                        className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-nomad-pink text-white text-sm font-medium hover:bg-nomad-magenta pink-glow-sm transition-colors"
+                                    >
+                                        {d.cta.text}
+                                    </button>
+                                )}
+                                {d.cta.kind === 'link' && (
+                                    <a href={d.cta.href} className="inline-flex items-center text-nomad-black hover:text-nomad-pink text-sm font-medium transition-colors">
+                                        {d.cta.text}
+                                    </a>
+                                )}
+                                {d.cta.kind === 'underline' && (
+                                    <a href={d.cta.href} className="inline-flex items-center text-nomad-black text-sm font-medium border-b-2 border-nomad-pink pb-1 hover:text-nomad-pink transition-colors">
+                                        {d.cta.text}
+                                    </a>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="flex flex-col items-start md:items-end justify-center lg:w-2/5 gap-12 mt-12 md:mt-0">
-                    <div className="space-y-12">
-                        <div>
-                            <p className="text-nomad-black font-medium text-lg leading-snug mb-4">If you're living with autonomic dysfunction and want to know about our clinical investigation programme — write to us first.</p>
-                            <Button variant="ghost" href="mailto:hello@nomadneuro.com" className="text-nomad-pink hover:text-white transition-all font-medium !p-0 text-xl group flex items-center">
-                                Write to us
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform ml-2">
-                                    <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </Button>
-                        </div>
-                        <div>
-                            <p className="text-nomad-black/60 font-medium text-base leading-snug mb-4">If you're a researcher, clinician, or engineer — we'd like to hear what you're working on.</p>
-                            <Button variant="ghost" href="mailto:hello@nomadneuro.com" className="text-nomad-black hover:text-nomad-pink transition-all font-medium !p-0 group flex items-center">
-                                Collaborate
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="group-hover:translate-x-1 transition-transform ml-2">
-                                    <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </Button>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
-        </div>
-    </section>
-);
+        </section>
+    );
+};
 
 const LoadingScreen = ({ onComplete }) => {
     const [phase, setPhase] = useState(0);
@@ -2249,8 +2299,9 @@ const App = () => {
                     <ScienceAndTeam />
                     <ResearchTimeline />
                     <Roadmap />
+                    <WhereWeAre />
                     <PartnerLogos />
-                    <GetInTouch />
+                    <ThreeDoors onWaitlistClick={() => setWaitlistOpen(true)} />
                 </main>
                 <Footer />
                 <LoginModal isOpen={loginOpen} onClose={() => setLoginOpen(false)} />

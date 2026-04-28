@@ -24,7 +24,8 @@ export default {
         sans:    ['PP Neue Montreal', 'IBM Plex Sans', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
         serif:   ['Newsreader', 'Georgia', 'serif'],
         display: ['PP Neue Montreal', 'IBM Plex Sans', 'sans-serif'],
-        tech:    ['IBM Plex Sans', 'ui-monospace', 'monospace'],
+        mono:    ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        tech:    ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       animation: {
         'slow-zoom':     'slowZoom 20s infinite alternate ease-in-out',
