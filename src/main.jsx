@@ -1667,24 +1667,6 @@ const DevelopmentTeaser = () => (
     </section>
 );
 
-const PhotoGridItem = ({ name, role, image, index = 0 }) => (
-    <div className="relative aspect-square overflow-hidden group cursor-pointer">
-        <CurvedReveal delay={index * 60}>
-            <img
-                src={image}
-                alt={`${name}, ${role}`}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
-            />
-        </CurvedReveal>
-        <div className="absolute inset-0 bg-gradient-to-t from-nomad-black/90 via-nomad-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-            <h4 className="text-white font-bold text-base mb-0.5">{name}</h4>
-            <p className="text-nomad-pink text-xs uppercase tracking-wider font-medium">{role}</p>
-        </div>
-    </div>
-);
-
 const ResearchTimeline = () => {
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -1993,8 +1975,7 @@ const Footer = () => {
                         <ul className="space-y-3 font-tech text-[11px] uppercase tracking-[0.16em] text-white/60">
                             <li><a href="#platform" className="hover:text-white transition-colors">platform</a></li>
                             <li><a href="#technology" className="hover:text-white transition-colors">technology</a></li>
-                            <li><a href="#lineage" className="hover:text-white transition-colors">lineage</a></li>
-                            <li><a href="#team" className="hover:text-white transition-colors">team</a></li>
+                            <li><a href="/team" className="hover:text-white transition-colors">team</a></li>
                             <li><a href="/careers" className="hover:text-white transition-colors">careers</a></li>
                         </ul>
                     </div>
@@ -2058,10 +2039,18 @@ const Footer = () => {
                     <p className="pt-4 flex flex-wrap gap-x-3">
                         <a href="/privacy" className="hover:text-white transition-colors">privacy</a>
                         <span>·</span>
-                        <a href="/privacy#cookies" className="hover:text-white transition-colors">cookies</a>
-                        <span>·</span>
-                        <a href="/privacy#terms" className="hover:text-white transition-colors">terms</a>
+                        <a href="/cookies" className="hover:text-white transition-colors">cookies</a>
                     </p>
+
+                    <div id="references" className="pt-8 mt-4 border-t border-white/5 space-y-3">
+                        <p className="font-tech text-[10px] tracking-[0.18em] uppercase text-white/40">references</p>
+                        <p className="font-tech text-[11px] leading-[1.7] text-white/40 lowercase tracking-[0.04em]">
+                            [1] estimates derived from aggregated global prevalence data across primary dysautonomia (dysautonomia international, 2023: &gt;70m), cardiovascular autonomic neuropathy in diabetes (spallone et al., front. neurosci., 2019; idf diabetes atlas 2021: ~107m), post-covid autonomic dysfunction (stiles et al., 2022; frontera et al., 2025 meta-analysis: &gt;100m), and autonomic impairment in heart failure and hypertension. total addressable population estimated at &gt;376m. this figure aggregates overlapping at-risk populations and is not a count of unique individuals.
+                        </p>
+                        <p className="font-tech text-[11px] leading-[1.7] text-white/40 lowercase tracking-[0.04em] pt-2 border-t border-white/5">
+                            as of 2026.04, no commercially available or ce/ukca-approved wearable device integrates real-time ans biomarker sensing with automated closed-loop neuromodulation.
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>
@@ -2149,7 +2138,7 @@ const ThreeDoors = ({ onWaitlistClick }) => {
     ];
 
     return (
-        <section className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-nomad-black/10">
+        <section id="three-doors" className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-nomad-black/10">
             <div className="max-w-[1400px] mx-auto">
                 <p className="font-tech text-[11px] text-nomad-pink tracking-[0.2em] lowercase mb-16">06 / 07 — who writes to us</p>
                 <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-nomad-black leading-[1.05] tracking-tight mb-10 max-w-[900px]">
@@ -2253,7 +2242,26 @@ const App = () => {
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
-        return () => lenis.destroy();
+
+        const handleAnchorClick = (e) => {
+            const link = e.target.closest('a[href]');
+            if (!link) return;
+            const href = link.getAttribute('href') || '';
+            if (!href.startsWith('#') || href === '#') return;
+            const target = document.querySelector(href);
+            if (!target) return;
+            e.preventDefault();
+            lenis.scrollTo(target, { offset: -80 });
+            if (window.history && window.history.pushState) {
+                window.history.pushState(null, '', href);
+            }
+        };
+        document.addEventListener('click', handleAnchorClick);
+
+        return () => {
+            document.removeEventListener('click', handleAnchorClick);
+            lenis.destroy();
+        };
     }, []);
 
     return (

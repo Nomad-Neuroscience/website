@@ -31,19 +31,68 @@ const team = [
         image: '/assets/images/Marcelo.png',
         linkedin: '',
     },
+    {
+        name: 'Manuel Hidalgo Sola',
+        role: 'Application Development',
+        bio: 'Builds the companion application — the surface where readings, calibration, and clinician feedback live.',
+        image: '/assets/images/Manuel.png',
+        linkedin: '',
+    },
+    {
+        name: 'Ben Black',
+        role: 'Director, Operations',
+        bio: 'Runs operations and strategy. Also serves on the board.',
+        image: '/assets/images/ben_black.png',
+        linkedin: '',
+    },
+];
+
+const board = [
+    { name: 'Ben Black',      role: 'Director',                image: '/assets/images/ben_black.png' },
+    { name: 'Dr. Guy Winter', role: 'Director',                image: '/assets/images/Guy_Winter.png' },
+];
+
+const clinicalAdvisors = [
+    { name: 'Prof. Imanuel Lerman', role: 'Clinical Lead',     image: '/assets/images/Imanuel_Lerman.png' },
+    { name: 'Rohan Kandasamy',      role: 'Clinical Advisor',  image: '' },
 ];
 
 const advisors = [
-    { name: 'Prof. Imanuel Lerman',    role: 'Clinical Team Lead',     image: '/assets/images/Imanuel_Lerman.png' },
-    { name: 'Prof. Steve Alty',        role: 'Engineering Advisor',    image: '/assets/images/Steve_Alty.png' },
-    { name: 'Anders Borg',             role: 'Strategic Advisor',      image: '/assets/images/Anders_borg.png' },
-    { name: 'Ben Black',               role: 'Non-Executive Director', image: '/assets/images/ben_black.png' },
-    { name: 'Ben Newton',              role: 'Strategic Advisor',      image: '/assets/images/Ben_Newton.png' },
-    { name: 'Dr. Guy Winter',          role: 'Clinical Network',       image: '/assets/images/Guy_Winter.png' },
-    { name: 'Dr. Ali Hawks',           role: 'Strategic Advisor',      image: '/assets/images/Ali-050.png' },
-    { name: 'Patrik Nilsson',          role: 'Supply Chain Resilience', image: '/assets/images/Patrik_Nilsson.png' },
-    { name: 'Manuel Hidalgo Sola',     role: 'Application Development', image: '/assets/images/Manuel.png' },
+    { name: 'Prof. Steve Alty', role: 'Engineering Advisor',     image: '/assets/images/Steve_Alty.png' },
+    { name: 'Anders Borg',      role: 'Strategic Advisor',       image: '/assets/images/Anders_borg.png' },
+    { name: 'Ben Newton',       role: 'Strategic Advisor',       image: '/assets/images/Ben_Newton.png' },
+    { name: 'Dr. Ali Hawks',    role: 'Strategic Advisor',       image: '/assets/images/Ali-050.png' },
+    { name: 'Patrik Nilsson',   role: 'Supply Chain Resilience', image: '/assets/images/Patrik_Nilsson.png' },
+    { name: 'Magnus Bruce',     role: 'Strategic Advisor',       image: '' },
 ];
+
+const initials = (name) => name.split(/\s+/).filter(Boolean).map((p) => p.replace(/[^A-Za-z]/g, '')[0] || '').join('').slice(0, 2).toUpperCase();
+
+const SmallCard = ({ person }) => (
+    <article className="flex flex-col">
+        <div className="aspect-square w-full bg-nomad-black/5 overflow-hidden mb-4 rounded-md grid place-items-center">
+            {person.image ? (
+                <img src={person.image} alt={person.name} loading="lazy" className="w-full h-full object-cover grayscale opacity-90" />
+            ) : (
+                <span className="font-display font-light text-nomad-black/30 tracking-tight" style={{ fontSize: '32px' }}>{initials(person.name)}</span>
+            )}
+        </div>
+        <h3 className="text-[15px] font-medium text-nomad-black/80 leading-tight mb-1">{person.name}</h3>
+        <p className="font-tech text-[10px] text-nomad-black/50 tracking-[0.16em] uppercase">{person.role}</p>
+    </article>
+);
+
+const SubSection = ({ title, label, items }) => (
+    <section className="mb-20 last:mb-0">
+        <div className="flex items-baseline justify-between mb-8 pb-5 border-b border-nomad-black/10">
+            <h2 className="font-display font-light text-nomad-black/80 tracking-tight text-[clamp(20px,2.5vw,28px)]">{title}</h2>
+            <p className="font-tech text-[11px] text-nomad-black/40 tracking-[0.18em] lowercase">{label}</p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
+            {items.map((p) => (<SmallCard key={p.name + p.role} person={p} />))}
+        </div>
+    </section>
+);
 
 const Team = () => (
     <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased">
@@ -75,7 +124,7 @@ const Team = () => (
                 The people building Nomad.
             </h1>
             <p className="text-[17px] md:text-[18px] text-nomad-black/70 leading-[1.7] max-w-[640px] mb-24">
-                A small, deliberate team. Full-time builders first. Below them, the clinical and strategic network whose scrutiny makes the work possible.
+                A small, deliberate team. Full-time builders first. Below them, the board, the clinical advisors, and the strategic network whose scrutiny makes the work possible.
             </p>
 
             {/* Team — full-time */}
@@ -106,27 +155,9 @@ const Team = () => (
                 </div>
             </section>
 
-            {/* Advisors & Clinical Network */}
-            <section>
-                <div className="flex items-baseline justify-between mb-10 pb-6 border-b border-nomad-black/10">
-                    <h2 className="font-display font-light text-nomad-black/70 tracking-tight text-[clamp(22px,3vw,32px)]">Advisors &amp; Clinical Network</h2>
-                    <p className="font-tech text-[11px] text-nomad-black/40 tracking-[0.18em] lowercase">scrutiny &amp; counsel</p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
-                    {advisors.map((a) => (
-                        <article key={a.name} className="flex flex-col">
-                            <div className="aspect-square w-full bg-nomad-black/5 overflow-hidden mb-4 rounded-md">
-                                {a.image && (
-                                    <img src={a.image} alt={a.name} loading="lazy" className="w-full h-full object-cover grayscale opacity-90" />
-                                )}
-                            </div>
-                            <h3 className="text-[15px] font-medium text-nomad-black/80 leading-tight mb-1">{a.name}</h3>
-                            <p className="font-tech text-[10px] text-nomad-black/50 tracking-[0.16em] uppercase">{a.role}</p>
-                        </article>
-                    ))}
-                </div>
-            </section>
+            <SubSection title="Board"               label="directors"          items={board} />
+            <SubSection title="Clinical Advisors"   label="medical & research" items={clinicalAdvisors} />
+            <SubSection title="Strategic Advisors"  label="counsel & network"  items={advisors} />
 
             <div className="mt-32 pt-10 border-t border-nomad-pink/30">
                 <p className="text-[15px] text-nomad-black/70 mb-3">Looking to join the team?</p>
