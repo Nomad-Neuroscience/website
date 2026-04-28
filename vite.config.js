@@ -18,6 +18,7 @@ export default defineConfig({
         privacy:   resolve(__dirname, 'privacy.html'),
         careers:   resolve(__dirname, 'careers.html'),
         manifesto: resolve(__dirname, 'manifesto.html'),
+        team:      resolve(__dirname, 'team.html'),
         notfound:  resolve(__dirname, '404.html'),
       },
     },

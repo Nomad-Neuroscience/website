@@ -2098,22 +2098,6 @@ const NumberedSection = ({ number, title, description, badge, linkText, linkHref
 );
 
 const ScienceAndTeam = () => {
-    const team = [
-        { name: 'Santiago Denari',         role: 'Chief Executive Officer',   image: '/assets/images/Santi.jpg' },
-        { name: 'Oliver Case',             role: 'Chief Science Officer',     image: '/assets/images/Ollie.png' },
-        { name: 'Ben Black',               role: 'Management Team [NED]',     image: '/assets/images/ben_black.png' },
-        { name: 'Ben Newton',              role: 'Management Team',           image: '/assets/images/Ben_Newton.png' },
-        { name: 'Callum Shingleton Smith', role: 'Head of Engineering',       image: '/assets/images/callum.png' },
-        { name: 'Marcelo Arenas',          role: 'Head of Systems',           image: '/assets/images/Marcelo.png' },
-        { name: 'Dr. Guy Winter',          role: 'Management Team',           image: '/assets/images/Guy_Winter.png' },
-        { name: 'Dr. Ali Hawks',           role: 'Management Team',           image: '/assets/images/Ali-050.png' },
-        { name: 'Patrik Nilsson',          role: 'Supply Chain Resilience',   image: '/assets/images/Patrik_Nilsson.png' },
-        { name: 'Prof. Imanuel Lerman',    role: 'Clinical Team',             image: '/assets/images/Imanuel_Lerman.png' },
-        { name: 'Prof. Steve Alty',        role: 'Engineering Advisor',       image: '/assets/images/Steve_Alty.png' },
-        { name: 'Anders Borg',             role: 'Strategic Advisor',         image: '/assets/images/Anders_borg.png' },
-        { name: 'Manuel Hidalgo Sola',     role: 'App Dev Team',              image: '/assets/images/Manuel.png' },
-    ];
-
     return (
         <section className="bg-nomad-cream py-32 md:py-48 px-6 md:px-16 lg:px-24">
             <div className="max-w-[1400px] mx-auto">
@@ -2130,19 +2114,12 @@ const ScienceAndTeam = () => {
                     <NumberedSection
                         number="2.0"
                         title="Driven by People"
-                        description="We believe technology is only as powerful as the people behind it. Discover the team that makes it possible."
+                        description="A small, deliberate full-time team. A clinical and strategic network behind them. Both visible — both separate."
                         badge="Careers"
                         badgeHref="/careers"
-                        linkText="Meet the Team"
-                        linkHref="#team"
+                        linkText="See the team →"
+                        linkHref="/team"
                     />
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 mt-16 border-t border-l border-nomad-black/10">
-                        {team.map((member, idx) => (
-                            <div key={idx} className="border-r border-b border-nomad-black/10">
-                                <PhotoGridItem {...member} index={idx} />
-                            </div>
-                        ))}
-                    </div>
                 </div>
             </div>
         </section>
