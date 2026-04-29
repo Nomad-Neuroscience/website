@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import Lenis from 'lenis';
 import './index.css';
+import { Wordmark } from './wordmark.jsx';
 
 let _lenis = null;
 
@@ -15,6 +16,33 @@ const Activity = (props) => <IconWrapper {...props}><path d="M22 12h-4l-3 9L9 3l
 const Brain = (props) => <IconWrapper {...props}><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" /><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" /></IconWrapper>;
 const HeartPulse = (props) => <IconWrapper {...props}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27" /></IconWrapper>;
 const Lock = (props) => <IconWrapper {...props}><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></IconWrapper>;
+
+/* Custom embargo seal — drawn in Nomad's hand. Pink wax-seal dot on a thin
+   line shackle that closes a beat. Replaces the generic lucide padlock for
+   anywhere the brand wants to say "sealed." */
+const EmbargoSeal = ({ size = 14, className = '' }) => (
+    <svg
+        width={size}
+        height={size * (28 / 24)}
+        viewBox="0 0 24 28"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        aria-hidden="true"
+    >
+        {/* Shackle — drawn as one continuous arc */}
+        <path d="M7 13V8a5 5 0 0 1 10 0v5" />
+        {/* Body — softened rect */}
+        <rect x="4" y="13" width="16" height="11" rx="2.5" />
+        {/* Pink seal */}
+        <circle cx="12" cy="18" r="1.6" fill="#FF1B8D" stroke="none" />
+        {/* Drip / pulse below seal */}
+        <line x1="12" y1="20" x2="12" y2="22" stroke="#FF1B8D" strokeWidth="1.2" />
+    </svg>
+);
 
 /* --- BUTTON --- */
 const Button = ({ children, variant = 'primary', className = '', onClick, href, size = 'default', hoverImage, type, disabled, title, 'aria-disabled': ariaDisabled, 'aria-label': ariaLabel }) => {
@@ -831,16 +859,9 @@ const Navbar = ({ onWaitlistClick }) => {
                             aria-label="nomad — home"
                             className={`group flex-shrink-0 h-14 md:h-16 px-5 md:px-6 rounded-full backdrop-blur-md border flex items-center justify-center transition-all duration-500 ${isDark ? 'bg-white/10 border-white/10' : 'bg-white/80 border-black/5 shadow-[0_1px_2px_rgba(10,10,10,0.04)]'}`}
                         >
-                            <span className={`font-display font-light lowercase tracking-tight text-[22px] md:text-[26px] leading-none flex items-center transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-black'}`}>
-                                <span>n</span>
-                                <span
-                                    aria-hidden="true"
-                                    className="inline-block rounded-full border-[1.5px] border-nomad-pink mx-[0.04em] align-middle"
-                                    style={{ width: '0.62em', height: '0.62em' }}
-                                />
-                                <span className="sr-only">o</span>
-                                <span>mad</span>
-                            </span>
+                            <Wordmark
+                                className={`text-[22px] md:text-[26px] transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-black'}`}
+                            />
                         </a>
                     </Magnetic>
 
@@ -995,13 +1016,15 @@ const Hero = () => {
                                 padding: '8px 14px', border: '1px solid rgba(255,255,255,.18)',
                                 borderRadius: 999, fontSize: 11, letterSpacing: '.18em',
                                 textTransform: 'uppercase', color: 'rgba(244,242,234,.55)',
+                                whiteSpace: 'nowrap',
                             }}>
                                 <span style={{
                                     width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
                                     background: '#E94A9C', boxShadow: '0 0 10px #E94A9C',
                                     display: 'inline-block', animation: 'veri-blink 2s infinite',
                                 }} />
-                                Preparing for first-in-human investigation
+                                <span className="hidden sm:inline">Preparing for first-in-human investigation</span>
+                                <span className="sm:hidden">First-in-human · in preparation</span>
                             </span>
 
                             <h1 style={{
@@ -1360,7 +1383,7 @@ const CardiacVis = () => {
             </div>
             <div className="cv-readout">
                 <div className="cv-row">
-                    <span className="cv-k">SBI<sup>™</sup></span>
+                    <span className="cv-k">SBI</span>
                     <span className="cv-v" ref={sbiRef}>0.87</span>
                 </div>
                 <div className="cv-row">
@@ -1699,8 +1722,8 @@ const DevelopmentTeaser = () => (
                             Non-invasive blood pressure. <span className="text-nomad-black/40 italic">More to follow when we're ready to say it.</span>
                         </p>
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-nomad-black/30 shrink-0">
-                        <Lock size={12} />
+                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-nomad-black/45 shrink-0">
+                        <EmbargoSeal size={14} />
                         <span>Embargoed</span>
                     </div>
                 </div>
@@ -2095,11 +2118,11 @@ const Footer = () => {
                     </p>
 
                     <div id="references" className="pt-8 mt-4 border-t border-white/5 space-y-3">
-                        <p className="font-tech text-[10px] tracking-[0.18em] uppercase text-white/40">references</p>
-                        <p className="font-tech text-[11px] leading-[1.7] text-white/40 lowercase tracking-[0.04em]">
+                        <p className="font-tech text-[10px] tracking-[0.18em] uppercase text-white/55">references</p>
+                        <p className="font-tech text-[11px] leading-[1.7] text-white/55 lowercase tracking-[0.04em]">
                             [1] estimates derived from aggregated global prevalence data across primary dysautonomia (dysautonomia international, 2023: &gt;70m), cardiovascular autonomic neuropathy in diabetes (spallone et al., front. neurosci., 2019; idf diabetes atlas 2021: ~107m), post-covid autonomic dysfunction (stiles et al., 2022; frontera et al., 2025 meta-analysis: &gt;100m), and autonomic impairment in heart failure and hypertension. total addressable population estimated at &gt;376m. this figure aggregates overlapping at-risk populations and is not a count of unique individuals.
                         </p>
-                        <p className="font-tech text-[11px] leading-[1.7] text-white/40 lowercase tracking-[0.04em] pt-2 border-t border-white/5">
+                        <p className="font-tech text-[11px] leading-[1.7] text-white/55 lowercase tracking-[0.04em] pt-2 border-t border-white/5">
                             as of 2026.04, no commercially available or ce/ukca-approved wearable device integrates real-time ans biomarker sensing with automated closed-loop neuromodulation.
                         </p>
                     </div>
@@ -2325,10 +2348,10 @@ const App = () => {
     return (
         <>
             {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
-            <div className={`font-sans text-nomad-black bg-nomad-cream antialiased selection:bg-nomad-pink selection:text-white transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`font-sans text-nomad-black bg-nomad-cream antialiased selection:bg-nomad-pink selection:text-white overflow-x-hidden transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
                 <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:bg-nomad-pink focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to content</a>
                 <Navbar onWaitlistClick={() => setWaitlistOpen(true)} />
-                <main id="main-content">
+                <main id="main-content" className="overflow-x-clip">
                     <Hero />
                     <MarqueeText text="SENSING IN REAL TIME • RESPONDING IN MILLISECONDS • NON-INVASIVE • NO SURGERY • NO IMPLANT • PERSONALIZED TO YOUR NERVOUS SYSTEM • THE FIRST OF ITS KIND • " />
                     <OverviewBlock />

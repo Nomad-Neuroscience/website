@@ -1,43 +1,37 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
+import { SubpageHeader } from './wordmark.jsx';
+import { ClosedLoopEmblem, LoopMark } from './closed-loop-emblem.jsx';
 
 const Manifesto = () => (
-    <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased">
-        {/* Minimal nav */}
-        <header className="fixed top-6 left-6 right-6 z-50 flex items-center justify-between">
-            <a
-                href="/"
-                aria-label="nomad — home"
-                className="group inline-flex items-center h-12 px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors"
+    <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased overflow-x-hidden">
+        <SubpageHeader />
+
+        {/* Editorial hero — emblem floats top-right, headline anchors left */}
+        <section className="relative max-w-[1080px] mx-auto px-6 pt-40 pb-12">
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute right-0 top-32 lg:top-24 opacity-[0.85] hidden md:block"
             >
-                <span className="font-display font-light lowercase tracking-tight text-[20px] leading-none flex items-center text-nomad-black">
-                    <span>n</span>
-                    <span
-                        aria-hidden="true"
-                        className="inline-block rounded-full border-[1.5px] border-nomad-pink mx-[0.04em] align-middle"
-                        style={{ width: '0.62em', height: '0.62em' }}
-                    />
-                    <span className="sr-only">o</span>
-                    <span>mad</span>
-                </span>
-            </a>
-            <a
-                href="/"
-                className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors"
-            >
-                ← back
-            </a>
-        </header>
+                <ClosedLoopEmblem
+                    size={360}
+                    labels={true}
+                    showCore={true}
+                    className="text-nomad-black"
+                    ariaLabel="The Nomad closed loop"
+                />
+            </div>
+            <div className="relative max-w-[640px]">
+                <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-12">manifesto · 2026.04</p>
+                <h1 className="font-display font-light text-nomad-black leading-[1.02] tracking-tight text-[clamp(44px,7vw,88px)] mb-10">
+                    Why we built the loop.
+                </h1>
+            </div>
+        </section>
 
         {/* Essay */}
-        <article className="max-w-[640px] mx-auto px-6 pt-40 pb-32">
-            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-12">manifesto · 2026.04</p>
-
-            <h1 className="font-display font-light text-nomad-black leading-[1.02] tracking-tight text-[clamp(44px,7vw,88px)] mb-20">
-                Why we built the loop.
-            </h1>
-
+        <article className="max-w-[640px] mx-auto px-6 pb-32">
             <hr className="border-0 h-px bg-nomad-pink/40 mb-12" />
 
             <div className="text-[18px] md:text-[19px] leading-[1.8] text-nomad-black/85 space-y-8">
@@ -106,9 +100,12 @@ const Manifesto = () => (
                 <p>We built the interface.</p>
             </div>
 
-            <div className="mt-20 pt-10 border-t border-nomad-pink/30">
-                <p className="font-tech text-[11px] text-nomad-pink tracking-[0.18em] lowercase mb-2">the founding team</p>
-                <p className="font-tech text-[11px] text-nomad-black/50 tracking-[0.18em] lowercase">nomad neuroscience · april 2026</p>
+            <div className="mt-20 pt-10 border-t border-nomad-pink/30 flex items-start justify-between gap-6">
+                <div>
+                    <p className="font-tech text-[11px] text-nomad-pink tracking-[0.18em] lowercase mb-2">the founding team</p>
+                    <p className="font-tech text-[11px] text-nomad-black/50 tracking-[0.18em] lowercase">nomad neuroscience · april 2026</p>
+                </div>
+                <LoopMark size={28} className="text-nomad-pink shrink-0 mt-1" />
             </div>
 
             <div className="mt-16">

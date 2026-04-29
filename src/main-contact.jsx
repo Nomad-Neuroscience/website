@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
+import { SubpageHeader } from './wordmark.jsx';
 
 const DOORS = [
     {
@@ -49,15 +50,6 @@ const DOORS = [
         cta: 'Request portal access',
     },
 ];
-
-const Wordmark = () => (
-    <span className="font-display font-light lowercase tracking-tight text-[20px] leading-none flex items-center text-nomad-black">
-        <span>n</span>
-        <span aria-hidden="true" className="inline-block rounded-full border-[1.5px] border-nomad-pink mx-[0.04em] align-middle" style={{ width: '0.62em', height: '0.62em' }} />
-        <span className="sr-only">o</span>
-        <span>mad</span>
-    </span>
-);
 
 const encode = (data) =>
     Object.keys(data)
@@ -241,13 +233,8 @@ const Contact = () => {
     }, [initialDoor, active]);
 
     return (
-        <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased">
-            <header className="fixed top-6 left-6 right-6 z-50 flex items-center justify-between">
-                <a href="/" aria-label="nomad — home" className="group inline-flex items-center h-12 px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors">
-                    <Wordmark />
-                </a>
-                <a href="/" className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors">← back</a>
-            </header>
+        <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased overflow-x-hidden">
+            <SubpageHeader />
 
             <main className="max-w-[900px] mx-auto px-6 pt-40 pb-32">
                 <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-16">contact · three doors</p>
