@@ -28,12 +28,11 @@ export default {
         tech:    ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       animation: {
-        'slow-zoom':     'slowZoom 20s infinite alternate ease-in-out',
-        'fade-in-up':    'fadeInUp 1s ease-out forwards',
-        'shake':         'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
-        'pulse-soft':    'pulseSoft 2s ease-in-out infinite',
-        'float':         'float 6s ease-in-out infinite',
-        'gradient-shift':'gradientShift 8s ease infinite',
+        'slow-zoom':  'slowZoom 20s infinite alternate ease-in-out',
+        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+        'shake':      'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
+        'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+        'float':      'float 6s ease-in-out infinite',
       },
       keyframes: {
         slowZoom: {
@@ -56,10 +55,6 @@ export default {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%':      { transform: 'translateY(-10px)' },
-        },
-        gradientShift: {
-          '0%, 100%': { backgroundPosition: '0% 50%' },
-          '50%':      { backgroundPosition: '100% 50%' },
         },
       },
     },
