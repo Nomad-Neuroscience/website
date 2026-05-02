@@ -20,14 +20,14 @@ const team = [
     },
     {
         name: 'Callum Shingleton Smith',
-        role: 'Head of Engineering',
+        role: 'Hardware Engineer',
         bio: 'Owns the hardware platform — sensing, electronics, and the path to a wearable form factor.',
         image: '/assets/images/callum.png',
         linkedin: '',
     },
     {
         name: 'Marcelo Arenas',
-        role: 'Head of Systems',
+        role: 'Engineer',
         bio: 'Builds the closed-loop signal chain — from biosignal acquisition to real-time response.',
         image: '/assets/images/Marcelo.png',
         linkedin: '',
@@ -48,7 +48,7 @@ const team = [
     },
     {
         name: 'Magnus Bruce',
-        role: 'Head of Outreach',
+        role: 'Research & Operations',
         bio: 'Leads outreach and stakeholder engagement. Ex Imperial College London.',
         image: '/assets/images/Magnus.jpeg',
         linkedin: '',
