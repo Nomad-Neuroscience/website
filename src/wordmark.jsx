@@ -1,22 +1,13 @@
 import React from 'react';
 
 /**
- * The Nomad wordmark — `n[O]mad` where the "o" is rendered as a hollow ring.
+ * The Nomad wordmark — `nomad` with a pink "o" sitting on the baseline.
  * Single source of truth for the brand mark across every entry point.
  */
-export const Wordmark = ({ className = '', oColor = '#FF1B8D', oStroke = '1.5px' }) => (
-    <span className={`font-display font-light lowercase tracking-tight inline-flex items-center leading-none ${className}`}>
+export const Wordmark = ({ className = '', oColor = '#FF1B8D' }) => (
+    <span className={`font-display font-light lowercase tracking-tight inline-flex items-baseline leading-none ${className}`}>
         <span>n</span>
-        <span
-            aria-hidden="true"
-            className="inline-block rounded-full mx-[0.04em] align-middle"
-            style={{
-                width: '0.62em',
-                height: '0.62em',
-                border: `${oStroke} solid ${oColor}`,
-            }}
-        />
-        <span className="sr-only">o</span>
+        <span style={{ color: oColor }}>o</span>
         <span>mad</span>
     </span>
 );

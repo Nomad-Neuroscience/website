@@ -41,7 +41,7 @@ const team = [
     },
     {
         name: 'Ben Black',
-        role: 'Director, Operations',
+        role: 'Operations',
         bio: 'Runs operations and strategy. Serves on the board.',
         image: '/assets/images/ben_black.png',
         linkedin: '',
@@ -75,8 +75,8 @@ const board = [
         image: '/assets/images/ben_black.png',
     },
     {
-        name: 'Dr. Guy Winter',
-        role: 'Director',
+        name: 'Lt Col Dr Guy Winter',
+        role: 'Director, Strategic Governance',
         bio: 'Clinical and strategic governance.',
         image: '/assets/images/Guy_Winter.png',
     },

@@ -1,7 +1,14 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import { SubpageHeader } from './wordmark.jsx';
+
+const Wordmark = () => (
+    <span className="font-display font-light lowercase tracking-tight text-[20px] leading-none flex items-center text-nomad-black">
+        <span>n</span>
+        <span className="text-nomad-pink">o</span>
+        <span>mad</span>
+    </span>
+);
 
 const H = ({ n, id, children }) => (
     <h2 id={id} className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mt-20 mb-6">
@@ -20,8 +27,13 @@ const UL = ({ children }) => (
 );
 
 const Cookies = () => (
-    <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased overflow-x-hidden">
-        <SubpageHeader />
+    <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased">
+        <header className="fixed top-6 left-6 right-6 z-50 flex items-center justify-between">
+            <a href="/" aria-label="nomad — home" className="group inline-flex items-center h-12 px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors">
+                <Wordmark />
+            </a>
+            <a href="/" className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors">← back</a>
+        </header>
 
         <main className="max-w-[720px] mx-auto px-6 pt-40 pb-32">
             <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-12">cookie notice · last updated 2026.04</p>

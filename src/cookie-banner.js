@@ -1,14 +1,29 @@
 // Site-wide cookie banner. Vanilla DOM so every entry (React or static) can mount it.
-// Persists dismissal in localStorage under "nomad-cookie-ack".
+// Persists choice in localStorage under "nomad-cookie-ack" (values: "accepted" | "declined").
+// The site uses ONLY strictly-necessary storage (this consent record + Netlify form state).
+// No analytics, advertising, or third-party tracking is loaded — choice is informational,
+// but we record it so we can honour withdrawal later without re-prompting.
 
 const STORAGE_KEY = 'nomad-cookie-ack';
+
+// Public API: read/clear consent. Exposed on window so /cookies page can offer "withdraw".
+function getConsent() {
+    try { return localStorage.getItem(STORAGE_KEY) || null; } catch (e) { return null; }
+}
+function setConsent(v) {
+    try { localStorage.setItem(STORAGE_KEY, v); } catch (e) {}
+}
+function clearConsent() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+}
+if (typeof window !== 'undefined') {
+    window.NomadConsent = { get: getConsent, clear: clearConsent };
+}
 
 export function mountCookieBanner() {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
-    try {
-        if (localStorage.getItem(STORAGE_KEY) === '1') return;
-    } catch (e) {}
+    if (getConsent()) return;
 
     const mount = () => {
         if (document.getElementById('nomad-cookie-banner')) return;
@@ -79,7 +94,26 @@ export function mountCookieBanner() {
             accept.style.borderColor = 'rgba(255,255,255,0.18)';
         });
         accept.addEventListener('click', () => {
-            try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) {}
+            setConsent('accepted');
+            root.remove();
+        });
+
+        const decline = document.createElement('button');
+        decline.type = 'button';
+        decline.textContent = 'decline';
+        decline.style.cssText = sharedBtnCss;
+        decline.addEventListener('mouseenter', () => {
+            decline.style.color = 'rgba(255,255,255,0.9)';
+            decline.style.borderColor = 'rgba(255,255,255,0.4)';
+        });
+        decline.addEventListener('mouseleave', () => {
+            decline.style.color = 'rgba(255,255,255,0.55)';
+            decline.style.borderColor = 'rgba(255,255,255,0.18)';
+        });
+        decline.addEventListener('click', () => {
+            // Site loads no non-essential cookies/trackers; recording the preference
+            // prevents re-prompting and honours withdrawal symmetry with accept.
+            setConsent('declined');
             root.remove();
         });
 
@@ -97,6 +131,7 @@ export function mountCookieBanner() {
         });
 
         actions.appendChild(accept);
+        actions.appendChild(decline);
         actions.appendChild(details);
         inner.appendChild(text);
         inner.appendChild(actions);
@@ -110,3 +145,4 @@ export function mountCookieBanner() {
         mount();
     }
 }
+

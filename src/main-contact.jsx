@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import { SubpageHeader } from './wordmark.jsx';
 
 const DOORS = [
     {
@@ -51,34 +50,61 @@ const DOORS = [
     },
 ];
 
+const Wordmark = () => (
+    <span className="font-display font-light lowercase tracking-tight text-[20px] leading-none flex items-center text-nomad-black">
+        <span>n</span>
+        <span className="text-nomad-pink">o</span>
+        <span>mad</span>
+    </span>
+);
+
 const encode = (data) =>
     Object.keys(data)
         .map((k) => encodeURIComponent(k) + '=' + encodeURIComponent(data[k]))
         .join('&');
 
+// Per-field hard cap (defence-in-depth alongside Netlify's own limits).
+const MAX_FIELD_LEN = 4000;
+// Minimum render-to-submit dwell. Bots typically submit instantly.
+const MIN_DWELL_MS = 1500;
+
 const Door = ({ door, isActive, onActivate }) => {
     const [values, setValues] = useState({});
+    const [honeypot, setHoneypot] = useState(''); // visible-to-bots, hidden-from-humans field
     const [consent, setConsent] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [done, setDone] = useState(false);
     const [error, setError] = useState('');
+    const [mountedAt] = useState(() => Date.now());
 
-    const handleChange = (name) => (e) => setValues((v) => ({ ...v, [name]: e.target.value }));
+    const handleChange = (name) => (e) => {
+        const v = String(e.target.value ?? '').slice(0, MAX_FIELD_LEN);
+        setValues((prev) => ({ ...prev, [name]: v }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        // Anti-bot: honeypot must remain empty.
+        if (honeypot) { setDone(true); return; }
+        // Anti-bot: enforce minimum dwell (silently swallow as success to avoid feedback).
+        if (Date.now() - mountedAt < MIN_DWELL_MS) { setDone(true); return; }
         if (!consent) {
             setError('Please confirm consent below to submit.');
             return;
         }
+        if (submitting) return; // double-submit guard
         setSubmitting(true);
         try {
+            // Re-clamp on submit in case of programmatic value injection.
+            const clamped = Object.fromEntries(
+                Object.entries(values).map(([k, v]) => [k, String(v ?? '').slice(0, MAX_FIELD_LEN)])
+            );
             const payload = {
                 'form-name': door.formName,
                 'bot-field': '',
                 consent: 'yes',
-                ...values,
+                ...clamped,
             };
             const res = await fetch('/', {
                 method: 'POST',
@@ -132,12 +158,24 @@ const Door = ({ door, isActive, onActivate }) => {
                         onSubmit={handleSubmit}
                         name={door.formName}
                         method="POST"
+                        action="/"
                         data-netlify="true"
                         data-netlify-honeypot="bot-field"
+                        autoComplete="on"
+                        noValidate={false}
                         className="max-w-[640px] mb-16 space-y-6"
                     >
                         <input type="hidden" name="form-name" value={door.formName} />
-                        <p hidden><label>Don't fill this out: <input name="bot-field" /></label></p>
+                        {/* Honeypot: visually hidden, accessibility-hidden, but present in DOM for naive bots. */}
+                        <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
+                            <label>Don't fill this out: <input
+                                name="bot-field"
+                                tabIndex={-1}
+                                autoComplete="off"
+                                value={honeypot}
+                                onChange={(e) => setHoneypot(e.target.value)}
+                            /></label>
+                        </div>
 
                         {door.fields.map((f) => (
                             <div key={f.name} className="flex flex-col">
@@ -150,6 +188,7 @@ const Door = ({ door, isActive, onActivate }) => {
                                         name={f.name}
                                         rows={f.rows || 4}
                                         required={f.required}
+                                        maxLength={MAX_FIELD_LEN}
                                         placeholder={f.placeholder}
                                         value={values[f.name] || ''}
                                         onChange={handleChange(f.name)}
@@ -161,9 +200,11 @@ const Door = ({ door, isActive, onActivate }) => {
                                         type={f.type}
                                         name={f.name}
                                         required={f.required}
+                                        maxLength={f.type === 'email' ? 254 : MAX_FIELD_LEN}
                                         placeholder={f.placeholder}
                                         value={values[f.name] || ''}
                                         onChange={handleChange(f.name)}
+                                        autoComplete={f.type === 'email' ? 'email' : 'off'}
                                         className="bg-white/60 border border-nomad-black/15 rounded-lg px-4 py-3 text-[16px] focus:outline-none focus:border-nomad-pink transition-colors"
                                     />
                                 )}
@@ -233,8 +274,13 @@ const Contact = () => {
     }, [initialDoor, active]);
 
     return (
-        <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased overflow-x-hidden">
-            <SubpageHeader />
+        <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased">
+            <header className="fixed top-6 left-6 right-6 z-50 flex items-center justify-between">
+                <a href="/" aria-label="nomad — home" className="group inline-flex items-center h-12 px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors">
+                    <Wordmark />
+                </a>
+                <a href="/" className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors">← back</a>
+            </header>
 
             <main className="max-w-[900px] mx-auto px-6 pt-40 pb-32">
                 <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-16">contact · three doors</p>

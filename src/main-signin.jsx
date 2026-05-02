@@ -322,7 +322,7 @@ const SigninForm = () => {
                     </FadeIn>
 
                     <FadeIn delay={150}>
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} method="post" action="#" autoComplete="on" noValidate={false} className="space-y-6">
                             <div className="space-y-1">
                                 <label htmlFor="signin-email" className="text-[10px] uppercase tracking-[0.3em] font-bold text-nomad-black/40 block">Email</label>
                                 <input
