@@ -7,7 +7,7 @@ const team = [
     {
         name: 'Santiago Denari',
         role: 'Chief Executive Officer',
-        bio: 'Founder. Sets the standard of evidence the company holds itself to.',
+        bio: 'Founder. Leads business development and day-to-day running. Original architect of the closed-loop algorithm.',
         image: '/assets/images/Santi.jpg',
         linkedin: '',
     },
