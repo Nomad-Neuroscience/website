@@ -53,13 +53,6 @@ const team = [
         image: '/assets/images/Magnus.jpeg',
         linkedin: '',
     },
-    {
-        name: 'Andrea Ingrassia',
-        role: 'Machine Learning Engineer',
-        bio: 'ML engineer for the closed-loop system.',
-        image: '/assets/images/andrea.png',
-        linkedin: '',
-    },
 ];
 
 const board = [
