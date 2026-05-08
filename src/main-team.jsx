@@ -54,7 +54,7 @@ const team = [
         linkedin: '',
     },
     {
-        name: 'Andrea Ingresia',
+        name: 'Andrea Ingrassia',
         role: 'Machine Learning Engineer',
         bio: 'ML engineer for the closed-loop system.',
         image: '/assets/images/andrea.png',
