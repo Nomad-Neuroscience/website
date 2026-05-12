@@ -159,11 +159,11 @@ const SmallCard = ({ person }) => (
 
 const SubSection = ({ title, label, items }) => (
     <section className="mb-20 last:mb-0">
-        <div className="flex items-baseline justify-between mb-8 pb-5 border-b border-nomad-black/10">
-            <h2 className="font-display font-light text-nomad-black/80 tracking-tight text-[clamp(20px,2.5vw,28px)]">{title}</h2>
-            <p className="font-tech text-[11px] text-nomad-black/40 tracking-[0.18em] lowercase">{label}</p>
+        <div className="flex flex-wrap items-baseline justify-between gap-2 mb-8 pb-5 border-b border-nomad-black/10">
+            <h2 className="font-display font-light text-nomad-black/80 tracking-tight text-[clamp(18px,2.5vw,28px)]">{title}</h2>
+            <p className="font-tech text-[10px] text-nomad-black/40 tracking-[0.18em] lowercase">{label}</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 md:gap-x-8 md:gap-y-10">
             {items.map((p) => <SmallCard key={p.name + p.role} person={p} />)}
         </div>
     </section>
@@ -173,24 +173,24 @@ const Team = () => (
     <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased overflow-x-hidden">
         <SubpageHeader />
 
-        <main className="max-w-[1200px] mx-auto px-6 pt-40 pb-32">
-            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-16">team · 2026</p>
+        <main className="max-w-[1200px] mx-auto px-6 pt-28 sm:pt-32 md:pt-40 pb-24 md:pb-32">
+            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-10 md:mb-16">team · 2026</p>
 
-            <h1 className="font-display font-light text-nomad-black leading-[1.02] tracking-tight text-[clamp(44px,8vw,104px)] mb-10 max-w-[900px]">
+            <h1 className="font-display font-light text-nomad-black leading-[1.02] tracking-tight text-[clamp(36px,8vw,104px)] mb-8 md:mb-10 max-w-[900px]">
                 The people building Nomad.
             </h1>
-            <p className="text-[17px] md:text-[18px] text-nomad-black/70 leading-[1.7] max-w-[640px] mb-24">
+            <p className="text-[16px] md:text-[18px] text-nomad-black/70 leading-[1.7] max-w-[640px] mb-16 md:mb-24">
                 A small, deliberate team. Full-time builders first. Below them, the board, the clinical advisors, and the network whose scrutiny makes the work possible.
             </p>
 
             {/* Team — full-time */}
-            <section className="mb-32">
-                <div className="flex items-baseline justify-between mb-12 pb-6 border-b border-nomad-black/15">
-                    <h2 className="font-display font-light text-nomad-black tracking-tight text-[clamp(28px,4vw,48px)]">Team</h2>
-                    <p className="font-tech text-[11px] text-nomad-pink tracking-[0.18em] lowercase">full-time builders</p>
+            <section className="mb-24 md:mb-32">
+                <div className="flex flex-wrap items-baseline justify-between gap-2 mb-8 md:mb-12 pb-6 border-b border-nomad-black/15">
+                    <h2 className="font-display font-light text-nomad-black tracking-tight text-[clamp(24px,4vw,48px)]">Team</h2>
+                    <p className="font-tech text-[10px] text-nomad-pink tracking-[0.18em] lowercase">full-time builders</p>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-10">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 md:gap-x-8 md:gap-y-10">
                     {team.map((m) => (
                         <article key={m.name} className="flex flex-col">
                             <div className="aspect-square w-full bg-nomad-black/5 overflow-hidden mb-4 rounded-md">
@@ -216,7 +216,7 @@ const Team = () => (
             <SubSection title="Clinical Advisory Team"  label="medical & research" items={clinicalAdvisors} />
             <SubSection title="Advisors"           label="counsel & network"  items={advisors} />
 
-            <div className="mt-32 pt-10 border-t border-nomad-pink/30">
+            <div className="mt-20 md:mt-32 pt-10 border-t border-nomad-pink/30">
                 <p className="text-[15px] text-nomad-black/70 mb-3">Looking to join the team?</p>
                 <a href="/careers" className="font-tech text-[12px] text-nomad-pink lowercase tracking-[0.14em] hover:text-nomad-magenta transition-colors">
                     open roles →

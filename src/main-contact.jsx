@@ -275,21 +275,21 @@ const Contact = () => {
 
     return (
         <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased">
-            <header className="fixed top-6 left-6 right-6 z-50 flex items-center justify-between">
-                <a href="/" aria-label="nomad — home" className="group inline-flex items-center h-12 px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors">
+            <header className="fixed top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 z-50 flex items-center justify-between">
+                <a href="/" aria-label="nomad — home" className="group inline-flex items-center h-11 sm:h-12 px-4 sm:px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors">
                     <Wordmark />
                 </a>
-                <a href="/" className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors">← back</a>
+                <a href="/" className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors py-2 px-1">← back</a>
             </header>
 
-            <main className="max-w-[900px] mx-auto px-6 pt-40 pb-32">
-                <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-16">contact · three doors</p>
+            <main className="max-w-[900px] mx-auto px-6 pt-28 sm:pt-32 md:pt-40 pb-24 md:pb-32">
+                <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-10 md:mb-16">contact · three doors</p>
 
-                <h1 className="font-display font-light leading-[1.02] tracking-tight mb-10" style={{ fontSize: 'clamp(44px, 8vw, 96px)' }}>
+                <h1 className="font-display font-light leading-[1.02] tracking-tight mb-8 md:mb-10" style={{ fontSize: 'clamp(36px, 8vw, 96px)' }}>
                     Three ways in.
                 </h1>
 
-                <p className="text-nomad-black/70 leading-[1.7] max-w-[640px] mb-24" style={{ fontSize: '18px' }}>
+                <p className="text-nomad-black/70 leading-[1.7] max-w-[640px] mb-16 md:mb-24" style={{ fontSize: '17px' }}>
                     The site is mostly quiet. The inbox is not. Every message is read by a human. Choose the door that fits, and tell us what you need to tell us.
                 </p>
 

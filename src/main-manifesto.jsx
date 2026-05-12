@@ -6,13 +6,13 @@ import './index.css';
 const Manifesto = () => (
     <div className="min-h-screen bg-nomad-cream text-nomad-black antialiased">
         {/* Minimal nav */}
-        <header className="fixed top-6 left-6 right-6 z-50 flex items-center justify-between">
+        <header className="fixed top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 z-50 flex items-center justify-between">
             <a
                 href="/"
                 aria-label="nomad — home"
-                className="group inline-flex items-center h-12 px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors"
+                className="group inline-flex items-center h-11 sm:h-12 px-4 sm:px-5 rounded-full bg-white/60 backdrop-blur-md hover:bg-white/80 transition-colors"
             >
-                <span className="font-display font-light lowercase tracking-tight text-[20px] leading-none flex items-center text-nomad-black">
+                <span className="font-display font-light lowercase tracking-tight text-[18px] sm:text-[20px] leading-none flex items-center text-nomad-black">
                     <span>n</span>
                     <span className="text-nomad-pink">o</span>
                     <span>mad</span>
@@ -20,17 +20,17 @@ const Manifesto = () => (
             </a>
             <a
                 href="/"
-                className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors"
+                className="font-tech text-[11px] uppercase tracking-[0.22em] text-nomad-black/60 hover:text-nomad-black transition-colors py-2 px-1"
             >
                 ← back
             </a>
         </header>
 
         {/* Essay */}
-        <article className="max-w-[640px] mx-auto px-6 pt-40 pb-32">
-            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-12">manifesto · 2026.04</p>
+        <article className="max-w-[640px] mx-auto px-6 pt-28 sm:pt-32 md:pt-40 pb-24 md:pb-32">
+            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.22em] lowercase mb-10 md:mb-12">manifesto · 2026.04</p>
 
-            <h1 className="font-display font-light text-nomad-black leading-[1.02] tracking-tight text-[clamp(44px,7vw,88px)] mb-20">
+            <h1 className="font-display font-light text-nomad-black leading-[1.02] tracking-tight text-[clamp(36px,7vw,88px)] mb-14 md:mb-20">
                 Why we built the loop.
             </h1>
 

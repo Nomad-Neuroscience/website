@@ -12,9 +12,25 @@
 @tailwind utilities;
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+  }
+
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Prevent iOS Safari from zooming into inputs with small font sizes */
+  @media (max-width: 768px) {
+    input[type="email"],
+    input[type="text"],
+    input[type="search"],
+    input[type="tel"],
+    textarea,
+    select {
+      font-size: max(16px, 1em) !important;
+    }
   }
 
   /* Italic text uses serif font for elegant contrast */
@@ -285,14 +301,17 @@ html.lenis body {
 
 /* Mega stat (376M) — ported from Veri.html */
 .stat-mega {
-  padding: 140px 0;
+  padding: 80px 0;
   text-align: center;
   background: radial-gradient(60% 80% at 50% 60%, rgba(233,74,156,.16), transparent 70%);
+}
+@media (min-width: 768px) {
+  .stat-mega { padding: 140px 0; }
 }
 .stat-mega .mega-num {
   font-weight: 700;
   letter-spacing: -0.05em;
-  font-size: clamp(180px, 28vw, 440px);
+  font-size: clamp(64px, 22vw, 440px);
   line-height: .85;
   background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.25) 75%);
   -webkit-background-clip: text;

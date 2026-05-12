@@ -850,23 +850,23 @@ const Navbar = ({ onWaitlistClick }) => {
 
     return (
         <>
-            <div className="navbar-container fixed top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-4 select-none">
-                <div className="flex items-center gap-2.5 w-full max-w-[800px]">
+            <div className="navbar-container fixed top-6 md:top-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-4 w-full px-3 md:px-4 select-none">
+                <div className="flex items-center gap-2 md:gap-2.5 w-full max-w-[800px]">
                     {/* Wordmark */}
                     <Magnetic>
                         <a
                             href="/"
                             aria-label="nomad — home"
-                            className={`group flex-shrink-0 h-14 md:h-16 px-5 md:px-6 rounded-full backdrop-blur-md border flex items-center justify-center transition-all duration-500 ${isDark ? 'bg-white/10 border-white/10' : 'bg-white/80 border-black/5 shadow-[0_1px_2px_rgba(10,10,10,0.04)]'}`}
+                            className={`group flex-shrink-0 h-12 md:h-16 px-4 md:px-6 rounded-full backdrop-blur-md border flex items-center justify-center transition-all duration-500 ${isDark ? 'bg-white/10 border-white/10' : 'bg-white/80 border-black/5 shadow-[0_1px_2px_rgba(10,10,10,0.04)]'}`}
                         >
                             <Wordmark
-                                className={`text-[22px] md:text-[26px] transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-black'}`}
+                                className={`text-[20px] md:text-[26px] transition-colors duration-500 ${isDark ? 'text-white' : 'text-nomad-black'}`}
                             />
                         </a>
                     </Magnetic>
 
                     {/* Nav Pill */}
-                    <nav className={`flex-1 h-14 md:h-16 rounded-[22px] md:rounded-[26px] backdrop-blur-md border flex items-center justify-between px-6 md:px-10 transition-all duration-500 ${isDark ? 'bg-white/10 border-white/10' : 'bg-white/80 border-black/5 shadow-[0_1px_2px_rgba(10,10,10,0.04)]'}`}>
+                    <nav className={`flex-1 h-12 md:h-16 rounded-[20px] md:rounded-[26px] backdrop-blur-md border flex items-center justify-between px-4 md:px-10 transition-all duration-500 ${isDark ? 'bg-white/10 border-white/10' : 'bg-white/80 border-black/5 shadow-[0_1px_2px_rgba(10,10,10,0.04)]'}`}>
                         <div className={`hidden md:flex flex-1 items-center justify-around gap-8 text-[14px] font-medium transition-colors duration-500 ${isDark ? 'text-white' : 'text-black/80'}`}>
                             <a href="#platform" className="hover:text-nomad-pink transition-colors">Platform</a>
                             <a href="#technology" className="hover:text-nomad-pink transition-colors">Technology</a>
@@ -874,8 +874,15 @@ const Navbar = ({ onWaitlistClick }) => {
                             <div className="w-px h-4 bg-black/10 mx-2"></div>
                             <a href="/signin" className="hover:text-nomad-pink transition-colors">Investor Portal</a>
                         </div>
+                        {/* Mobile: Join Waitlist pill + hamburger */}
                         <button
-                            className={`flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 ml-4 ${isDark ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/5'}`}
+                            onClick={onWaitlistClick}
+                            className={`md:hidden text-[11px] font-medium rounded-full px-4 py-1.5 transition-all active:scale-95 mr-2 ${isDark ? 'bg-nomad-pink text-white' : 'bg-nomad-pink text-white'}`}
+                        >
+                            Join waitlist
+                        </button>
+                        <button
+                            className={`flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 ${isDark ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/5'}`}
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             aria-label="Toggle menu"
                         >
@@ -987,9 +994,12 @@ const Hero = () => {
                     max-width: 680px;
                 }
                 @media (max-width: 1024px) {
-                    .veri-hero-grid { grid-template-columns: 1fr; }
-                    .veri-feat-grid { grid-template-columns: 1fr; }
+                    .veri-hero-grid { grid-template-columns: 1fr; gap: 40px; min-height: auto; }
+                    .veri-feat-grid { grid-template-columns: 1fr; gap: 16px; }
                     .veri-phone-col { display: none; }
+                }
+                @media (max-width: 640px) {
+                    .veri-feat-grid { margin-top: 32px; }
                 }
             `}</style>
             <div
@@ -997,8 +1007,8 @@ const Hero = () => {
                 data-theme="dark"
                 style={{
                     position: 'relative',
-                    minHeight: '100vh',
-                    padding: '140px 0 80px',
+                    minHeight: '100svh',
+                    padding: 'clamp(100px, 18vw, 140px) 0 60px',
                     overflow: 'hidden',
                     background: 'radial-gradient(60% 50% at 75% 35%, rgba(233,74,156,.18), transparent 65%), radial-gradient(80% 60% at 12% 90%, rgba(233,74,156,.08), transparent 60%), #070707',
                     color: '#F4F2EA',
@@ -1006,7 +1016,7 @@ const Hero = () => {
                     WebkitFontSmoothing: 'antialiased',
                 }}
             >
-                <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+                <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 clamp(16px, 4vw, 32px)' }}>
                     <div className="veri-hero-grid">
 
                         {/* LEFT — copy */}
@@ -1028,7 +1038,7 @@ const Hero = () => {
                             </span>
 
                             <h1 style={{
-                                fontSize: 'clamp(48px, 8vw, 120px)',
+                                fontSize: 'clamp(36px, 8vw, 120px)',
                                 margin: '24px 0 0',
                                 fontWeight: 700,
                                 letterSpacing: '-0.03em',
@@ -1822,11 +1832,11 @@ const ResearchTimeline = () => {
                             </Magnetic>
                         </div>
 
-                        <div className="relative w-full max-w-2xl mt-16 h-40">
+                        <div className="relative w-full max-w-2xl mt-16 min-h-[10rem] md:h-40">
                             {researchItems.map((item, idx) => (
                                 <div
                                     key={idx}
-                                    className={`absolute inset-0 flex flex-col items-center text-center transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${activeIndex === idx ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}`}
+                                    className={`md:absolute inset-0 flex flex-col items-center text-center transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${activeIndex === idx ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none md:absolute'} ${activeIndex !== idx ? 'hidden md:flex' : ''}`}
                                 >
                                     <h3 className="text-xl md:text-3xl font-light mb-4 tracking-tight">
                                         {item.link
@@ -1943,7 +1953,7 @@ const Roadmap = () => {
                                     <div className={`pl-8 md:pl-0 md:w-1/2 ${isLeft ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'}`}>
                                         <div className={`group transition-all duration-500 ${isFuture ? 'opacity-60 hover:opacity-100' : ''}`}>
                                             <div
-                                                className={`text-6xl md:text-7xl lg:text-8xl font-light tracking-tighter mb-4 transition-all duration-700 ${isCurrent ? 'text-nomad-pink' : isFuture ? 'text-white/40 group-hover:text-white/60' : 'text-white/30'}`}
+                                                className={`text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter mb-4 transition-all duration-700 ${isCurrent ? 'text-nomad-pink' : isFuture ? 'text-white/40 group-hover:text-white/60' : 'text-white/30'}`}
                                                 style={{ transitionDelay: `${idx * 200 + 500}ms` }}
                                             >
                                                 {milestone.year}
@@ -1968,10 +1978,10 @@ const Roadmap = () => {
 };
 
 const WhereWeAre = () => (
-    <section id="where-we-are" data-theme="dark" className="bg-nomad-black text-white py-32 md:py-48 px-6 md:px-16 lg:px-24 border-t border-white/5">
+    <section id="where-we-are" data-theme="dark" className="bg-nomad-black text-white py-20 md:py-32 lg:py-48 px-6 md:px-16 lg:px-24 border-t border-white/5">
         <div className="max-w-[1100px] mx-auto">
-            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.2em] lowercase mb-16">05 / 07 — where we are</p>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-nomad-cream leading-[1.05] tracking-tight mb-14 max-w-[900px]">
+            <p className="font-tech text-[11px] text-nomad-pink tracking-[0.2em] lowercase mb-10 md:mb-16">05 / 07 — where we are</p>
+            <h2 className="text-3xl md:text-5xl lg:text-7xl font-light text-nomad-cream leading-[1.05] tracking-tight mb-10 md:mb-14 max-w-[900px]">
                 We are preparing for first-in-human investigation.
             </h2>
             <div className="text-nomad-cream/85 text-[17px] md:text-[18px] leading-[1.7] space-y-7 max-w-[640px]">
@@ -2021,14 +2031,14 @@ const Footer = () => {
     };
 
     return (
-        <footer data-theme="dark" className="bg-nomad-black text-white pt-32 pb-16 px-6 md:px-16 lg:px-24">
+        <footer data-theme="dark" className="bg-nomad-black text-white pt-20 md:pt-32 pb-16 px-6 md:px-16 lg:px-24">
             <div className="max-w-[1400px] mx-auto">
                 {/* Wordmark sign-off */}
-                <div className="mb-24 max-w-[1100px]">
-                    <h2 className="font-display font-light lowercase tracking-tight text-nomad-pink leading-[0.95] text-[clamp(48px,9vw,128px)]">
+                <div className="mb-16 md:mb-24 max-w-[1100px]">
+                    <h2 className="font-display font-light lowercase tracking-tight text-nomad-pink leading-[1] md:leading-[0.95] text-[clamp(40px,9vw,128px)]">
                         nomad —<br />the operating system for your body.
                     </h2>
-                    <p className="mt-10 text-nomad-cream/70 text-[16px] md:text-[17px] leading-[1.7] max-w-[540px]">
+                    <p className="mt-8 md:mt-10 text-nomad-cream/70 text-[15px] md:text-[17px] leading-[1.7] max-w-[540px]">
                         Preparing for first-in-human investigation. We refuse to release anything we cannot prove.
                     </p>
                 </div>
@@ -2133,15 +2143,15 @@ const Footer = () => {
 };
 
 const NumberedSection = ({ number, title, description, badge, linkText, linkHref, badgeHref }) => (
-    <div className="border-t border-nomad-black/10 py-16 flex flex-col md:flex-row justify-between items-start gap-12 group">
-        <div className="flex gap-8 lg:w-1/2">
-            <span className="text-nomad-black text-2xl md:text-3xl font-light transition-transform duration-300 group-hover:translate-x-2">{number}</span>
+    <div className="border-t border-nomad-black/10 py-12 md:py-16 flex flex-col md:flex-row justify-between items-start gap-8 md:gap-12 group">
+        <div className="flex gap-6 md:gap-8 lg:w-1/2">
+            <span className="text-nomad-black text-xl md:text-3xl font-light transition-transform duration-300 group-hover:translate-x-2 flex-shrink-0">{number}</span>
             <div>
-                <h3 className="text-3xl md:text-5xl font-light text-nomad-black leading-tight mb-6 tracking-tight">{title}</h3>
-                <p className="text-xl text-nomad-black/60 leading-relaxed max-w-sm">{description}</p>
+                <h3 className="text-2xl md:text-4xl lg:text-5xl font-light text-nomad-black leading-tight mb-4 md:mb-6 tracking-tight">{title}</h3>
+                <p className="text-lg md:text-xl text-nomad-black/60 leading-relaxed max-w-sm">{description}</p>
             </div>
         </div>
-        <div className="flex flex-col items-start md:items-end justify-between h-full lg:w-1/2 gap-12">
+        <div className="flex flex-col items-start md:items-end justify-between h-full lg:w-1/2 gap-8 md:gap-12">
             {badgeHref ? (
                 <Button variant="outline" href={badgeHref} className="!px-5 !py-2 !rounded-full text-xs tracking-widest uppercase font-medium !border-black/10 hover:!bg-black hover:!text-white !text-nomad-black transition-all">
                     {badge}
